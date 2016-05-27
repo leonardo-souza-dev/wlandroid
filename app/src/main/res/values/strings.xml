@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">WatchListt</string>
+    <string name="title_activity_search_result">SearchResult</string>
+    <string name="title_activity_search_results">SearchResults</string>
+    <string name="title_activity_movie_activity">MovieTitle</string>
+    <string name="title_activity_movie_new">MovieNewActivity</string>
+    <string name="chamada_busca">Add a movie to your watch list</string>
+    <string name="botao_adiciona_remove">Add to my WatchListt!</string>
+    <string name="botao_busca">Search</string>
+    <string name="titulo_filme">Movie name</string>
+    <string name="remove_filme">Remove from my WatchListt</string>
+    <string name="adiciona_filme">Add to my WatchListt</string>
+</resources>

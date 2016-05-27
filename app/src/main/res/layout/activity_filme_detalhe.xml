@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetalheFilmeActivity">
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="222dp"
+        android:id="@+id/imgPoster"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/poster"
+        android:layout_marginTop="39dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/titulo_filme"
+        android:id="@+id/txtMovieTitle"
+        android:textSize="24dp"
+        android:layout_below="@id/imgPoster"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/botao_adiciona_remove"
+        android:layout_below="@id/txtMovieTitle"
+        android:id="@+id/btnAddRemove"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:onClick="adicionaOuRemove"/>
+
+</RelativeLayout>
