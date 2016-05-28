@@ -10,4 +10,11 @@
     <string name="titulo_filme">Movie name</string>
     <string name="remove_filme">Remove from my WatchListt</string>
     <string name="adiciona_filme">Add to my WatchListt</string>
+    <string name="title_activity_xxxyyy">XxxyyyActivity</string>
+    <string name="title_activity_primeira">PrimeiraActivity</string>
+    <string name="title_activity_first">FirstActivity</string>
+    <string name="resultado_busca">Resultado da busca</string>
+    <string name="sua_busca_para">Sua busca para </string>
+    <string name="retornou">retornou</string>
+    <string name="resultados">resultados</string>
 </resources>

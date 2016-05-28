@@ -2,16 +2,14 @@ package com.leonardoserra.watchlist;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-/**
- * Created by leonardo on 15/05/16.
- */
-public class DetalheFilmeActivity extends AppCompatActivity {
+public class FilmeActivity extends AppCompatActivity {
 
     private Button btnAcao;
     private String jsonMyObject;
@@ -21,9 +19,11 @@ public class DetalheFilmeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filme_detalhe);
+        setContentView(R.layout.activity_filme);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        //receber filme da tela principal
+        //receber dados do filme
         myObject = null;
         savedInstanceState = getIntent().getExtras();
         if (savedInstanceState != null) {
@@ -35,13 +35,13 @@ public class DetalheFilmeActivity extends AppCompatActivity {
         tituloTextView = (TextView) findViewById(R.id.txtMovieTitle);
         String titulo = myObject.obterNome();
         tituloTextView.setText(titulo);
+        toolbar.setTitle(titulo);
 
+        //setando botao de acao
         btnAcao = (Button)findViewById(R.id.btnAddRemove);
         Boolean estaNaLista = myObject.getEstaNaMinhaLista();
-
         String remove = getResources().getString(R.string.remove_filme).toString();
         String adiciona = getResources().getString(R.string.adiciona_filme).toString();
-
         btnAcao.setText(estaNaLista ? remove : adiciona);
     }
 

@@ -1,9 +1,7 @@
 package com.leonardoserra.watchlist;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Movie;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +13,12 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-
 //
-public final class MovieViewModelAdapter extends ArrayAdapter<Filme> {
+public final class FilmeAdapter extends ArrayAdapter<Filme> {
 
     private final int fruitItemLayoutResource;
 
-    public MovieViewModelAdapter(final Context context, final int fruitItemLayoutResource) {
+    public FilmeAdapter(final Context context, final int fruitItemLayoutResource) {
         super(context, 0);
         this.fruitItemLayoutResource = fruitItemLayoutResource;
     }
@@ -52,7 +48,7 @@ public final class MovieViewModelAdapter extends ArrayAdapter<Filme> {
     }
 
     private void callFruitActivity(Filme fruitEntry) {
-        Intent intent = new Intent(getContext(), DetalheFilmeActivity.class);
+        Intent intent = new Intent(getContext(), FilmeActivity.class);
 
         Bundle b = new Bundle();
         b.putString("movieEntry", new Gson().toJson(fruitEntry));

@@ -9,20 +9,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
+        </activity>
+        <activity
+            android:name=".ResultadoBuscaActivity"
+            android:label="@string/title_activity_search_results"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FilmeActivity"
+            android:label="@string/title_activity_movie_activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PrimeiraActivity"
+            android:label="@string/title_activity_primeira"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".FirstActivity"
+            android:label="@string/title_activity_first"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SearchResultsActivity"
-            android:label="@string/title_activity_search_results"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".DetalheFilmeActivity"
-            android:label="@string/title_activity_movie_activity"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

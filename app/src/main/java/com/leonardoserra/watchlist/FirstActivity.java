@@ -1,15 +1,17 @@
 package com.leonardoserra.watchlist;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class FirstActivity extends AppCompatActivity {
 
     private TextView termoTextView;
     private Api api;
@@ -17,9 +19,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_primeira);
+        setContentView(R.layout.activity_first);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        String nomeApp = getResources().getString(R.string.app_name);
+        getSupportActionBar().setTitle(nomeApp);
     }
 
     public void search(View view) {
@@ -38,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         //redireciona para tela de busca
         Intent intent = new Intent(this, ResultadoBuscaActivity.class);
         intent.putExtra("bundle_searchResult", resultadoDaBusca);
+        intent.putExtra("termo", termo);
+        intent.putExtra("qtd", resultadoDaBusca.size());
         startActivity(intent);
     }
 }
