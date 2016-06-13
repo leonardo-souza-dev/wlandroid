@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 //
-public final class FilmeAdapter extends ArrayAdapter<Filme> {
+public final class FilmeAdapter extends ArrayAdapter<Movie> {
 
     private final int fruitItemLayoutResource;
 
@@ -30,10 +30,10 @@ public final class FilmeAdapter extends ArrayAdapter<Filme> {
         // retrieve its corresponding ViewHolder, which optimizes lookup efficiency
         final View view = getWorkingView(convertView);
         final ViewHolder viewHolder = getViewHolder(view);
-        final Filme entry = getItem(position);
+        final Movie entry = getItem(position);
 
         // Setting the title view is straightforward
-        viewHolder.titleView.setText(entry.obterNome());
+        viewHolder.titleView.setText(entry.getName());
 
         // Setting image view is also simple
         //viewHolder.imageView.setImageResource(entry.getImage());
@@ -47,7 +47,7 @@ public final class FilmeAdapter extends ArrayAdapter<Filme> {
         return view;
     }
 
-    private void callFruitActivity(Filme fruitEntry) {
+    private void callFruitActivity(Movie fruitEntry) {
         Intent intent = new Intent(getContext(), FilmeActivity.class);
 
         Bundle b = new Bundle();

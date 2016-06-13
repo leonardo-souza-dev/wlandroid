@@ -12,8 +12,8 @@ public class RepositorioUsuario {
         return usuario;
     }
 
-    public ArrayList<Filme> obterMyWatchListt(int usuarioId) {
-        ArrayList<Filme> lista = new ArrayList<>();
+    public ArrayList<Movie> obterMyWatchListt(int usuarioId) {
+        ArrayList<Movie> lista = new ArrayList<>();
         Api api = new Api();
 
         lista.add(api.obterFilme(2));

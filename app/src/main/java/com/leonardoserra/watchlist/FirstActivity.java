@@ -15,12 +15,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class FirstActivity extends AppCompatActivity {
@@ -52,20 +51,11 @@ public class FirstActivity extends AppCompatActivity {
 
         BuscaFilmeTask task = new BuscaFilmeTask();
         task.execute(termoStr);
-//
-//        //solicita resultado da busca
-//        api = new Api();
-//        ArrayList<Filme> resultadoDaBusca = api.busca(termoStr, 13);
-//
-//        //redireciona para tela de busca
-//        Intent intent = new Intent(this, ResultadoBuscaActivity.class);
-//        intent.putExtra("bundle_searchResult", resultadoDaBusca);
-//        intent.putExtra("termoStr", termoStr);
-//        intent.putExtra("qtd", resultadoDaBusca.size());
-//        startActivity(intent);
     }
 
     private class BuscaFilmeTask extends AsyncTask<String, Void, String> {
+
+        private String termoBusca;
 
         @Override
         protected String doInBackground(String... params) {
@@ -74,7 +64,7 @@ public class FirstActivity extends AppCompatActivity {
                 Toast.makeText(FirstActivity.this, "Insira um CEP", Toast.LENGTH_LONG).show();
 
             try {
-                String termoBusca = params[0].trim().replace(",", "").replace("-", "").replace(".", "");
+                termoBusca = params[0].trim().replace(",", "").replace("-", "").replace(".", "");
 
                 String uri = "http://10.0.2.2:8080/api/search";
 
@@ -87,8 +77,10 @@ public class FirstActivity extends AppCompatActivity {
                 JSONObject jsonParam = new JSONObject();
                 jsonParam.put("searchterm", termoBusca);
 
-                OutputStreamWriter wr= new OutputStreamWriter(connection.getOutputStream());
-                wr.write(jsonParam.toString());
+                byte[] outputBytes = jsonParam.toString().getBytes("UTF-8");
+                OutputStream os = connection.getOutputStream();
+                os.write(outputBytes);
+                os.close();
 
                 if (connection.getResponseCode() == 200) {
                     BufferedReader stream =
@@ -116,7 +108,7 @@ public class FirstActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             if (s == null)
-                Toast.makeText(FirstActivity.this, "Erro ao buscar o Cep", Toast.LENGTH_LONG).show();
+                Toast.makeText(FirstActivity.this, "Erro ao buscar", Toast.LENGTH_LONG).show();
 
             try {
                 int len;
@@ -124,18 +116,18 @@ public class FirstActivity extends AppCompatActivity {
 
                 if (jsonArray != null) {
 
-                    ArrayList<Filme> list = new ArrayList<>();
+                    ArrayList<Movie> list = new ArrayList<>();
                     len = jsonArray.length();
 
                     for (int i=0;i<len;i++) {
                         String str = jsonArray.get(i).toString();
-                        Filme f = new Gson().fromJson(str, Filme.class);
+                        Movie f = new Gson().fromJson(str, Movie.class);
                         list.add(f);
                     }
 
                     Intent intent = new Intent(getBaseContext(), ResultadoBuscaActivity.class);
                     intent.putExtra("bundle_searchResult", list);
-                    intent.putExtra("termoStr", termoStr);
+                    intent.putExtra("termo", termoBusca);
                     intent.putExtra("qtd", len);
                     startActivity(intent);
                 }

@@ -4,24 +4,24 @@ import java.util.ArrayList;
 
 public class RepositorioBusca {
 
-    public ArrayList<Filme> buscaFilmesPorTermo(String termo, int usuarioId) {
+    public ArrayList<Movie> buscaFilmesPorTermo(String termo, int usuarioId) {
 
-        ArrayList<Filme> filmesEncontrados = new RepositorioFilme().buscaFilmesPorTermo(termo);
-        ArrayList<Filme> meusFilmes = new RepositorioUsuario().obterMyWatchListt(usuarioId);
+        ArrayList<Movie> filmesEncontrados = new RepositorioFilme().buscaFilmesPorTermo(termo);
+        ArrayList<Movie> myMovies = new RepositorioUsuario().obterMyWatchListt(usuarioId);
 
-        for(Filme filmeEncontrado: filmesEncontrados) {
-            if (jaExisteNaLista(filmeEncontrado, meusFilmes)) {
-                filmeEncontrado.setEstaNaMinhaLista(true);
+        for(Movie movieEncontrado : filmesEncontrados) {
+            if (jaExisteNaLista(movieEncontrado, myMovies)) {
+                movieEncontrado.setEstaNaMinhaLista(true);
             }
         }
 
         return filmesEncontrados;
     }
 
-    private Boolean jaExisteNaLista(Filme filme, ArrayList<Filme> lista) {
-        int idFilmeEncontrado = filme.obterId();
-        for(Filme meuFilme: lista) {
-            int idMeuFilme = meuFilme.obterId();
+    private Boolean jaExisteNaLista(Movie movie, ArrayList<Movie> lista) {
+        int idFilmeEncontrado = movie.getId();
+        for(Movie myMovie : lista) {
+            int idMeuFilme = myMovie.getId();
             if (idFilmeEncontrado == idMeuFilme) {
                 return true;
             }

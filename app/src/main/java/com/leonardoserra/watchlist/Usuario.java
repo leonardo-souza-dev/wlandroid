@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 public class Usuario {
 
-    private ArrayList<Filme> meusFilmes;
+    private ArrayList<Movie> myMovies;
     private String nome;
 
     public Usuario() {
-        this.meusFilmes = new ArrayList();
+        this.myMovies = new ArrayList();
     }
 
-    public void adicionaFilme(Filme pFilme) {
-        this.meusFilmes.add(pFilme);
+    public void adicionaFilme(Movie pMovie) {
+        this.myMovies.add(pMovie);
     }
 
-    public void removeFilme(Filme pFilme) {
-        this.meusFilmes.remove(pFilme);
+    public void removeFilme(Movie pMovie) {
+        this.myMovies.remove(pMovie);
     }
 
     public String obterNome() {

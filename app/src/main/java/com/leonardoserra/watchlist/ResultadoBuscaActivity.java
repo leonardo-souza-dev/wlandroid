@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         newsEntryListView.setAdapter(fruitEntryAdapter);
 
         // Populate the list, through the adapter
-        for(final Filme entry : getNewsEntries()) {
+        for(final Movie entry : getNewsEntries()) {
             fruitEntryAdapter.add(entry);
         }
 
@@ -47,9 +46,9 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     }
 
     //obtem resultados da busca
-    private List<Filme> getNewsEntries() {
-        ArrayList<Filme> myListItems = null;
-        myListItems = (ArrayList<Filme>)getIntent().getSerializableExtra("bundle_searchResult");
+    private List<Movie> getNewsEntries() {
+        ArrayList<Movie> myListItems = null;
+        myListItems = (ArrayList<Movie>)getIntent().getSerializableExtra("bundle_searchResult");
 
         return myListItems;
     }

@@ -13,7 +13,7 @@ public class FilmeActivity extends AppCompatActivity {
 
     private Button btnAcao;
     private String jsonMyObject;
-    private Filme myObject;
+    private Movie myObject;
     private TextView tituloTextView;
 
     @Override
@@ -28,12 +28,12 @@ public class FilmeActivity extends AppCompatActivity {
         savedInstanceState = getIntent().getExtras();
         if (savedInstanceState != null) {
             jsonMyObject = savedInstanceState.getString("movieEntry");
-            myObject = new Gson().fromJson(jsonMyObject, Filme.class);
+            myObject = new Gson().fromJson(jsonMyObject, Movie.class);
         }
 
         //setando titulo do filme
         tituloTextView = (TextView) findViewById(R.id.txtMovieTitle);
-        String titulo = myObject.obterNome();
+        String titulo = myObject.getName();
         tituloTextView.setText(titulo);
 
         getSupportActionBar().setTitle(titulo);

@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         //solicita resultado da busca
         api = new Api();
-        ArrayList<Filme> resultadoDaBusca = api.busca(termo, 13);
+        ArrayList<Movie> resultadoDaBusca = api.busca(termo, 13);
 
         //redireciona para tela de busca
         Intent intent = new Intent(this, ResultadoBuscaActivity.class);

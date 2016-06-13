@@ -5,23 +5,23 @@ import java.io.Serializable;
 /**
  * Created by leonardo on 26/05/16.
  */
-public class Filme implements Serializable {
+public class Movie implements Serializable {
 
-    private String nome;
+    private String name;
     private int id;
     private Boolean estaNaMinhaLista;
 
-    public Filme(String pNome, int pId) {
-        this.nome = pNome;
+    public Movie(String pNome, int pId) {
+        this.name = pNome;
         this.id = pId;
         this.estaNaMinhaLista = false;
     }
 
-    public String obterNome() {
-        return this.nome;
+    public String getName() {
+        return this.name;
     }
 
-    public int obterId() {
+    public int getId() {
         return this.id;
     }
 

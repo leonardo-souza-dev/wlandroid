@@ -5,35 +5,35 @@ import java.util.ArrayList;
 
 public class RepositorioFilme {
 
-    private Filme m2 = new Filme("Batman (1989)", 2);
-    private Filme m3 = new Filme("Cidade de Deus (2002)", 3);
-    private Filme m4 = new Filme("Domésticas - O Filme (2001)", 4);
-    private Filme m19 = new Filme("The Dominici Affair", 19);
+    private Movie m2 = new Movie("Batman (1989)", 2);
+    private Movie m3 = new Movie("Cidade de Deus (2002)", 3);
+    private Movie m4 = new Movie("Domésticas - O Movie (2001)", 4);
+    private Movie m19 = new Movie("The Dominici Affair", 19);
 
-    public ArrayList<Filme> buscaFilmesPorTermo(String termo) {
-        ArrayList<Filme> filmes = new ArrayList<>();
+    public ArrayList<Movie> buscaFilmesPorTermo(String termo) {
+        ArrayList<Movie> movies = new ArrayList<>();
 
-        ArrayList<Filme> todosOsFilmesDoBanco = this.obterTodosOsFilmesDoBanco(termo);
+        ArrayList<Movie> todosOsFilmesDoBanco = this.obterTodosOsFilmesDoBanco(termo);
 
-        for (Filme filmeDoBanco: todosOsFilmesDoBanco) {
-            String nomeDoFilmeDoBanco = filmeDoBanco.obterNome();
+        for (Movie movieDoBanco : todosOsFilmesDoBanco) {
+            String nomeDoFilmeDoBanco = movieDoBanco.getName();
             if (nomeDoFilmeDoBanco.contains(termo)) {
-                filmes.add(filmeDoBanco);
+                movies.add(movieDoBanco);
             }
         }
 
-        return filmes;
+        return movies;
     }
 
-    private ArrayList<Filme> obterTodosOsFilmesDoBanco(String termo) {
-        ArrayList<Filme> filmes = new ArrayList<>();
+    private ArrayList<Movie> obterTodosOsFilmesDoBanco(String termo) {
+        ArrayList<Movie> movies = new ArrayList<>();
 
-        filmes.add(m2);
-        filmes.add(m3);
-        filmes.add(m4);
-        filmes.add(m19);
+        movies.add(m2);
+        movies.add(m3);
+        movies.add(m4);
+        movies.add(m19);
 
-        return filmes;
+        return movies;
     }
 }
 
