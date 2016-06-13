@@ -1,5 +1,7 @@
 package com.leonardoserra.watchlist;
 
+import android.widget.TextView;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;

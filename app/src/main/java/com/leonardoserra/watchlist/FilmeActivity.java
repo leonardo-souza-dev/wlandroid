@@ -35,7 +35,8 @@ public class FilmeActivity extends AppCompatActivity {
         tituloTextView = (TextView) findViewById(R.id.txtMovieTitle);
         String titulo = myObject.obterNome();
         tituloTextView.setText(titulo);
-        toolbar.setTitle(titulo);
+
+        getSupportActionBar().setTitle(titulo);
 
         //setando botao de acao
         btnAcao = (Button)findViewById(R.id.btnAddRemove);
