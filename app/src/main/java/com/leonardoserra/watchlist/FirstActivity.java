@@ -25,7 +25,6 @@ import java.util.ArrayList;
 public class FirstActivity extends AppCompatActivity {
 
     private TextView termoTextView;
-    private Api api;
     private String termoStr;
 
     @Override
@@ -60,9 +59,10 @@ public class FirstActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            if (params.length < 1 || params[0] == "" || params[0] == null)
-                Toast.makeText(FirstActivity.this, "Insira um CEP", Toast.LENGTH_LONG).show();
-
+            if (params.length < 1 || params[0] == "" || params[0] == null) {
+                Toast.makeText(FirstActivity.this, "Insira um termo de busca", Toast.LENGTH_LONG).show();
+                return null;
+            }
             try {
                 termoBusca = params[0].trim().replace(",", "").replace("-", "").replace(".", "");
 
@@ -72,15 +72,17 @@ public class FirstActivity extends AppCompatActivity {
                 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 
                 connection.setRequestMethod("POST");
-                connection.setRequestProperty("Accept", "application/json");
+                connection.setRequestProperty("Content-Type", "application/json");
 
                 JSONObject jsonParam = new JSONObject();
                 jsonParam.put("searchterm", termoBusca);
 
-                byte[] outputBytes = jsonParam.toString().getBytes("UTF-8");
+                byte[] outputBytes = jsonParam.toString().getBytes();
+                //String output = "{'searchtem': '"+ termoBusca +"'} ";
+                //byte[] outputBytes = output.getBytes();
                 OutputStream os = connection.getOutputStream();
                 os.write(outputBytes);
-                os.close();
+                //os.close();
 
                 if (connection.getResponseCode() == 200) {
                     BufferedReader stream =
@@ -107,8 +109,10 @@ public class FirstActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            if (s == null)
+            if (s == null) {
                 Toast.makeText(FirstActivity.this, "Erro ao buscar", Toast.LENGTH_LONG).show();
+                return;
+            }
 
             try {
                 int len;

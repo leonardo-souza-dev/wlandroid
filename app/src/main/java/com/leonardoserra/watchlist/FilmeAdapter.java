@@ -55,7 +55,6 @@ public final class FilmeAdapter extends ArrayAdapter<Movie> {
         intent.putExtras(b);
 
         getContext().startActivity(intent);
-        //MainActivity.fa.finish();
     }
 
     private View getWorkingView(final View convertView) {
