@@ -2,6 +2,7 @@ package com.leonardoserra.watchlist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +15,15 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 //
-public final class FilmeAdapter extends ArrayAdapter<Movie> {
+public final class MovieAdapter extends ArrayAdapter<Movie> {
 
-    private final int fruitItemLayoutResource;
+    private final int movieItemLayoutResource;
+    private final String gTerm;
 
-    public FilmeAdapter(final Context context, final int fruitItemLayoutResource) {
+    public MovieAdapter(final Context context, final int movieItemLayoutResource, String term) {
         super(context, 0);
-        this.fruitItemLayoutResource = fruitItemLayoutResource;
+        this.movieItemLayoutResource = movieItemLayoutResource;
+        this.gTerm = term;
     }
 
     @Override
@@ -33,25 +36,40 @@ public final class FilmeAdapter extends ArrayAdapter<Movie> {
         final Movie entry = getItem(position);
 
         // Setting the title view is straightforward
-        viewHolder.titleView.setText(entry.getName());
+        String title = entry.getName();
+        String partOne = "";
+        String partTwo = "";
+        String termOriginal = "";
+
+        if (title != null) {
+            int p = title.toLowerCase().indexOf(gTerm.toLowerCase());
+            termOriginal = title.substring(p, p + gTerm.length());
+            partOne = title.substring(0, p);
+            partTwo = title.substring(p + gTerm.length(), title.length());
+        }
+
+        viewHolder.titleView1.setText(partOne);
+        viewHolder.titleView2.setText(termOriginal);
+        viewHolder.titleView2.setTextColor(Color.GREEN);
+        viewHolder.titleView3.setText(partTwo);
 
         // Setting image view is also simple
         //viewHolder.imageView.setImageResource(entry.getImage());
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                callFruitActivity(entry);
+                callMovieActivity(entry);
             }
         });
 
         return view;
     }
 
-    private void callFruitActivity(Movie fruitEntry) {
-        Intent intent = new Intent(getContext(), FilmeActivity.class);
+    private void callMovieActivity(Movie movieEntry) {
+        Intent intent = new Intent(getContext(), MovieActivity.class);
 
         Bundle b = new Bundle();
-        b.putString("movieEntry", new Gson().toJson(fruitEntry));
+        b.putString("movieEntry", new Gson().toJson(movieEntry));
         intent.putExtras(b);
 
         getContext().startActivity(intent);
@@ -67,7 +85,7 @@ public final class FilmeAdapter extends ArrayAdapter<Movie> {
             final LayoutInflater inflater = (LayoutInflater)context.getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
 
-            workingView = inflater.inflate(fruitItemLayoutResource, null);
+            workingView = inflater.inflate(movieItemLayoutResource, null);
         } else {
             workingView = convertView;
         }
@@ -83,7 +101,9 @@ public final class FilmeAdapter extends ArrayAdapter<Movie> {
 
         if(null == tag || !(tag instanceof ViewHolder)) {
             viewHolder = new ViewHolder();
-            viewHolder.titleView = (TextView) workingView.findViewById(R.id.rowTextView);
+            viewHolder.titleView1 = (TextView) workingView.findViewById(R.id.rowTextView1);
+            viewHolder.titleView2 = (TextView) workingView.findViewById(R.id.rowTextView2);
+            viewHolder.titleView3 = (TextView) workingView.findViewById(R.id.rowTextView3);
             viewHolder.addRemoveBtn = (Button)workingView.findViewById(R.id.btnAddRemove);
             //viewHolder.imageView = (ImageView) workingView.findViewById(R.id.fruit_entry_image);
 
@@ -97,8 +117,10 @@ public final class FilmeAdapter extends ArrayAdapter<Movie> {
     }
 
     private static class ViewHolder {
-        public TextView titleView;
-        public ImageView imageView;
+        public TextView titleView1;
+        public TextView titleView2;
+        public TextView titleView3;
+        //public ImageView imageView;
         public Button addRemoveBtn;
     }
 }

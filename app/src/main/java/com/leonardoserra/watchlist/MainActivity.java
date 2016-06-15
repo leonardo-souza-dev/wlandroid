@@ -1,6 +1,7 @@
 package com.leonardoserra.watchlist;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,27 +16,50 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class FirstActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private TextView termoTextView;
     private String termoStr;
+    private String gUserToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first);
+        setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         String nomeApp = getResources().getString(R.string.app_name);
         getSupportActionBar().setTitle(nomeApp);
+
+        try {
+            SharedPreferences sp = getPreferences(MODE_PRIVATE);
+            String userToken = sp.getString("wl_user_token", null);
+
+            if (userToken == null) {
+
+                SharedPreferences.Editor e = sp.edit();
+                String token_generated = java.util.UUID.randomUUID().toString();
+                gUserToken = token_generated;
+                e.putString("wl_user_token", token_generated);
+                e.commit();
+
+            } else {
+
+                gUserToken = userToken;
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -60,7 +84,7 @@ public class FirstActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             if (params.length < 1 || params[0] == "" || params[0] == null) {
-                Toast.makeText(FirstActivity.this, "Insira um termo de busca", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Insira um termo de busca", Toast.LENGTH_LONG).show();
                 return null;
             }
             try {
@@ -110,7 +134,7 @@ public class FirstActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             if (s == null) {
-                Toast.makeText(FirstActivity.this, "Erro ao buscar", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Erro ao buscar", Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -129,7 +153,7 @@ public class FirstActivity extends AppCompatActivity {
                         list.add(f);
                     }
 
-                    Intent intent = new Intent(getBaseContext(), ResultadoBuscaActivity.class);
+                    Intent intent = new Intent(getBaseContext(), SearchResultActivity.class);
                     intent.putExtra("bundle_searchResult", list);
                     intent.putExtra("termo", termoBusca);
                     intent.putExtra("qtd", len);

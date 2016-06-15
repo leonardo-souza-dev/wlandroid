@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-public class FilmeActivity extends AppCompatActivity {
+public class MovieActivity extends AppCompatActivity {
 
     private Button btnAcao;
     private String jsonMyObject;

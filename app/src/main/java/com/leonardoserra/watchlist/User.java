@@ -2,12 +2,12 @@ package com.leonardoserra.watchlist;
 
 import java.util.ArrayList;
 
-public class Usuario {
+public class User {
 
     private ArrayList<Movie> myMovies;
     private String nome;
 
-    public Usuario() {
+    public User() {
         this.myMovies = new ArrayList();
     }
 
