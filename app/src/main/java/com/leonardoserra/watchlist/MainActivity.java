@@ -16,7 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -27,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView termoTextView;
     private String termoStr;
-    private String gUserToken;
+    private String gUserHash;
+    private String gAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,20 +40,23 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(nomeApp);
 
         try {
+            //tenta obter o hash do usuario
             SharedPreferences sp = getPreferences(MODE_PRIVATE);
-            String userToken = sp.getString("wl_user_token", null);
+            String userHash = sp.getString("wl_user_hash", null);
 
-            if (userToken == null) {
+            if (userHash == null) {
+
+                //se nao encontra nenhum hash, gera um na web api
+                BuscaFilmeTask task = new BuscaFilmeTask();
+                task.execute("createuser");
 
                 SharedPreferences.Editor e = sp.edit();
-                String token_generated = java.util.UUID.randomUUID().toString();
-                gUserToken = token_generated;
-                e.putString("wl_user_token", token_generated);
+                e.putString("wl_user_hash", gUserHash);
                 e.commit();
 
             } else {
 
-                gUserToken = userToken;
+                gUserHash = userHash;
 
             }
         } catch (Exception e) {
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             return;
 
         BuscaFilmeTask task = new BuscaFilmeTask();
-        task.execute(termoStr);
+        task.execute("search", termoStr);
     }
 
     private class BuscaFilmeTask extends AsyncTask<String, Void, String> {
@@ -83,30 +86,34 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            if (params.length < 1 || params[0] == "" || params[0] == null) {
+            gAction = params[0].toString();
+            String termParam = params.length == 2 ? params[1] : "";
+
+            if (gAction == "search" && termParam == "") {
                 Toast.makeText(MainActivity.this, "Insira um termo de busca", Toast.LENGTH_LONG).show();
                 return null;
             }
             try {
-                termoBusca = params[0].trim().replace(",", "").replace("-", "").replace(".", "");
+                termoBusca = termParam.trim().replace(",", "").replace("-", "").replace(".", "");
 
-                String uri = "http://10.0.2.2:8080/api/search";
+                String uri = "http://10.0.2.2:8080/api/" + gAction;
 
                 URL url = new URL(uri);
                 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 
                 connection.setRequestMethod("POST");
-                connection.setRequestProperty("Content-Type", "application/json");
 
-                JSONObject jsonParam = new JSONObject();
-                jsonParam.put("searchterm", termoBusca);
+                if (gAction == "search") {
+                    connection.setRequestProperty("Content-Type", "application/json");
 
-                byte[] outputBytes = jsonParam.toString().getBytes();
-                //String output = "{'searchtem': '"+ termoBusca +"'} ";
-                //byte[] outputBytes = output.getBytes();
-                OutputStream os = connection.getOutputStream();
-                os.write(outputBytes);
-                //os.close();
+
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("searchterm", termoBusca);
+
+                    byte[] outputBytes = jsonParam.toString().getBytes();
+                    OutputStream os = connection.getOutputStream();
+                    os.write(outputBytes);
+                }
 
                 if (connection.getResponseCode() == 200) {
                     BufferedReader stream =
@@ -120,6 +127,13 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     connection.disconnect();
+
+                    if (gAction == "createuser") {
+                        JSONObject hashJson = new JSONObject(resposta.toString());
+                        gUserHash = hashJson.getString("hash").toString();
+
+                        return gUserHash;
+                    }
 
                     return resposta.toString();
                 }
@@ -138,7 +152,15 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
+
             try {
+
+                if (gAction == "createuser"){
+                    JSONObject hashJson = new JSONObject(s);
+                    gUserHash = hashJson.getString("hash").toString();
+                    return;
+                }
+
                 int len;
                 JSONArray jsonArray = new JSONArray(s);
 
