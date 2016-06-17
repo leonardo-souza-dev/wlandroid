@@ -46,28 +46,27 @@ public class MainActivity extends AppCompatActivity {
             String userHash = sp.getString("wl_user_hash", null);
             String userToken = sp.getString("wl_user_token", null);
 
+            SharedPreferences.Editor e = sp.edit();
+            BuscaFilmeTask task = new BuscaFilmeTask();
+            
             if (userHash == null) {
 
                 //se nao encontra nenhum hash, gera um na web api
-                BuscaFilmeTask task = new BuscaFilmeTask();
-
                 String jsonHash = task.execute("createuser").get();
                 JSONObject hashJson = new JSONObject(jsonHash);
                 gUserHash = hashJson.getString("hash").toString();
-
-//                String jsonToken = task.execute("authenticate").get();
-//                JSONObject hashToken = new JSONObject(jsonToken);
-//                gUserToken = hashJson.getString("token").toString();
-
-                SharedPreferences.Editor e = sp.edit();
                 e.putString("wl_user_hash", gUserHash);
-//                e.putString("wl_user_token", gUserToken);
-                e.commit();
-
             } else {
                 gUserHash = userHash;
                 //gUserToken = userToken;
             }
+            
+            String jsonToken = task.execute("authenticate", gUserHash).get();
+            JSONObject hashToken = new JSONObject(jsonToken);
+            gUserToken = hashJson.getString("token").toString();
+            e.putString("wl_user_token", gUserToken);
+            
+            e.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
