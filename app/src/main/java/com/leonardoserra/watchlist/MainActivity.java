@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView termoTextView;
     private String termoStr;
     private String gUserHash;
-    //private String gUserToken;
+    private String gUserToken;
     private String gAction;
 
     @Override
@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
                 e.putString("wl_user_hash", gUserHash);
             } else {
                 gUserHash = userHash;
-                //gUserToken = userToken;
             }
             
             String jsonToken = task.execute("authenticate", gUserHash).get();
