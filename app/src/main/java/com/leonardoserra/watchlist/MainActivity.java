@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView termoTextView;
     private String termoStr;
     private String gUserHash;
+    //private String gUserToken;
     private String gAction;
 
     @Override
@@ -43,28 +44,35 @@ public class MainActivity extends AppCompatActivity {
             //tenta obter o hash do usuario
             SharedPreferences sp = getPreferences(MODE_PRIVATE);
             String userHash = sp.getString("wl_user_hash", null);
+            String userToken = sp.getString("wl_user_token", null);
 
             if (userHash == null) {
 
                 //se nao encontra nenhum hash, gera um na web api
                 BuscaFilmeTask task = new BuscaFilmeTask();
-                task.execute("createuser");
+
+                String jsonHash = task.execute("createuser").get();
+                JSONObject hashJson = new JSONObject(jsonHash);
+                gUserHash = hashJson.getString("hash").toString();
+
+//                String jsonToken = task.execute("authenticate").get();
+//                JSONObject hashToken = new JSONObject(jsonToken);
+//                gUserToken = hashJson.getString("token").toString();
 
                 SharedPreferences.Editor e = sp.edit();
                 e.putString("wl_user_hash", gUserHash);
+//                e.putString("wl_user_token", gUserToken);
                 e.commit();
 
             } else {
-
                 gUserHash = userHash;
-
+                //gUserToken = userToken;
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
 
     public void search(View view) {
         //obtem ter_mo da busca
@@ -128,13 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
                     connection.disconnect();
 
-                    if (gAction == "createuser") {
-                        JSONObject hashJson = new JSONObject(resposta.toString());
-                        gUserHash = hashJson.getString("hash").toString();
-
-                        return gUserHash;
-                    }
-
                     return resposta.toString();
                 }
 
@@ -158,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 if (gAction == "createuser"){
                     JSONObject hashJson = new JSONObject(s);
                     gUserHash = hashJson.getString("hash").toString();
+
                     return;
                 }
 
