@@ -42,7 +42,8 @@ public class SearchResultActivity extends AppCompatActivity {
         String suaBuscaPara = getResources().getString(R.string.sua_busca_para);
         String retornou = getResources().getString(R.string.retornou);
         Integer qtd = getIntent().getIntExtra("qtd", 0);
-        String resultados = getResources().getString(R.string.resultados);
+        String resultados = qtd == 1 ? getResources().getString(R.string.resultado) :
+                getResources().getString(R.string.resultados);
 
         txtFraseBusca.setText(suaBuscaPara + " \"" + termo + "\" " + retornou + " " + qtd + " " + resultados);
     }

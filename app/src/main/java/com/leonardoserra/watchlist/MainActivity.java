@@ -26,9 +26,14 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView termoTextView;
     private String termoStr;
-    private String gUserHash;
-    private String gUserToken;
+
+    private String gHash;
+    private String gToken;
     private String gAction;
+
+    private final String SEARCH = "search";
+    private final String CREATEUSER = "createuser";
+    private final String AUTHENTICATE = "authenticate";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,30 +46,41 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(nomeApp);
 
         try {
-            //tenta obter o hash do usuario
+
             SharedPreferences sp = getPreferences(MODE_PRIVATE);
-            String userHash = sp.getString("wl_user_hash", null);
-            String userToken = sp.getString("wl_user_token", null);
-
             SharedPreferences.Editor e = sp.edit();
-            BuscaFilmeTask task = new BuscaFilmeTask();
-            
-            if (userHash == null) {
 
-                //se nao encontra nenhum hash, gera um na web api
-                String jsonHash = task.execute("createuser").get();
-                JSONObject hashJson = new JSONObject(jsonHash);
-                gUserHash = hashJson.getString("hash").toString();
-                e.putString("wl_user_hash", gUserHash);
+            String userHash = sp.getString("wl_user_hash", null); //tenta obter o hash do usuario no dispositivo
+            if (userHash == null) { //se nao encontrar hash no sistema...
+
+                WLWebApi task = new WLWebApi();
+                String jsonHash = task.execute(CREATEUSER).get(); //obtem string-json com hash gerado
+                JSONObject hashJson = new JSONObject(jsonHash); //convert string para json
+                gHash = hashJson.getString("hash").toString(); //obtem valor do hash
+                e.putString("wl_user_hash", gHash); //grava hash em SharedPreferences
+
             } else {
-                gUserHash = userHash;
+                gHash = userHash; //se encontrar hash, joga valor para variavel global
             }
-            
-            String jsonToken = task.execute("authenticate", gUserHash).get();
-            JSONObject hashToken = new JSONObject(jsonToken);
-            gUserToken = hashJson.getString("token").toString();
-            e.putString("wl_user_token", gUserToken);
-            
+
+            String userToken = sp.getString("wl_user_token", null); //tenta obter o token do usuario no dispositivo
+            if (userToken == null) {
+
+                WLWebApi task = new WLWebApi();
+                String jsonToken = task.execute(AUTHENTICATE, gHash).get();
+                JSONObject hashToken = new JSONObject(jsonToken);
+                gToken = hashToken.getString("token").toString();
+                e.putString("wl_user_token", gToken);
+
+            } else {
+                gToken = userToken;
+            }
+
+            TextView txtHash = (TextView)findViewById(R.id.txtHash);
+            txtHash.setText(gHash);
+            TextView txtToken = (TextView)findViewById(R.id.txtToken);
+            txtToken.setText(gToken.substring(0,10));
+
             e.commit();
 
         } catch (Exception e) {
@@ -81,13 +97,13 @@ public class MainActivity extends AppCompatActivity {
         else
             return;
 
-        BuscaFilmeTask task = new BuscaFilmeTask();
-        task.execute("search", termoStr);
+        WLWebApi task = new WLWebApi();
+        task.execute(SEARCH, termoStr);
     }
 
-    private class BuscaFilmeTask extends AsyncTask<String, Void, String> {
+    private class WLWebApi extends AsyncTask<String, Void, String> {
 
-        private String termoBusca;
+        private String searchTerm;
 
         @Override
         protected String doInBackground(String... params) {
@@ -95,12 +111,12 @@ public class MainActivity extends AppCompatActivity {
             gAction = params[0].toString();
             String termParam = params.length == 2 ? params[1] : "";
 
-            if (gAction == "search" && termParam == "") {
+            if (gAction == SEARCH && termParam == "") {
                 Toast.makeText(MainActivity.this, "Insira um termo de busca", Toast.LENGTH_LONG).show();
                 return null;
             }
             try {
-                termoBusca = termParam.trim().replace(",", "").replace("-", "").replace(".", "");
+
 
                 String uri = "http://10.0.2.2:8080/api/" + gAction;
 
@@ -108,33 +124,37 @@ public class MainActivity extends AppCompatActivity {
                 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 
                 connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type", "application/json");
+                JSONObject jsonParam = new JSONObject();
+
+                if (gAction == AUTHENTICATE) {
+                    jsonParam.put("hash", gHash);
+                    jsonParam.put("password", "");
+                }
 
                 if (gAction == "search") {
-                    connection.setRequestProperty("Content-Type", "application/json");
-
-
-                    JSONObject jsonParam = new JSONObject();
-                    jsonParam.put("searchterm", termoBusca);
-
-                    byte[] outputBytes = jsonParam.toString().getBytes();
-                    OutputStream os = connection.getOutputStream();
-                    os.write(outputBytes);
+                    searchTerm = termParam.trim().replace(",", "").replace("-", "").replace(".", "");
+                    jsonParam.put("searchterm", searchTerm);
                 }
+
+                byte[] outputBytes = jsonParam.toString().getBytes();
+                OutputStream os = connection.getOutputStream();
+                os.write(outputBytes);
 
                 if (connection.getResponseCode() == 200) {
                     BufferedReader stream =
                             new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-                    String linha = "";
-                    StringBuilder resposta = new StringBuilder();
+                    String line = "";
+                    StringBuilder response = new StringBuilder();
 
-                    while ((linha = stream.readLine()) != null) {
-                        resposta.append(linha);
+                    while ((line = stream.readLine()) != null) {
+                        response.append(line);
                     }
 
                     connection.disconnect();
 
-                    return resposta.toString();
+                    return response.toString();
                 }
 
             } catch (Exception e) {
@@ -146,42 +166,50 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
+
             if (s == null) {
                 Toast.makeText(MainActivity.this, "Erro ao buscar", Toast.LENGTH_LONG).show();
                 return;
             }
 
-
             try {
 
-                if (gAction == "createuser"){
-                    JSONObject hashJson = new JSONObject(s);
-                    gUserHash = hashJson.getString("hash").toString();
-
+                if (gAction == CREATEUSER) {
+                    JSONObject json = new JSONObject(s);
+                    String temp  = json.getString("hash");
+                    gHash = temp.toString();
                     return;
                 }
 
-                int len;
-                JSONArray jsonArray = new JSONArray(s);
-
-                if (jsonArray != null) {
-
-                    ArrayList<Movie> list = new ArrayList<>();
-                    len = jsonArray.length();
-
-                    for (int i=0;i<len;i++) {
-                        String str = jsonArray.get(i).toString();
-                        Movie f = new Gson().fromJson(str, Movie.class);
-                        list.add(f);
-                    }
-
-                    Intent intent = new Intent(getBaseContext(), SearchResultActivity.class);
-                    intent.putExtra("bundle_searchResult", list);
-                    intent.putExtra("termo", termoBusca);
-                    intent.putExtra("qtd", len);
-                    startActivity(intent);
+                if (gAction == AUTHENTICATE) {
+                    JSONObject json = new JSONObject(s);
+                    String temp = json.getString("token");
+                    gToken = temp.toString();
+                    return;
                 }
 
+                if (gAction == SEARCH) {
+                    int len;
+                    JSONArray jsonArray = new JSONArray(s);
+
+                    if (jsonArray != null) {
+
+                        ArrayList<Movie> list = new ArrayList<>();
+                        len = jsonArray.length();
+
+                        for (int i = 0; i < len; i++) {
+                            String str = jsonArray.get(i).toString();
+                            Movie f = new Gson().fromJson(str, Movie.class);
+                            list.add(f);
+                        }
+
+                        Intent intent = new Intent(getBaseContext(), SearchResultActivity.class);
+                        intent.putExtra("bundle_searchResult", list);
+                        intent.putExtra("termo", searchTerm);
+                        intent.putExtra("qtd", len);
+                        startActivity(intent);
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

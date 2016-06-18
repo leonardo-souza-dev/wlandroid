@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -15,13 +16,19 @@ public class MovieActivity extends AppCompatActivity {
     private String jsonMyObject;
     private Movie myObject;
     private TextView tituloTextView;
+    private boolean gIsInMyList;
+    private String remove;
+    private String add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filme);
+        setContentView(R.layout.activity_movie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        remove = getResources().getString(R.string.remove_movie).toString();
+        add = getResources().getString(R.string.add_movie).toString();
 
         //receber dados do filme
         myObject = null;
@@ -40,13 +47,22 @@ public class MovieActivity extends AppCompatActivity {
 
         //setando botao de acao
         btnAcao = (Button)findViewById(R.id.btnAddRemove);
-        Boolean estaNaLista = myObject.getEstaNaMinhaLista();
-        String remove = getResources().getString(R.string.remove_filme).toString();
-        String adiciona = getResources().getString(R.string.adiciona_filme).toString();
-        btnAcao.setText(estaNaLista ? remove : adiciona);
+        //Boolean gIsInMyList = myObject.getEstaNaMinhaLista();
+        gIsInMyList = false;
+
+        btnAcao.setText(gIsInMyList ? remove : add);
     }
 
-    public void adicionaOuRemove(View view) {
+    public void addOrRemove(View view) {
 
+        if (gIsInMyList) {
+            Toast.makeText(this, "filme retirado da sua lista",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "filme adicionado à sua lista",Toast.LENGTH_LONG).show();
+        }
+
+        gIsInMyList = !gIsInMyList;
+
+        btnAcao.setText(gIsInMyList ? remove : add);
     }
 }
