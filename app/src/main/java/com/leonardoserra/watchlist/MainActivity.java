@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private TextView termoTextView;
-    private String termoStr;
+    private String searchTerm;
 
     private String gHash;
     private String gToken;
@@ -53,12 +53,18 @@ public class MainActivity extends AppCompatActivity {
             String userHash = sp.getString("wl_user_hash", null); //tenta obter o hash do usuario no dispositivo
             if (userHash == null) { //se nao encontrar hash no sistema...
 
-                WLWebApi task = new WLWebApi();
-                String jsonHash = task.execute(CREATEUSER).get(); //obtem string-json com hash gerado
-                JSONObject hashJson = new JSONObject(jsonHash); //convert string para json
-                gHash = hashJson.getString("hash").toString(); //obtem valor do hash
-                e.putString("wl_user_hash", gHash); //grava hash em SharedPreferences
+                //WLWebApi task = new WLWebApi();
 
+                Message msgCreateUser = new ApiHelper().callSync(CREATEUSER);
+
+                if (msgCreateUser.getSucess()) {
+                    gHash = msgCreateUser.getObject("hash");
+
+                    //String jsonHash = task.execute(CREATEUSER).get(); //obtem string-json com hash gerado
+                    //JSONObject hashJson = new JSONObject(jsonHash); //convert string para json
+                    //gHash = hashJson.getString("hash").toString(); //obtém valor do hash
+                    e.putString("wl_user_hash", gHash); //grava hash em SharedPreferences
+                }
             } else {
                 gHash = userHash; //se encontrar hash, joga valor para variavel global
             }
@@ -66,10 +72,8 @@ public class MainActivity extends AppCompatActivity {
             String userToken = sp.getString("wl_user_token", null); //tenta obter o token do usuario no dispositivo
             if (userToken == null) {
 
-                WLWebApi task = new WLWebApi();
-                String jsonToken = task.execute(AUTHENTICATE, gHash).get();
-                JSONObject hashToken = new JSONObject(jsonToken);
-                gToken = hashToken.getString("token").toString();
+                Message msg = new ApiHelper().callSync(AUTHENTICATE, gHash);
+                gToken = msg.getObject("token");
                 e.putString("wl_user_token", gToken);
 
             } else {
@@ -91,14 +95,45 @@ public class MainActivity extends AppCompatActivity {
     public void search(View view) {
         //obtem ter_mo da busca
         termoTextView = (TextView)findViewById(R.id.txtTerm);
-        termoStr = "";
+        searchTerm = "";
         if (!termoTextView.getText().equals(""))
-            termoStr = termoTextView.getText().toString();
+            searchTerm = termoTextView.getText().toString();
         else
             return;
 
+        Message msg = new ApiHelper().callSync(SEARCH, searchTerm, gToken);
+
+        if (msg.getSucess()) {
+
+            try {
+
+                int len;
+                JSONObject object = msg.getObject();
+                JSONArray jsonArray = object.getJSONArray("movies");
+
+                if (jsonArray != null) {
+
+                    ArrayList<Movie> list = new ArrayList<>();
+                    len = jsonArray.length();
+
+                    for (int i = 0; i < len; i++) {
+                        String str = jsonArray.get(i).toString();
+                        Movie f = new Gson().fromJson(str, Movie.class);
+                        list.add(f);
+                    }
+
+                    Intent intent = new Intent(getBaseContext(), SearchResultActivity.class);
+                    intent.putExtra("bundle_searchResult", list);
+                    intent.putExtra("termo", searchTerm);
+                    intent.putExtra("qtd", len);
+                    startActivity(intent);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         WLWebApi task = new WLWebApi();
-        task.execute(SEARCH, termoStr);
+        task.execute(SEARCH, searchTerm);
     }
 
     private class WLWebApi extends AsyncTask<String, Void, String> {

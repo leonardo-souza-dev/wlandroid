@@ -8,12 +8,12 @@ import java.io.Serializable;
 public class Movie implements Serializable {
 
     private String name;
-    private int id;
+    private String _id;
     private Boolean estaNaMinhaLista;
 
-    public Movie(String pNome, int pId) {
+    public Movie(String pNome, String pId) {
         this.name = pNome;
-        this.id = pId;
+        this._id = pId;
         this.estaNaMinhaLista = false;
     }
 
@@ -21,8 +21,8 @@ public class Movie implements Serializable {
         return this.name;
     }
 
-    public int getId() {
-        return this.id;
+    public String getId() {
+        return this._id;
     }
 
     public Boolean getEstaNaMinhaLista() {
