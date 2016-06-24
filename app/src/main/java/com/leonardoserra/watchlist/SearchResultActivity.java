@@ -33,7 +33,7 @@ public class SearchResultActivity extends AppCompatActivity {
         newsEntryListView.setAdapter(fruitEntryAdapter);
 
         // Populate the list, through the adapter
-        for(final Movie entry : getNewsEntries()) {
+        for(final MovieViewModel entry : getNewsEntries()) {
             fruitEntryAdapter.add(entry);
         }
 
@@ -49,9 +49,9 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     //obtem resultados da busca
-    private List<Movie> getNewsEntries() {
-        ArrayList<Movie> myListItems = null;
-        myListItems = (ArrayList<Movie>)getIntent().getSerializableExtra("bundle_searchResult");
+    private List<MovieViewModel> getNewsEntries() {
+        ArrayList<MovieViewModel> myListItems = null;
+        myListItems = (ArrayList<MovieViewModel>)getIntent().getSerializableExtra("bundle_searchResult");
 
         return myListItems;
     }

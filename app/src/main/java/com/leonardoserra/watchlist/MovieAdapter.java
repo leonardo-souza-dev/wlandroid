@@ -9,13 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
 //
-public final class MovieAdapter extends ArrayAdapter<Movie> {
+public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
     private final int movieItemLayoutResource;
     private final String gTerm;
@@ -33,7 +32,7 @@ public final class MovieAdapter extends ArrayAdapter<Movie> {
         // retrieve its corresponding ViewHolder, which optimizes lookup efficiency
         final View view = getWorkingView(convertView);
         final ViewHolder viewHolder = getViewHolder(view);
-        final Movie entry = getItem(position);
+        final MovieViewModel entry = getItem(position);
 
         // Setting the title view is straightforward
         String title = entry.getName();
@@ -65,11 +64,11 @@ public final class MovieAdapter extends ArrayAdapter<Movie> {
         return view;
     }
 
-    private void callMovieActivity(Movie movieEntry) {
+    private void callMovieActivity(MovieViewModel movieViewModelEntry) {
         Intent intent = new Intent(getContext(), MovieActivity.class);
 
         Bundle b = new Bundle();
-        b.putString("movieEntry", new Gson().toJson(movieEntry));
+        b.putString("movieViewModelEntry", new Gson().toJson(movieViewModelEntry));
         intent.putExtras(b);
 
         getContext().startActivity(intent);

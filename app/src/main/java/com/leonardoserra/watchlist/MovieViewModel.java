@@ -5,13 +5,13 @@ import java.io.Serializable;
 /**
  * Created by leonardo on 26/05/16.
  */
-public class Movie implements Serializable {
+public class MovieViewModel implements Serializable {
 
     private String name;
     private String _id;
     private Boolean estaNaMinhaLista;
 
-    public Movie(String pNome, String pId) {
+    public MovieViewModel(String pNome, String pId) {
         this.name = pNome;
         this._id = pId;
         this.estaNaMinhaLista = false;
@@ -33,3 +33,4 @@ public class Movie implements Serializable {
         this.estaNaMinhaLista = esta;
     }
 }
+

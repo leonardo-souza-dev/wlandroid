@@ -4,19 +4,23 @@ import java.util.ArrayList;
 
 public class User {
 
-    private ArrayList<Movie> myMovies;
+    private ArrayList<MovieViewModel> myMovies;
     private String nome;
+    private String token;
+    private String hash;
+    private ArrayList<Integer> myMoviesId;
+
 
     public User() {
         this.myMovies = new ArrayList();
     }
 
-    public void adicionaFilme(Movie pMovie) {
-        this.myMovies.add(pMovie);
+    public void adicionaFilme(MovieViewModel pMovieViewModel) {
+        this.myMovies.add(pMovieViewModel);
     }
 
-    public void removeFilme(Movie pMovie) {
-        this.myMovies.remove(pMovie);
+    public void removeFilme(MovieViewModel pMovieViewModel) {
+        this.myMovies.remove(pMovieViewModel);
     }
 
     public String obterNome() {
@@ -25,5 +29,21 @@ public class User {
 
     public void definirNome(String pNome) {
         this.nome = pNome;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }

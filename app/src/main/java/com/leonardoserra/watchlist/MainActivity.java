@@ -113,12 +113,12 @@ public class MainActivity extends AppCompatActivity {
 
                 if (jsonArray != null) {
 
-                    ArrayList<Movie> list = new ArrayList<>();
+                    ArrayList<MovieViewModel> list = new ArrayList<>();
                     len = jsonArray.length();
 
                     for (int i = 0; i < len; i++) {
                         String str = jsonArray.get(i).toString();
-                        Movie f = new Gson().fromJson(str, Movie.class);
+                        MovieViewModel f = new Gson().fromJson(str, MovieViewModel.class);
                         list.add(f);
                     }
 
@@ -151,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
             try {
-
 
                 String uri = "http://10.0.2.2:8080/api/" + gAction;
 
@@ -229,12 +228,12 @@ public class MainActivity extends AppCompatActivity {
 
                     if (jsonArray != null) {
 
-                        ArrayList<Movie> list = new ArrayList<>();
+                        ArrayList<MovieViewModel> list = new ArrayList<>();
                         len = jsonArray.length();
 
                         for (int i = 0; i < len; i++) {
                             String str = jsonArray.get(i).toString();
-                            Movie f = new Gson().fromJson(str, Movie.class);
+                            MovieViewModel f = new Gson().fromJson(str, MovieViewModel.class);
                             list.add(f);
                         }
 

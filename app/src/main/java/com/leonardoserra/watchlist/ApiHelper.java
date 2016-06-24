@@ -1,9 +1,7 @@
 package com.leonardoserra.watchlist;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -31,7 +29,13 @@ public class ApiHelper  {
 
     private final String SEARCH = "search";
     private final String CREATEUSER = "createuser";
+    private final String UPDATEUSER = "updateuser";
     private final String AUTHENTICATE = "authenticate";
+
+    public Message update(String pToken, User pUser) {
+        String[] lParameters = {pToken, UPDATEUSER, new Gson().toJson(pUser)};
+        return callSync(lParameters);
+    }
 
     public Message callSync(String... params) {
         Message msg;
@@ -147,13 +151,13 @@ public class ApiHelper  {
 
                     if (jsonArray != null) {
 
-                        ArrayList<Movie> list = new ArrayList<>();
+                        MoviesViewModel f = new MoviesViewModel();
                         len = jsonArray.length();
 
                         for (int i = 0; i < len; i++) {
                             String str = jsonArray.get(i).toString();
-                            Movie f = new Gson().fromJson(str, Movie.class);
-                            list.add(f);
+                            f = new Gson().fromJson(str, MoviesViewModel.class);
+                            //list.add(f);
                         }
 
 //                        Intent intent = new Intent(getBaseContext(), SearchResultActivity.class);

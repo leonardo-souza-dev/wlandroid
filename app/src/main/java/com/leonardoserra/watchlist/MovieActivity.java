@@ -14,11 +14,13 @@ public class MovieActivity extends AppCompatActivity {
 
     private Button btnAcao;
     private String jsonMyObject;
-    private Movie myObject;
+    private MovieViewModel movieViewModel;
+    private MoviesViewModel moviesViewModel;
     private TextView tituloTextView;
     private boolean gIsInMyList;
     private String remove;
     private String add;
+    private User gUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,23 +33,23 @@ public class MovieActivity extends AppCompatActivity {
         add = getResources().getString(R.string.add_movie).toString();
 
         //receber dados do filme
-        myObject = null;
+        movieViewModel = null;
         savedInstanceState = getIntent().getExtras();
         if (savedInstanceState != null) {
-            jsonMyObject = savedInstanceState.getString("movieEntry");
-            myObject = new Gson().fromJson(jsonMyObject, Movie.class);
+            jsonMyObject = savedInstanceState.getString("movieViewModelEntry");
+            movieViewModel = new Gson().fromJson(jsonMyObject, MovieViewModel.class);
         }
 
         //setando titulo do filme
         tituloTextView = (TextView) findViewById(R.id.txtMovieTitle);
-        String titulo = myObject.getName();
+        String titulo = movieViewModel.getName();
         tituloTextView.setText(titulo);
 
         getSupportActionBar().setTitle(titulo);
 
         //setando botao de acao
         btnAcao = (Button)findViewById(R.id.btnAddRemove);
-        //Boolean gIsInMyList = myObject.getEstaNaMinhaLista();
+        //Boolean gIsInMyList = movieViewModel.getEstaNaMinhaLista();
         gIsInMyList = false;
 
         btnAcao.setText(gIsInMyList ? remove : add);
@@ -56,6 +58,10 @@ public class MovieActivity extends AppCompatActivity {
     public void addOrRemove(View view) {
 
         if (gIsInMyList) {
+            ApiHelper api = new ApiHelper();
+            gUser = moviesViewModel.getUser();
+
+            api.update(gUser.getToken(), gUser);
             Toast.makeText(this, "filme retirado da sua lista",Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "filme adicionado à sua lista",Toast.LENGTH_LONG).show();
