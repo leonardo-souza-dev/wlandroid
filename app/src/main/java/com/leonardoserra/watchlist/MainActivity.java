@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private final String SEARCH = "search";
     private final String CREATEUSER = "createuser";
     private final String AUTHENTICATE = "authenticate";
+    private User gUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,50 +46,45 @@ public class MainActivity extends AppCompatActivity {
         String nomeApp = getResources().getString(R.string.app_name);
         getSupportActionBar().setTitle(nomeApp);
 
+        SharedPreferences sp = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor e = sp.edit();
+        String lHash;
+
         try {
+            gUser = new User();
 
-            SharedPreferences sp = getPreferences(MODE_PRIVATE);
-            SharedPreferences.Editor e = sp.edit();
+            sp = getPreferences(MODE_PRIVATE);
+            lHash = sp.getString("wl_user_hash", null);
+            Boolean estaRegistrado = lHash != null;
 
-            String userHash = sp.getString("wl_user_hash", null); //tenta obter o hash do usuario no dispositivo
-            if (userHash == null) { //se nao encontrar hash no sistema...
+            if (!estaRegistrado) {
 
-                //WLWebApi task = new WLWebApi();
-
-                Message msgCreateUser = new ApiHelper().callSync(CREATEUSER);
+                Message msgCreateUser = new ApiHelper().createuser();
 
                 if (msgCreateUser.getSucess()) {
-                    gHash = msgCreateUser.getObject("hash");
 
-                    //String jsonHash = task.execute(CREATEUSER).get(); //obtem string-json com hash gerado
-                    //JSONObject hashJson = new JSONObject(jsonHash); //convert string para json
-                    //gHash = hashJson.getString("hash").toString(); //obtém valor do hash
-                    e.putString("wl_user_hash", gHash); //grava hash em SharedPreferences
+                    lHash = msgCreateUser.getObject("hash");
+                    e.putString("wl_user_hash", lHash);
+                    e.commit();
+
+
+
+                    Toast.makeText(this, msgCreateUser.getMessage(), Toast.LENGTH_SHORT).show();//"novo usuario"
+
+                } else {
+                    Toast.makeText(this, msgCreateUser.getMessage(), Toast.LENGTH_LONG).show();//"erro ao obter o hash"
+                    return;
                 }
-            } else {
-                gHash = userHash; //se encontrar hash, joga valor para variavel global
             }
 
-            String userToken = sp.getString("wl_user_token", null); //tenta obter o token do usuario no dispositivo
-            if (userToken == null) {
-
-                Message msg = new ApiHelper().callSync(AUTHENTICATE, gHash);
-                gToken = msg.getObject("token");
-                e.putString("wl_user_token", gToken);
-
-            } else {
-                gToken = userToken;
-            }
-
+            gUser.setHash(lHash);
             TextView txtHash = (TextView)findViewById(R.id.txtHash);
-            txtHash.setText(gHash);
-            TextView txtToken = (TextView)findViewById(R.id.txtToken);
-            txtToken.setText(gToken.substring(0,10));
+            txtHash.setText(lHash);
 
-            e.commit();
+            return;
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -101,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         else
             return;
 
-        Message msg = new ApiHelper().callSync(SEARCH, searchTerm, gToken);
+        Message msg = new ApiHelper().search(gUser, searchTerm);
 
         if (msg.getSucess()) {
 
@@ -132,10 +128,11 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        WLWebApi task = new WLWebApi();
-        task.execute(SEARCH, searchTerm);
+        //WLWebApi task = new WLWebApi();
+        //task.execute(SEARCH, searchTerm);
     }
 
+    /*
     private class WLWebApi extends AsyncTask<String, Void, String> {
 
         private String searchTerm;
@@ -248,5 +245,5 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
+    } */
 }

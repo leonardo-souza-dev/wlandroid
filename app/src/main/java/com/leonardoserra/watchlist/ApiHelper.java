@@ -2,6 +2,7 @@ package com.leonardoserra.watchlist;
 
 import android.os.AsyncTask;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -32,9 +33,23 @@ public class ApiHelper  {
     private final String UPDATEUSER = "updateuser";
     private final String AUTHENTICATE = "authenticate";
 
+    public Message createuser() {
+        String[] params = {CREATEUSER};
+
+        return callSync(params);
+    }
+
     public Message update(String pToken, User pUser) {
         String[] lParameters = {pToken, UPDATEUSER, new Gson().toJson(pUser)};
         return callSync(lParameters);
+    }
+
+    public Message search(User user, String term) {
+        //Gson gson = new Gson();
+        String[] lParameters = { SEARCH, user.getHash(), term};
+        Message msg = callSync(lParameters);
+
+        return msg;
     }
 
     public Message callSync(String... params) {
@@ -50,7 +65,6 @@ public class ApiHelper  {
             JSONObject object = hashToken.getJSONObject("object");
 
             msg = new Message(success, message, object);
-
         } catch (Exception e) {
             msg = new Message(false, "Some error occurred!", null);
             e.printStackTrace();
@@ -66,15 +80,12 @@ public class ApiHelper  {
         @Override
         protected String doInBackground(String... params) {
 
-            gAction = params[0].toString();
-            String termParam = params.length > 1 ? params[1] : "";
+            String responseStr = "", lHash = "";
 
-            if (gAction == SEARCH && termParam == "") {
-                //Toast.makeText(MainActivity.this, "Insira um termo de busca", Toast.LENGTH_LONG).show();
-                return null;
-            }
             try {
 
+                gAction = params[0];
+                lHash = gAction == SEARCH ? params[1] : "";
                 String uri = "http://10.0.2.2:8080/api/" + gAction;
 
                 URL url = new URL(uri);
@@ -84,14 +95,13 @@ public class ApiHelper  {
                 connection.setRequestProperty("Content-Type", "application/json");
                 JSONObject jsonParam = new JSONObject();
 
-                if (gAction == AUTHENTICATE) {
-                    jsonParam.put("hash", params[1]);
-                    jsonParam.put("password", "");
-                }
-
-                if (gAction == "search") {
-                    searchTerm = termParam.trim().replace(",", "").replace("-", "").replace(".", "");
+                if (gAction == SEARCH) {
+                    if (params[2].equals("")) {
+                        return null;
+                    }
+                    searchTerm = params[2].trim().replace(",", "").replace("-", "").replace(".", "");
                     jsonParam.put("searchterm", searchTerm);
+                    jsonParam.put("hash", lHash);
                 }
 
                 byte[] outputBytes = jsonParam.toString().getBytes();
@@ -111,14 +121,14 @@ public class ApiHelper  {
 
                     connection.disconnect();
 
-                    return response.toString();
-                }
+                    responseStr = response.toString();
 
+                }
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                return responseStr;
             }
-
-            return null;
         }
 
         @Override
@@ -138,13 +148,6 @@ public class ApiHelper  {
                     return;
                 }
 
-                if (gAction == AUTHENTICATE) {
-                    JSONObject json = new JSONObject(s);
-                    String temp = json.getString("token");
-                    gToken = temp.toString();
-                    return;
-                }
-
                 if (gAction == SEARCH) {
                     int len;
                     JSONArray jsonArray = new JSONArray(s);
@@ -159,12 +162,6 @@ public class ApiHelper  {
                             f = new Gson().fromJson(str, MoviesViewModel.class);
                             //list.add(f);
                         }
-
-//                        Intent intent = new Intent(getBaseContext(), SearchResultActivity.class);
-//                        intent.putExtra("bundle_searchResult", list);
-//                        intent.putExtra("termo", searchTerm);
-//                        intent.putExtra("qtd", len);
-//                        startActivity(intent);
                     }
                 }
             } catch (Exception e) {

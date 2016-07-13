@@ -1,8 +1,9 @@
 package com.leonardoserra.watchlist;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
 
     private ArrayList<MovieViewModel> myMovies;
     private String nome;
