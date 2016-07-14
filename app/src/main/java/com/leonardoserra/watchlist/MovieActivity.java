@@ -49,21 +49,25 @@ public class MovieActivity extends AppCompatActivity {
 
         //setando botao de acao
         btnAcao = (Button)findViewById(R.id.btnAddRemove);
-        //Boolean gIsInMyList = movieViewModel.getEstaNaMinhaLista();
-        gIsInMyList = false;
+        //esta na minha lista?
+        gIsInMyList = movieViewModel.getIsInMyList();
 
         btnAcao.setText(gIsInMyList ? remove : add);
     }
 
     public void addOrRemove(View view) {
 
-        if (gIsInMyList) {
-            ApiHelper api = new ApiHelper();
-            gUser = moviesViewModel.getUser();
+        User lUser = movieViewModel.getUser();
+        String hash = lUser.getHash();
+        String movieId = movieViewModel.get_id();
 
-            api.update(gUser.getToken(), gUser);
+        ApiHelper api = new ApiHelper();
+
+        if (gIsInMyList) {
+            //api.addMovie(gUser.getToken(), gUser);
             Toast.makeText(this, "filme retirado da sua lista",Toast.LENGTH_LONG).show();
         } else {
+            api.addMovie(hash, movieId);
             Toast.makeText(this, "filme adicionado à sua lista",Toast.LENGTH_LONG).show();
         }
 

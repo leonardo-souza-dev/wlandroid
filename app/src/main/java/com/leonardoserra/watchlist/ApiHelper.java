@@ -1,8 +1,6 @@
 package com.leonardoserra.watchlist;
 
 import android.os.AsyncTask;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -14,15 +12,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
-/**
- * Created by leonardo on 18/06/16.
- */
 public class ApiHelper  {
-
-    private TextView termoTextView;
-    private String termoStr;
 
     private String gHash;
     private String gToken;
@@ -30,8 +21,7 @@ public class ApiHelper  {
 
     private final String SEARCH = "search";
     private final String CREATEUSER = "createuser";
-    private final String UPDATEUSER = "updateuser";
-    private final String AUTHENTICATE = "authenticate";
+    private final String ADDMOVIE = "addmovie";
 
     public Message createuser() {
         String[] params = {CREATEUSER};
@@ -39,13 +29,14 @@ public class ApiHelper  {
         return callSync(params);
     }
 
-    public Message update(String pToken, User pUser) {
-        String[] lParameters = {pToken, UPDATEUSER, new Gson().toJson(pUser)};
-        return callSync(lParameters);
+    public Message addMovie(String pHash, String pMovieId) {
+        String[] lParameters = {ADDMOVIE, pHash, pMovieId };
+        Message msg = callSync(lParameters);
+
+        return msg;
     }
 
     public Message search(User user, String term) {
-        //Gson gson = new Gson();
         String[] lParameters = { SEARCH, user.getHash(), term};
         Message msg = callSync(lParameters);
 
@@ -85,7 +76,7 @@ public class ApiHelper  {
             try {
 
                 gAction = params[0];
-                lHash = gAction == SEARCH ? params[1] : "";
+                lHash = (gAction == SEARCH  || gAction == ADDMOVIE) ? params[1] : "";
                 String uri = "http://10.0.2.2:8080/api/" + gAction;
 
                 URL url = new URL(uri);
@@ -101,6 +92,9 @@ public class ApiHelper  {
                     }
                     searchTerm = params[2].trim().replace(",", "").replace("-", "").replace(".", "");
                     jsonParam.put("searchterm", searchTerm);
+                    jsonParam.put("hash", lHash);
+                } else if (gAction == ADDMOVIE) {
+                    jsonParam.put("movieid", params[2]);
                     jsonParam.put("hash", lHash);
                 }
 
@@ -160,7 +154,6 @@ public class ApiHelper  {
                         for (int i = 0; i < len; i++) {
                             String str = jsonArray.get(i).toString();
                             f = new Gson().fromJson(str, MoviesViewModel.class);
-                            //list.add(f);
                         }
                     }
                 }
@@ -169,5 +162,4 @@ public class ApiHelper  {
             }
         }
     }
-
 }

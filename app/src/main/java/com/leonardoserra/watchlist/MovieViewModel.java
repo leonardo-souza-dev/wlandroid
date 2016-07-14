@@ -8,29 +8,38 @@ import java.io.Serializable;
 public class MovieViewModel implements Serializable {
 
     private String name;
-    private String _id;
-    private Boolean estaNaMinhaLista;
+    private String _id; //movieId
+    private Boolean isInMyList;
+    private User user;
 
-    public MovieViewModel(String pNome, String pId) {
-        this.name = pNome;
-        this._id = pId;
-        this.estaNaMinhaLista = false;
+    public MovieViewModel(String name, String _id) {
+        this.name = name;
+        this._id = _id;
+        this.isInMyList = false;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public String getId() {
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String get_id() {
         return this._id;
     }
 
-    public Boolean getEstaNaMinhaLista() {
-        return this.estaNaMinhaLista;
+    public Boolean getIsInMyList() {
+        return this.isInMyList;
     }
 
-    public void setEstaNaMinhaLista(Boolean esta) {
-        this.estaNaMinhaLista = esta;
+    public void setIsInMyList(Boolean esta) {
+        this.isInMyList = esta;
     }
 }
 
