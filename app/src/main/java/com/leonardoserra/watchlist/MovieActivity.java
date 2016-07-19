@@ -64,7 +64,7 @@ public class MovieActivity extends AppCompatActivity {
         ApiHelper api = new ApiHelper();
 
         if (gIsInMyList) {
-            //api.addMovie(gUser.getToken(), gUser);
+            api.removeMovie(hash, movieId);
             Toast.makeText(this, "filme retirado da sua lista",Toast.LENGTH_LONG).show();
         } else {
             api.addMovie(hash, movieId);

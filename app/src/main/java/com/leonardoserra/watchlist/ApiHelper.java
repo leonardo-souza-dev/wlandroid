@@ -22,6 +22,7 @@ public class ApiHelper  {
     private final String SEARCH = "search";
     private final String CREATEUSER = "createuser";
     private final String ADDMOVIE = "addmovie";
+    private final String REMOVEMOVIE = "removemovie";
 
     public Message createuser() {
         String[] params = {CREATEUSER};
@@ -31,6 +32,13 @@ public class ApiHelper  {
 
     public Message addMovie(String pHash, String pMovieId) {
         String[] lParameters = {ADDMOVIE, pHash, pMovieId };
+        Message msg = callSync(lParameters);
+
+        return msg;
+    }
+
+    public Message removeMovie(String pHash, String pMovieId) {
+        String[] lParameters = {REMOVEMOVIE, pHash, pMovieId };
         Message msg = callSync(lParameters);
 
         return msg;
@@ -76,7 +84,7 @@ public class ApiHelper  {
             try {
 
                 gAction = params[0];
-                lHash = (gAction == SEARCH  || gAction == ADDMOVIE) ? params[1] : "";
+                lHash = (gAction == SEARCH || gAction == ADDMOVIE || gAction == REMOVEMOVIE) ? params[1] : "";
                 String uri = "http://10.0.2.2:8080/api/" + gAction;
 
                 URL url = new URL(uri);
@@ -93,7 +101,7 @@ public class ApiHelper  {
                     searchTerm = params[2].trim().replace(",", "").replace("-", "").replace(".", "");
                     jsonParam.put("searchterm", searchTerm);
                     jsonParam.put("hash", lHash);
-                } else if (gAction == ADDMOVIE) {
+                } else if (gAction == ADDMOVIE || gAction == REMOVEMOVIE) {
                     jsonParam.put("movieid", params[2]);
                     jsonParam.put("hash", lHash);
                 }
