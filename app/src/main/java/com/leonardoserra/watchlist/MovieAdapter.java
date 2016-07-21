@@ -1,5 +1,6 @@
 package com.leonardoserra.watchlist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,9 +19,11 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
     private final int movieItemLayoutResource;
     private final String gTerm;
+    private Context gContext;
 
     public MovieAdapter(final Context context, final int movieItemLayoutResource, String term) {
         super(context, 0);
+        gContext = context;
         this.movieItemLayoutResource = movieItemLayoutResource;
         this.gTerm = term;
     }
@@ -57,21 +60,21 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                callMovieActivity(entry);
+                callMovieActivity(entry, gContext);
             }
         });
 
         return view;
     }
 
-    private void callMovieActivity(MovieViewModel movieViewModelEntry) {
+    private void callMovieActivity(MovieViewModel movieViewModelEntry, Context pContext) {
         Intent intent = new Intent(getContext(), MovieActivity.class);
 
         Bundle b = new Bundle();
         b.putString("movieViewModelEntry", new Gson().toJson(movieViewModelEntry));
         intent.putExtras(b);
 
-        getContext().startActivity(intent);
+        ((Activity) pContext).startActivityForResult(intent, 1317);
     }
 
     private View getWorkingView(final View convertView) {

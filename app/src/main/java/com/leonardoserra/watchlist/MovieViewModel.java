@@ -13,10 +13,9 @@ public class MovieViewModel implements Serializable {
     private User user;
     private String poster;
 
-    public MovieViewModel(String name, String _id) {
-        this.name = name;
+    public MovieViewModel(String _id, Boolean pIsInMyList) {
         this._id = _id;
-        this.isInMyList = false;
+        this.isInMyList = pIsInMyList;
     }
 
     public String getName() {

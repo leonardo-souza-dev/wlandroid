@@ -1,7 +1,9 @@
 package com.leonardoserra.watchlist;
 
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -47,47 +52,47 @@ public class MainActivity extends AppCompatActivity {
 
             sp = getPreferences(MODE_PRIVATE);
             lHash = sp.getString("wl_user_hash", null);
-            Boolean estaRegistrado = lHash != null;
 
-            if (!estaRegistrado) {
+            Message msgCreateUser = new ApiHelper(this).createuser(lHash);
 
-                Message msgCreateUser = new ApiHelper().createuser();
+            if (msgCreateUser.getSucess()) {
+                Boolean exists = Boolean.parseBoolean(msgCreateUser.getObject("exists"));
 
-                if (msgCreateUser.getSucess()) {
-
+                if (!exists) {
                     lHash = msgCreateUser.getObject("hash");
                     e.putString("wl_user_hash", lHash);
                     e.commit();
-
-                    Toast.makeText(this, msgCreateUser.getMessage(), Toast.LENGTH_SHORT).show();//"novo usuario"
-
-                } else {
-                    Toast.makeText(this, msgCreateUser.getMessage(), Toast.LENGTH_LONG).show();//"erro ao obter o hash"
-                    return;
                 }
+
+                Toast.makeText(this, msgCreateUser.getMessage(), Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(this, msgCreateUser.getMessage(), Toast.LENGTH_LONG).show();
+                return;
             }
 
             gUser.setHash(lHash);
-            TextView txtHash = (TextView)findViewById(R.id.txtHash);
+            TextView txtHash = (TextView) findViewById(R.id.txtHash);
             txtHash.setText(lHash);
 
             return;
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            Toast.makeText(this, getResources().getString(R.string.some_error_occurred), Toast.LENGTH_SHORT).show();
         }
     }
 
     public void search(View view) {
         //obtem ter_mo da busca
-        termoTextView = (TextView)findViewById(R.id.txtTerm);
+        termoTextView = (TextView) findViewById(R.id.txtTerm);
         searchTerm = "";
         if (!termoTextView.getText().equals(""))
             searchTerm = termoTextView.getText().toString();
         else
             return;
 
-        Message msg = new ApiHelper().search(gUser, searchTerm);
+        Message msg = new ApiHelper(this).search(gUser, searchTerm);
 
         if (msg.getSucess()) {
 
@@ -118,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            Toast.makeText(this, msg.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }

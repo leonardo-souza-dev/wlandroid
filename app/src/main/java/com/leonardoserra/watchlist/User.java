@@ -9,8 +9,6 @@ public class User implements Serializable {
     private String nome;
     private String token;
     private String hash;
-    private ArrayList<Integer> myMoviesId;
-
 
     public User() {
         this.myMovies = new ArrayList();

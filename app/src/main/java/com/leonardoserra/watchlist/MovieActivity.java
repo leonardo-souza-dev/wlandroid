@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -47,6 +48,9 @@ public class MovieActivity extends AppCompatActivity {
             movieViewModel = new Gson().fromJson(jsonMyObject, MovieViewModel.class);
         }
 
+        //setando user que veio da tela de resultado da busca
+        gUser = movieViewModel.getUser();
+
         //setando titulo do filme
         tituloTextView = (TextView) findViewById(R.id.txtMovieTitle);
         String titulo = movieViewModel.getName();
@@ -54,20 +58,27 @@ public class MovieActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(titulo);
 
-        //setando botao de acao
-        btnAcao = (Button)findViewById(R.id.btnAddRemove);
         //esta na minha lista?
         gIsInMyList = movieViewModel.getIsInMyList();
-
+        //setando botao de acao
+        btnAcao = (Button)findViewById(R.id.btnAddRemove);
         btnAcao.setText(gIsInMyList ? remove : add);
 
         String nomeArquivo = movieViewModel.getPoster();
-
         new DownloadImageTask((ImageView) findViewById(R.id.imgPoster))
                 .execute("http://10.0.2.2:8080/poster?p=" + nomeArquivo);
-
-
     }
+
+    /*
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+
+            Log.d(this.getClass().getName(), "back button pressed");
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    */
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -96,18 +107,20 @@ public class MovieActivity extends AppCompatActivity {
 
     public void addOrRemove(View view) {
 
-        User lUser = movieViewModel.getUser();
-        String hash = lUser.getHash();
+        //User lUser = movieViewModel.getUser();
+        String hash = gUser.getHash();
         String movieId = movieViewModel.get_id();
 
-        ApiHelper api = new ApiHelper();
+        ApiHelper api = new ApiHelper(this);
 
         if (gIsInMyList) {
             api.removeMovie(hash, movieId);
-            Toast.makeText(this, "filme retirado da sua lista",Toast.LENGTH_LONG).show();
+            gUser.removeFilme(new MovieViewModel(movieId, false));
+            Toast.makeText(this, "filme retirado da sua lista", Toast.LENGTH_LONG).show();
         } else {
             api.addMovie(hash, movieId);
-            Toast.makeText(this, "filme adicionado à sua lista",Toast.LENGTH_LONG).show();
+            gUser.adicionaFilme(new MovieViewModel(movieId, true));
+            Toast.makeText(this, "filme adicionado à sua lista", Toast.LENGTH_LONG).show();
         }
 
         gIsInMyList = !gIsInMyList;

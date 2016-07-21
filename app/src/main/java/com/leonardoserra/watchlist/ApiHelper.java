@@ -1,10 +1,10 @@
 package com.leonardoserra.watchlist;
 
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -12,12 +12,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Objects;
 
-public class ApiHelper  {
+public class ApiHelper {
 
-    private String gHash;
+    private Context gContext;
     private String gToken;
     private String gAction;
 
@@ -26,10 +24,19 @@ public class ApiHelper  {
     private final String ADDMOVIE = "addmovie";
     private final String REMOVEMOVIE = "removemovie";
 
-    public Message createuser() {
-        String[] params = {CREATEUSER};
+    public ApiHelper(Context current) {
+        gContext = current;
+    }
 
-        return callSync(params);
+    private Resources getResources(){
+        return gContext.getResources();
+    }
+
+    public Message createuser(String pHash) {
+        String[] lParameters = {CREATEUSER, pHash};
+        Message msg = callSync(lParameters);
+
+        return msg;
     }
 
     public Message addMovie(String pHash, String pMovieId) {
@@ -67,7 +74,7 @@ public class ApiHelper  {
 
             msg = new Message(success, message, object);
         } catch (Exception e) {
-            msg = new Message(false, "Some error occurred!", null);
+            msg = new Message(false, getResources().getString(R.string.some_error_occurred), null);
             e.printStackTrace();
         }
 
@@ -86,7 +93,7 @@ public class ApiHelper  {
             try {
 
                 gAction = params[0];
-                lHash = (gAction == SEARCH || gAction == ADDMOVIE || gAction == REMOVEMOVIE) ? params[1] : "";
+                lHash = (gAction == CREATEUSER || gAction == SEARCH || gAction == ADDMOVIE || gAction == REMOVEMOVIE) ? params[1] : "";
                 String uri = "http://10.0.2.2:8080/api/" + gAction;
 
                 URL url = new URL(uri);
@@ -105,6 +112,8 @@ public class ApiHelper  {
                     jsonParam.put("hash", lHash);
                 } else if (gAction == ADDMOVIE || gAction == REMOVEMOVIE) {
                     jsonParam.put("movieid", params[2]);
+                    jsonParam.put("hash", lHash);
+                } else if (gAction == CREATEUSER) {
                     jsonParam.put("hash", lHash);
                 }
 
