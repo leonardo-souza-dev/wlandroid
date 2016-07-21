@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class ApiHelper  {
 
@@ -135,7 +137,7 @@ public class ApiHelper  {
 
         @Override
         protected void onPostExecute(String s) {
-
+/*
             if (s == null) {
                 //Toast.makeText(MainActivity.this, "Erro ao buscar", Toast.LENGTH_LONG).show();
                 return;
@@ -152,22 +154,25 @@ public class ApiHelper  {
 
                 if (gAction == SEARCH) {
                     int len;
-                    JSONArray jsonArray = new JSONArray(s);
+                    JSONObject jsonObject = new JSONObject(s);
 
-                    if (jsonArray != null) {
+                    if (jsonObject != null) {
 
-                        MoviesViewModel f = new MoviesViewModel();
-                        len = jsonArray.length();
+                        ArrayList<MovieViewModel> f = new ArrayList<>();
+                        JSONObject object = jsonObject.getJSONObject("object");
+                        JSONArray movies = object.getJSONArray("movies");
+                        len = movies.length();
 
                         for (int i = 0; i < len; i++) {
-                            String str = jsonArray.get(i).toString();
-                            f = new Gson().fromJson(str, MoviesViewModel.class);
+                            String str = movies.get(i).toString();
+                            MovieViewModel m = new Gson().fromJson(str, MovieViewModel.class);
+                            f.add(m);
                         }
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 }

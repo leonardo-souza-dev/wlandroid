@@ -11,6 +11,7 @@ public class MovieViewModel implements Serializable {
     private String _id; //movieId
     private Boolean isInMyList;
     private User user;
+    private String poster;
 
     public MovieViewModel(String name, String _id) {
         this.name = name;
@@ -40,6 +41,14 @@ public class MovieViewModel implements Serializable {
 
     public void setIsInMyList(Boolean esta) {
         this.isInMyList = esta;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 }
 
