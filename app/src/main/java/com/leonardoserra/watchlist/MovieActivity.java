@@ -1,14 +1,21 @@
 package com.leonardoserra.watchlist;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+
+import java.io.InputStream;
 
 public class MovieActivity extends AppCompatActivity {
 
@@ -53,6 +60,38 @@ public class MovieActivity extends AppCompatActivity {
         gIsInMyList = movieViewModel.getIsInMyList();
 
         btnAcao.setText(gIsInMyList ? remove : add);
+
+        String nomeArquivo = movieViewModel.getPoster();
+
+        new DownloadImageTask((ImageView) findViewById(R.id.imgPoster))
+                .execute("http://10.0.2.2:8080/poster?p=" + nomeArquivo);
+
+
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 
     public void addOrRemove(View view) {
