@@ -1,5 +1,6 @@
 package com.leonardoserra.watchlist;
 
+import android.content.Intent;
 import android.widget.TextView;
 
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import java.util.List;
 public class SearchResultActivity extends AppCompatActivity {
 
     private TextView txtFraseBusca;
+    private MovieAdapter gFruitEntryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +31,12 @@ public class SearchResultActivity extends AppCompatActivity {
 
         String termo = getIntent().getStringExtra("termo");
 
-        final MovieAdapter fruitEntryAdapter = new MovieAdapter(this, R.layout.simple_row, termo);
-        newsEntryListView.setAdapter(fruitEntryAdapter);
+        gFruitEntryAdapter = new MovieAdapter(this, R.layout.simple_row, termo);
+        newsEntryListView.setAdapter(gFruitEntryAdapter);
 
         // Populate the list, through the adapter
         for(final MovieViewModel entry : getNewsEntries()) {
-            fruitEntryAdapter.add(entry);
+            gFruitEntryAdapter.add(entry);
         }
 
         txtFraseBusca = (TextView)findViewById(R.id.txtFraseBusca);
@@ -44,13 +46,18 @@ public class SearchResultActivity extends AppCompatActivity {
         String resultados = qtd == 1 ? getResources().getString(R.string.resultado) : getResources().getString(R.string.resultados);
         txtFraseBusca.setText(suaBuscaPara + " \"" + termo + "\" " + retornou + " " + qtd + " " + resultados);
     }
-
+/*
     @Override
     public void onResume(){
         super.onResume();
         Bundle b = getIntent().getBundleExtra("updateuser");
         // put your code here...
 
+    }
+*/
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        gFruitEntryAdapter.onActivityResult(requestCode, resultCode, data);
     }
 
     //obtem resultados da busca

@@ -1,5 +1,7 @@
 package com.leonardoserra.watchlist;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -16,6 +18,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
 import java.io.InputStream;
 
 public class MovieActivity extends AppCompatActivity {
@@ -29,6 +33,7 @@ public class MovieActivity extends AppCompatActivity {
     private String remove;
     private String add;
     private User gUser;
+    private String gMovieId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,22 +114,39 @@ public class MovieActivity extends AppCompatActivity {
 
         //User lUser = movieViewModel.getUser();
         String hash = gUser.getHash();
-        String movieId = movieViewModel.get_id();
+        gMovieId = movieViewModel.get_id();
 
         ApiHelper api = new ApiHelper(this);
 
         if (gIsInMyList) {
-            api.removeMovie(hash, movieId);
-            gUser.removeFilme(new MovieViewModel(movieId, false));
+            api.removeMovie(hash, gMovieId);
+            gUser.removeFilme(new MovieViewModel(gMovieId, false));
             Toast.makeText(this, "filme retirado da sua lista", Toast.LENGTH_LONG).show();
         } else {
-            api.addMovie(hash, movieId);
-            gUser.adicionaFilme(new MovieViewModel(movieId, true));
+            api.addMovie(hash, gMovieId);
+            gUser.adicionaFilme(new MovieViewModel(gMovieId, true));
             Toast.makeText(this, "filme adicionado à sua lista", Toast.LENGTH_LONG).show();
         }
 
         gIsInMyList = !gIsInMyList;
 
         btnAcao.setText(gIsInMyList ? remove : add);
+    }
+
+    @Override
+    public void onBackPressed(){
+
+        Intent returnIntent = new Intent();
+        JSONObject json = new JSONObject();
+        try {
+            json.put("movie_id", gMovieId);
+            json.put("isInMyList", gIsInMyList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        returnIntent.putExtra("action_result", json.toString());
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
+
     }
 }

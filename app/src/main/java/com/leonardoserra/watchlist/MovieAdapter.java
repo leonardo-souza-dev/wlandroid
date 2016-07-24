@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Movie;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +12,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-//
+import org.json.JSONObject;
+
 public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
     private final int movieItemLayoutResource;
     private final String gTerm;
     private Context gContext;
+    private Integer MOVIEACTION;
 
     public MovieAdapter(final Context context, final int movieItemLayoutResource, String term) {
         super(context, 0);
@@ -28,6 +32,8 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         this.gTerm = term;
     }
 
+    private MovieViewModel gEntry;
+
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
 
@@ -35,10 +41,10 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         // retrieve its corresponding ViewHolder, which optimizes lookup efficiency
         final View view = getWorkingView(convertView);
         final ViewHolder viewHolder = getViewHolder(view);
-        final MovieViewModel entry = getItem(position);
+        gEntry = getItem(position);
 
         // Setting the title view is straightforward
-        String title = entry.getName();
+        String title = gEntry.getName();
         String partOne = "";
         String partTwo = "";
         String termOriginal = "";
@@ -60,7 +66,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                callMovieActivity(entry, gContext);
+                callMovieActivity(gEntry, gContext);
             }
         });
 
@@ -74,8 +80,33 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         b.putString("movieViewModelEntry", new Gson().toJson(movieViewModelEntry));
         intent.putExtras(b);
 
-        ((Activity) pContext).startActivityForResult(intent, 1317);
+        ((Activity) pContext).startActivityForResult(intent, MOVIEACTION);
     }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == MOVIEACTION) {
+            if(resultCode == Activity.RESULT_OK){
+                String result = data.getStringExtra("action_result");
+                try {
+                    JSONObject json = new JSONObject(result);
+                    String movieId = json.getString("movie_id");
+                    Boolean isInMyList = json.getBoolean("isInMyList");
+                    if (gEntry.get_id().equals(movieId)) {
+                        gEntry.setIsInMyList(isInMyList);
+                    } else {
+                        Toast.makeText(gContext, "algum erro aconteceu", Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
+
 
     private View getWorkingView(final View convertView) {
         // The workingView is basically just the convertView re-used if possible
