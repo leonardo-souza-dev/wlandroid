@@ -19,7 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:src="@drawable/poster" />
+        android:src="@drawable/img" />
 
     <TextView
         android:id="@+id/txtMovieTitle"
