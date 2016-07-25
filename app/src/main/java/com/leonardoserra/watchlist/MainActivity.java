@@ -6,6 +6,10 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -36,6 +40,68 @@ public class MainActivity extends AppCompatActivity {
     private String searchTerm;
     private User gUser;
 
+
+    private FragmentOne fragmentOne;
+    private FragmentTwo fragmentTwo;
+    private TabLayout allTabs;
+
+    private void getAllWidgets() {
+        allTabs = (TabLayout) findViewById(R.id.tabs);
+    }
+
+    private void setCurrentTabFragment(int tabPosition)
+    {
+        switch (tabPosition)
+        {
+            case 0 :
+                replaceFragment(fragmentOne, null);
+                break;
+            case 1 :
+                replaceFragment(fragmentTwo, null);
+                break;
+        }
+    }
+
+    public void replaceFragment(Fragment fragment, Bundle b) {
+        if (b != null);
+            fragment.setArguments(b);
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.frame_container, fragment);
+
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.commit();
+    }
+
+    private void bindWidgetsWithAnEvent() {
+
+        allTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                setCurrentTabFragment(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    private void setupTabLayout(){
+        fragmentOne = new FragmentOne();
+        fragmentTwo = new FragmentTwo();
+        allTabs.addTab(allTabs.newTab().setText("Search"),true);
+        allTabs.addTab(allTabs.newTab().setText("MyListt"));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +112,9 @@ public class MainActivity extends AppCompatActivity {
         String nomeApp = getResources().getString(R.string.app_name);
         getSupportActionBar().setTitle(nomeApp);
 
-
+        getAllWidgets();
+        bindWidgetsWithAnEvent();
+        setupTabLayout();
 
         SharedPreferences sp = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor e = sp.edit();
@@ -119,11 +187,17 @@ public class MainActivity extends AppCompatActivity {
                         list.add(f);
                     }
 
-                    Intent intent = new Intent(getBaseContext(), SearchResultActivity.class);
+                    Bundle b = new Bundle();
+                    b.putSerializable("bundle_searchResult", list);
+                    b.putString("termo", searchTerm);
+                    b.putInt("qtd", len);
+                    replaceFragment(fragmentTwo, b);
+
+                    /*Intent intent = new Intent(getBaseContext(), SearchResultActivity.class);
                     intent.putExtra("bundle_searchResult", list);
                     intent.putExtra("termo", searchTerm);
                     intent.putExtra("qtd", len);
-                    startActivity(intent);
+                    startActivity(intent);*/
                 }
             } catch (Exception e) {
                 e.printStackTrace();

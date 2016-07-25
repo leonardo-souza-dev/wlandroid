@@ -35,8 +35,8 @@ public class UserActivity extends AppCompatActivity {
     private void setupTabLayout(){
         fragmentOne = new FragmentOne();
         fragmentTwo = new FragmentTwo();
-        allTabs.addTab(allTabs.newTab().setText("ONE"),true);
-        allTabs.addTab(allTabs.newTab().setText("TWO"));
+        allTabs.addTab(allTabs.newTab().setText("Search"),true);
+        allTabs.addTab(allTabs.newTab().setText("MyListt"));
     }
 
     private void bindWidgetsWithAnEvent() {
