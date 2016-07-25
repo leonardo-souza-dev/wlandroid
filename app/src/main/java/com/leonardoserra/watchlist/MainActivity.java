@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         String nomeApp = getResources().getString(R.string.app_name);
         getSupportActionBar().setTitle(nomeApp);
 
+
+
         SharedPreferences sp = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor e = sp.edit();
         String lHash;
