@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Movie;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +27,14 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
     private final String gTerm;
     private Context gContext;
     private Integer MOVIEACTION;
+    private FragmentSearchResult gF;
 
-    public MovieAdapter(final Context context, final int movieItemLayoutResource, String term) {
+    public MovieAdapter(final Context context, final int movieItemLayoutResource, String term, FragmentSearchResult f) {
         super(context, 0);
         gContext = context;
         this.movieItemLayoutResource = movieItemLayoutResource;
         this.gTerm = term;
+        this.gF = f;
     }
 
     private MovieViewModel gEntry;
@@ -74,6 +79,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
     }
 
     private void callMovieActivity(MovieViewModel movieViewModelEntry, Context pContext) {
+        /*
         Intent intent = new Intent(getContext(), MovieActivity.class);
 
         Bundle b = new Bundle();
@@ -81,6 +87,17 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         intent.putExtras(b);
 
         ((Activity) pContext).startActivityForResult(intent, MOVIEACTION);
+*/
+        BlankFragment blankFragment = new BlankFragment();
+        Bundle b = new Bundle();
+        b.putString("movieViewModelEntry", new Gson().toJson(movieViewModelEntry));
+        blankFragment.setArguments(b);
+
+        ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_container, blankFragment)
+                .commit();
+
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
