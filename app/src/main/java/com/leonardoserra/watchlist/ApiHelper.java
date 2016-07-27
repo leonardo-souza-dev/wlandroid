@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.os.Build;
 
 import org.json.JSONObject;
 
@@ -85,16 +86,31 @@ public class ApiHelper {
 
         private String searchTerm;
 
+        public boolean isEmulator() {
+            return Build.FINGERPRINT.startsWith("generic")
+                    || Build.FINGERPRINT.startsWith("unknown")
+                    || Build.MODEL.contains("google_sdk")
+                    || Build.MODEL.contains("Emulator")
+                    || Build.MODEL.contains("Android SDK built for x86")
+                    || Build.MANUFACTURER.contains("Genymotion")
+                    || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                    || "google_sdk".equals(Build.PRODUCT);
+        }
+
         @Override
         protected String doInBackground(String... params) {
 
             String responseStr = "", lHash = "";
+            String baseUrl = "http://10.0.2.2:8080/api/";
+
+            if (!isEmulator())
+                baseUrl = "http://192.168.1.5:8080/api/";
 
             try {
 
                 gAction = params[0];
                 lHash = (gAction == CREATEUSER || gAction == SEARCH || gAction == ADDMOVIE || gAction == REMOVEMOVIE) ? params[1] : "";
-                String uri = "http://10.0.2.2:8080/api/" + gAction;
+                String uri = baseUrl + gAction;
 
                 URL url = new URL(uri);
                 HttpURLConnection connection = (HttpURLConnection)url.openConnection();

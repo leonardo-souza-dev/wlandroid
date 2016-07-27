@@ -19,7 +19,7 @@ public class FragmentSearchResult extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.content_search_result, container,false);
+        View rootView = inflater.inflate(R.layout.fragment_search_result, container,false);
 
         ListView newsEntryListView = (ListView) rootView.findViewById(R.id.listView);
         String termo = getArguments().getString("termo");

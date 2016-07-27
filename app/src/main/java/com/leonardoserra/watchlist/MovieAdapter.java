@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -26,7 +25,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
     private final int movieItemLayoutResource;
     private final String gTerm;
     private Context gContext;
-    private Integer MOVIEACTION;
+    //private Integer MOVIEACTION;
     private FragmentSearchResult gF;
 
     public MovieAdapter(final Context context, final int movieItemLayoutResource, String term, FragmentSearchResult f) {
@@ -71,35 +70,28 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                callMovieActivity(gEntry, gContext);
+                callMovieFragment(gEntry, gContext);
             }
         });
 
         return view;
     }
 
-    private void callMovieActivity(MovieViewModel movieViewModelEntry, Context pContext) {
-        /*
-        Intent intent = new Intent(getContext(), MovieActivity.class);
-
-        Bundle b = new Bundle();
-        b.putString("movieViewModelEntry", new Gson().toJson(movieViewModelEntry));
-        intent.putExtras(b);
-
-        ((Activity) pContext).startActivityForResult(intent, MOVIEACTION);
-*/
-        BlankFragment blankFragment = new BlankFragment();
+    private void callMovieFragment(MovieViewModel movieViewModelEntry, Context pContext) {
+        FragmentMovie blankFragment = new FragmentMovie();
         Bundle b = new Bundle();
         b.putString("movieViewModelEntry", new Gson().toJson(movieViewModelEntry));
         blankFragment.setArguments(b);
 
-        ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_container, blankFragment)
-                .commit();
+        FragmentManager fm = ((FragmentActivity)pContext).getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.frame_container, blankFragment);
 
-
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.commit();
     }
 
+    /* //TODO: IMPLEMENTAR
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == MOVIEACTION) {
@@ -123,7 +115,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
             }
         }
     }
-
+    */
 
     private View getWorkingView(final View convertView) {
         // The workingView is basically just the convertView re-used if possible

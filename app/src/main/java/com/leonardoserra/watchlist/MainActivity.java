@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSearchOpened = false;
     private EditText edtSeach;
 
-
     private TextView termoTextView;
     private String searchTerm;
     private User gUser;
@@ -52,16 +52,50 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        configuraActionbar();
+
+        configurasAbas();
+
+        criaOuObtemUsuario();
+    }
+
+    private void configuraActionbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        String nomeApp = getResources().getString(R.string.app_name);
+        getSupportActionBar().setTitle(nomeApp);
+    }
 
-        //String nomeApp = getResources().getString(R.string.app_name);
-        //getSupportActionBar().setTitle(nomeApp);
+    private void configurasAbas() {
+        //obtem abas
+        allTabs = (TabLayout) findViewById(R.id.tabs);
 
-        getAllWidgets();
-        bindWidgetsWithAnEvent();
-        setupTabLayout();
+        allTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                setCurrentTabFragment(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        //configura abas
+        fragmentOne = new FragmentOne();
+        fragmentTwo = new FragmentTwo();
+        allTabs.addTab(allTabs.newTab().setText("Home"), true);
+        allTabs.addTab(allTabs.newTab().setText("MyListt"));
+    }
+
+    private void criaOuObtemUsuario(){
         SharedPreferences sp = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor e = sp.edit();
 
@@ -91,9 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
             gUser.setHash(gHash);
 
-
-            return;
-
         } catch (Exception ex) {
             ex.printStackTrace();
             Toast.makeText(this, getResources().getString(R.string.some_error_occurred), Toast.LENGTH_SHORT).show();
@@ -114,24 +145,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    private void getAllWidgets() {
-        allTabs = (TabLayout) findViewById(R.id.tabs);
-    }
-
     private void setCurrentTabFragment(int tabPosition)
     {
         switch (tabPosition)
         {
             case 0 :
-                replaceFragment(fragmentOne, null);
+                trocaFragment(fragmentOne, null);
                 break;
             case 1 :
-                replaceFragment(fragmentTwo, null);
+                trocaFragment(fragmentTwo, null);
                 break;
         }
     }
 
-    public void replaceFragment(Fragment fragment, Bundle b) {
+    public void trocaFragment(Fragment fragment, Bundle b) {
         if (b != null) {
             fragment.setArguments(b);
         }
@@ -143,36 +170,6 @@ public class MainActivity extends AppCompatActivity {
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
     }
-
-    private void bindWidgetsWithAnEvent() {
-
-        allTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                setCurrentTabFragment(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-    }
-
-    private void setupTabLayout(){
-        fragmentOne = new FragmentOne();
-        fragmentTwo = new FragmentTwo();
-        allTabs.addTab(allTabs.newTab().setText("Home"), true);
-        allTabs.addTab(allTabs.newTab().setText("MyListt"));
-    }
-
-
 
     public void search() {
         fragmentSearchResult = new FragmentSearchResult();
@@ -210,13 +207,8 @@ public class MainActivity extends AppCompatActivity {
                     b.putSerializable("bundle_searchResult", list);
                     b.putString("termo", searchTerm);
                     b.putInt("qtd", len);
-                    replaceFragment(fragmentSearchResult, b);
+                    trocaFragment(fragmentSearchResult, b);
 
-                    /*Intent intent = new Intent(getBaseContext(), SearchResultActivity.class);
-                    intent.putExtra("bundle_searchResult", list);
-                    intent.putExtra("termo", searchTerm);
-                    intent.putExtra("qtd", len);
-                    startActivity(intent);*/
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -238,16 +230,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-
-            //fonte: https://icons8.com/web-app/for/androidL/user
-        /*    case R.id.action_user:
-                Intent user = new Intent(this, UserActivity.class);
-                startActivity(user);
-                return true;
-*/
             case R.id.action_settings:
                 return true;
-
             case R.id.action_search:
                 handleMenuSearch();
                 return true;
@@ -257,28 +241,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void handleMenuSearch(){
-        ActionBar action = getSupportActionBar(); //get the actionbar
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) allTabs.getLayoutParams();
 
-        if(isSearchOpened){ //test if the search is open
-            allTabs.setVisibility(View.VISIBLE);
-
-            action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
-            action.setDisplayShowTitleEnabled(true); //show the title in the action bar
-
-            //hides the keyboard
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(edtSeach.getWindowToken(), 0);
-
-            //add the search icon in the action bar
-            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_open_search));
-
-            isSearchOpened = false;
-            replaceFragment(fragmentOne,null);
-        } else { //open the search entry
+        if (isSearchOpened){ //test if the search is open
+            escondeAbas(layoutParams);
+            configuraLayoutActionbarPadrao();
+            trocaFragment(fragmentOne, null);
+        } else {
+            ActionBar action = getSupportActionBar();
+            
             allTabs.setVisibility(View.INVISIBLE);
+            layoutParams.weight = 1;
+            allTabs.setLayoutParams(layoutParams);
 
-            action.setDisplayShowCustomEnabled(true); //enable it to display a
-            // custom view in the action bar.
+            action.setDisplayShowCustomEnabled(true); //enable it to display custom view in the action bar.
             action.setCustomView(R.layout.search_bar);//add the custom view
             action.setDisplayShowTitleEnabled(false); //hide the title
 
@@ -290,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         search();
+                        configuraLayoutActionbarPadrao();
                         return true;
                     }
                     return false;
@@ -298,12 +275,9 @@ public class MainActivity extends AppCompatActivity {
 
             edtSeach.setOnKeyListener(new View.OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
-                    // If the event is a key-down event on the "enter" button
-                    if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                            (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                        // Perform action on key press
-                        //Toast.makeText(MainActivity.this, "foi", Toast.LENGTH_SHORT).show();
+                    if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         search();
+                        configuraLayoutActionbarPadrao();
                         return true;
                     }
                     return false;
@@ -324,6 +298,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void escondeAbas(LinearLayout.LayoutParams layoutParams) {
+        allTabs.setVisibility(View.VISIBLE);
+        layoutParams.weight = 0;
+        allTabs.setLayoutParams(layoutParams);
+    }
+
+    private void configuraLayoutActionbarPadrao() {
+        ActionBar action2 = getSupportActionBar();
+        //layout normal - INICIO
+        action2.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
+        action2.setDisplayShowTitleEnabled(true); //show the title in the action bar
+
+        //hides the keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(edtSeach.getWindowToken(), 0);
+
+        //add the search icon in the action bar
+        mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_open_search));
+
+        isSearchOpened = false;
+    }
+
     @Override
     public void onBackPressed() {
         if(isSearchOpened) {
@@ -336,4 +332,6 @@ public class MainActivity extends AppCompatActivity {
     private void doSearch() {
         //
     }
+
+
 }
