@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private String searchTerm;
     private User gUser;
     private String gHash;
-    private FragmentOne fragmentOne;
-    private FragmentTwo fragmentTwo;
+    private FragmentHome fragmentHome;
+    private FragmentMyListt fragmentMyListt;
     private FragmentSearchResult fragmentSearchResult;
     private TabLayout allTabs;
 
@@ -52,11 +52,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        criaOuObtemUsuario();
+
         configuraActionbar();
 
         configurasAbas();
 
-        criaOuObtemUsuario();
     }
 
     private void configuraActionbar() {
@@ -89,8 +90,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //configura abas
-        fragmentOne = new FragmentOne();
-        fragmentTwo = new FragmentTwo();
+        Bundle bundleUser = new Bundle();
+        bundleUser.putString("user_hash", gUser.getHash());
+
+        fragmentHome = new FragmentHome();
+        fragmentHome.setArguments(bundleUser);
+
+        fragmentMyListt = new FragmentMyListt();
+        fragmentMyListt.setArguments(bundleUser);
+
         allTabs.addTab(allTabs.newTab().setText("Home"), true);
         allTabs.addTab(allTabs.newTab().setText("MyListt"));
     }
@@ -135,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
 
-        TextView txtHash = (TextView) findViewById(R.id.txtHash);
-        txtHash.setText(gHash);
+        //TextView txtHash = (TextView) findViewById(R.id.txtHash);
+        //txtHash.setText(gHash);
     }
 
     @Override
@@ -150,10 +158,10 @@ public class MainActivity extends AppCompatActivity {
         switch (tabPosition)
         {
             case 0 :
-                trocaFragment(fragmentOne, null);
+                trocaFragment(fragmentHome, null);
                 break;
             case 1 :
-                trocaFragment(fragmentTwo, null);
+                trocaFragment(fragmentMyListt, null);
                 break;
         }
     }
@@ -246,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
         if (isSearchOpened){ //test if the search is open
             escondeAbas(layoutParams);
             configuraLayoutActionbarPadrao();
-            trocaFragment(fragmentOne, null);
+            trocaFragment(fragmentHome, null);
         } else {
             ActionBar action = getSupportActionBar();
             

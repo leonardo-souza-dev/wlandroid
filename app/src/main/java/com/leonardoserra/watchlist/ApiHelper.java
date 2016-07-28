@@ -1,7 +1,6 @@
 package com.leonardoserra.watchlist;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -24,6 +23,8 @@ public class ApiHelper {
     private final String CREATEUSER = "createuser";
     private final String ADDMOVIE = "addmovie";
     private final String REMOVEMOVIE = "removemovie";
+    private final String OBTERMYLISTT = "obtermylistt";
+    private final String OBTERFILMESRECOMENDADOS = "obterfilmesrecomendados";
 
     public ApiHelper(Context current) {
         gContext = current;
@@ -33,39 +34,52 @@ public class ApiHelper {
         return gContext.getResources();
     }
 
+    public Message obterFilmesRecomendados(String pHash) {
+        String[] lParameters = {OBTERFILMESRECOMENDADOS, pHash};
+        Message msg = call(true, lParameters);
+
+        return msg;
+    }
+    public Message obterMyListt(String pHash) {
+        String[] lParameters = {OBTERMYLISTT, pHash};
+        Message msg = call(true, lParameters);
+
+        return msg;
+    }
+
     public Message createuser(String pHash) {
         String[] lParameters = {CREATEUSER, pHash};
-        Message msg = callSync(lParameters);
+        Message msg = call(true, lParameters);
 
         return msg;
     }
 
     public Message addMovie(String pHash, String pMovieId) {
         String[] lParameters = {ADDMOVIE, pHash, pMovieId };
-        Message msg = callSync(lParameters);
+        Message msg = call(true, lParameters);
 
         return msg;
     }
 
     public Message removeMovie(String pHash, String pMovieId) {
         String[] lParameters = {REMOVEMOVIE, pHash, pMovieId };
-        Message msg = callSync(lParameters);
+        Message msg = call(true, lParameters);
 
         return msg;
     }
 
     public Message search(User user, String term) {
         String[] lParameters = { SEARCH, user.getHash(), term};
-        Message msg = callSync(lParameters);
+        Message msg = call(true, lParameters);
 
         return msg;
     }
 
-    public Message callSync(String... params) {
+    public Message call(boolean sync, String... params) {
         Message msg;
         try {
             WLWebApi api = new WLWebApi();
-            String response = api.execute(params).get();
+            String response = sync ? api.execute(params).get() : null;
 
             JSONObject hashToken = new JSONObject(response);
 
@@ -109,7 +123,7 @@ public class ApiHelper {
             try {
 
                 gAction = params[0];
-                lHash = (gAction == CREATEUSER || gAction == SEARCH || gAction == ADDMOVIE || gAction == REMOVEMOVIE) ? params[1] : "";
+                lHash = (gAction == OBTERFILMESRECOMENDADOS || gAction == OBTERMYLISTT || gAction == CREATEUSER || gAction == SEARCH || gAction == ADDMOVIE || gAction == REMOVEMOVIE) ? params[1] : "";
                 String uri = baseUrl + gAction;
 
                 URL url = new URL(uri);
@@ -129,7 +143,7 @@ public class ApiHelper {
                 } else if (gAction == ADDMOVIE || gAction == REMOVEMOVIE) {
                     jsonParam.put("movieid", params[2]);
                     jsonParam.put("hash", lHash);
-                } else if (gAction == CREATEUSER) {
+                } else if (gAction == CREATEUSER || gAction == OBTERMYLISTT || gAction == OBTERFILMESRECOMENDADOS) {
                     jsonParam.put("hash", lHash);
                 }
 

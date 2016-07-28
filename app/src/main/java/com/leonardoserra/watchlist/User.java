@@ -15,10 +15,12 @@ public class User implements Serializable {
     }
 
     public void adicionaFilme(MovieViewModel pMovieViewModel) {
+        pMovieViewModel.setIsInMyList(true);
         this.myMovies.add(pMovieViewModel);
     }
 
     public void removeFilme(MovieViewModel pMovieViewModel) {
+        pMovieViewModel.setIsInMyList(false);
         this.myMovies.remove(pMovieViewModel);
     }
 

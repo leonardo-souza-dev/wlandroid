@@ -16,16 +16,17 @@ public class FragmentSearchResult extends Fragment {
 
     private TextView txtFraseBusca;
     private MovieAdapter gFruitEntryAdapter;
+    private ListView gNewsEntryListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_search_result, container,false);
 
-        ListView newsEntryListView = (ListView) rootView.findViewById(R.id.listView);
+        gNewsEntryListView = (ListView) rootView.findViewById(R.id.listViewResultadoBusca);
         String termo = getArguments().getString("termo");
 
         gFruitEntryAdapter = new MovieAdapter(getContext(), R.layout.simple_row, termo, this);
-        newsEntryListView.setAdapter(gFruitEntryAdapter);
+        gNewsEntryListView.setAdapter(gFruitEntryAdapter);
 
         // Populate the list, through the adapter
         for(final MovieViewModel entry : getNewsEntries()) {

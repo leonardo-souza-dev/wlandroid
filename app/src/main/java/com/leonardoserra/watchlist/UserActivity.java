@@ -10,8 +10,8 @@ import android.os.Bundle;
 public class UserActivity extends AppCompatActivity {
 
     //public static UserActivity instance;
-    private FragmentOne fragmentOne;
-    private FragmentTwo fragmentTwo;
+    private FragmentHome fragmentHome;
+    private FragmentMyListt fragmentMyListt;
     private TabLayout allTabs;
 
     @Override
@@ -33,8 +33,8 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void setupTabLayout(){
-        fragmentOne = new FragmentOne();
-        fragmentTwo = new FragmentTwo();
+        fragmentHome = new FragmentHome();
+        fragmentMyListt = new FragmentMyListt();
         allTabs.addTab(allTabs.newTab().setText("Search"),true);
         allTabs.addTab(allTabs.newTab().setText("MyListt"));
     }
@@ -65,10 +65,10 @@ public class UserActivity extends AppCompatActivity {
         switch (tabPosition)
         {
             case 0 :
-                replaceFragment(fragmentOne);
+                replaceFragment(fragmentHome);
                 break;
             case 1 :
-                replaceFragment(fragmentTwo);
+                replaceFragment(fragmentMyListt);
                 break;
         }
     }

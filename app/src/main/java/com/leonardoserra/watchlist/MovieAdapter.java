@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -26,9 +27,9 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
     private final String gTerm;
     private Context gContext;
     //private Integer MOVIEACTION;
-    private FragmentSearchResult gF;
+    private Fragment gF;
 
-    public MovieAdapter(final Context context, final int movieItemLayoutResource, String term, FragmentSearchResult f) {
+    public MovieAdapter(final Context context, final int movieItemLayoutResource, String term, Fragment f) {
         super(context, 0);
         gContext = context;
         this.movieItemLayoutResource = movieItemLayoutResource;
