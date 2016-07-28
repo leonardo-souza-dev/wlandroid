@@ -24,7 +24,6 @@ public class FragmentMovie extends Fragment {
     private Button btnAcao;
     private String jsonMyObject;
     private MovieViewModel movieViewModel;
-    private MoviesViewModel moviesViewModel;
     private TextView tituloTextView;
     private Boolean gIsInMyList;
     private String remove;
@@ -35,7 +34,7 @@ public class FragmentMovie extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        gRootView = inflater.inflate(R.layout.content_movie, container,false);
+        gRootView = inflater.inflate(R.layout.fragment_movie, container,false);
 
         remove = getResources().getString(R.string.remove_movie).toString();
         add = getResources().getString(R.string.add_movie).toString();
@@ -70,7 +69,7 @@ public class FragmentMovie extends Fragment {
         if (!isEmulator())
             baseUrl = "http://192.168.1.5:8080/";
 
-        new DownloadImageTask((ImageView)gRootView.findViewById(R.id.imgPoster))
+        new DownloadImagemTask((ImageView)gRootView.findViewById(R.id.imgPoster))
                 .execute(baseUrl + "poster?p=" + nomeArquivo);
 
         Button btnAddOrRemove = (Button)gRootView.findViewById(R.id.btnAddRemove);
@@ -104,7 +103,7 @@ public class FragmentMovie extends Fragment {
         }
         return super.onKeyDown(keyCode, event);
     }
-    */
+
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -130,7 +129,7 @@ public class FragmentMovie extends Fragment {
             bmImage.setImageBitmap(result);
         }
     }
-
+*/
     public void addOrRemove(View view) {
 
         //User lUser = movieViewModel.getUser();

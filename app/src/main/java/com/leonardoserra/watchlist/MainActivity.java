@@ -58,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
         configurasAbas();
 
+        //setar banner
+        //AdView mAdView = (AdView) findViewById(R.id.adViewMain);
+        //AdRequest.Builder adRequestBuilder = new AdRequest.Builder();
+
+        //AdRequest adRequest = adRequestBuilder.addTestDevice(getResources().getString(R.string.device_id)).build();
+        //mAdView.loadAd(adRequest);
     }
 
     private void configuraActionbar() {
@@ -137,14 +143,6 @@ public class MainActivity extends AppCompatActivity {
             ex.printStackTrace();
             Toast.makeText(this, getResources().getString(R.string.some_error_occurred), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-
-        //TextView txtHash = (TextView) findViewById(R.id.txtHash);
-        //txtHash.setText(gHash);
     }
 
     @Override

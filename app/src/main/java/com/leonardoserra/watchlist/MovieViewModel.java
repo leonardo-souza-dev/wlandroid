@@ -2,9 +2,6 @@ package com.leonardoserra.watchlist;
 
 import java.io.Serializable;
 
-/**
- * Created by leonardo on 26/05/16.
- */
 public class MovieViewModel implements Serializable {
 
     private String name;

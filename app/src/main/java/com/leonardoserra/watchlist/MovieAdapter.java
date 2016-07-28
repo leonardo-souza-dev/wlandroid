@@ -1,9 +1,8 @@
 package com.leonardoserra.watchlist;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,19 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-
-import org.json.JSONObject;
 
 public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
     private final int movieItemLayoutResource;
     private final String gTerm;
     private Context gContext;
-    //private Integer MOVIEACTION;
     private Fragment gF;
 
     public MovieAdapter(final Context context, final int movieItemLayoutResource, String term, Fragment f) {
@@ -49,16 +45,19 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         gEntry = getItem(position);
 
         // Setting the title view is straightforward
-        String title = gEntry.getName();
+        String tituloFilme = gEntry.getName();
         String partOne = "";
         String partTwo = "";
         String termOriginal = "";
 
-        if (title != null) {
-            int p = title.toLowerCase().indexOf(gTerm.toLowerCase());
-            termOriginal = title.substring(p, p + gTerm.length());
-            partOne = title.substring(0, p);
-            partTwo = title.substring(p + gTerm.length(), title.length());
+        if (!gTerm.equals("") && tituloFilme != null) {
+            int p = tituloFilme.toLowerCase().indexOf(gTerm.toLowerCase());
+            termOriginal = tituloFilme.substring(p, p + gTerm.length());
+            partOne = tituloFilme.substring(0, p);
+            partTwo = tituloFilme.substring(p + gTerm.length(), tituloFilme.length());
+        }
+        if (gTerm.equals("") && tituloFilme != null) {
+            partOne = tituloFilme;
         }
 
         viewHolder.titleView1.setText(partOne);
@@ -66,8 +65,16 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         viewHolder.titleView2.setTextColor(Color.GREEN);
         viewHolder.titleView3.setText(partTwo);
 
-        // Setting image view is also simple
-        //viewHolder.imageView.setImageResource(entry.getImage());
+
+        //new DownloadImagemTask((ImageView)gRootView.findViewById(R.id.imgPoster))
+        //       .execute(baseUrl + "poster?p=" + nomeArquivo);
+
+        String baseUrl = "http://10.0.2.2:8080/api/poster?p=" + gEntry.getPoster();
+        if (!isEmulator())
+            baseUrl = "http://192.168.1.5:8080/api/poster?p=" + gEntry.getPoster();
+        new DownloadImagemTask(viewHolder.imgFilmePoster).execute(baseUrl);
+
+        //viewHolder.imgFilmePoster.setImageResource(gEntry.getPoster());
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -76,6 +83,17 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         });
 
         return view;
+    }
+
+    public boolean isEmulator() {
+        return Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || "google_sdk".equals(Build.PRODUCT);
     }
 
     private void callMovieFragment(MovieViewModel movieViewModelEntry, Context pContext) {
@@ -148,7 +166,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
             viewHolder.titleView2 = (TextView) workingView.findViewById(R.id.rowTextView2);
             viewHolder.titleView3 = (TextView) workingView.findViewById(R.id.rowTextView3);
             viewHolder.addRemoveBtn = (Button)workingView.findViewById(R.id.btnAddRemove);
-            //viewHolder.imageView = (ImageView) workingView.findViewById(R.id.fruit_entry_image);
+            viewHolder.imgFilmePoster = (ImageView) workingView.findViewById(R.id.imgFilmePoster);
 
             workingView.setTag(viewHolder);
 
@@ -163,7 +181,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         public TextView titleView1;
         public TextView titleView2;
         public TextView titleView3;
-        //public ImageView imageView;
+        public ImageView imgFilmePoster;
         public Button addRemoveBtn;
     }
 }
