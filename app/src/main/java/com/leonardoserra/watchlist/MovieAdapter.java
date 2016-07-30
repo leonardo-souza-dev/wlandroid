@@ -17,33 +17,67 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.leonardoserra.watchlist.Fragments.FragmentMovie;
+import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
+import com.leonardoserra.watchlist.Models.MovieViewModel;
 
 public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
-    private final int movieItemLayoutResource;
+    private final int gLayout;
     private final String gTerm;
     private Context gContext;
     private Fragment gF;
+    private MovieViewModel gEntry;
+    private ImageLoader imgLoader;
+    private String gBasePosterUrl;
 
-    public MovieAdapter(final Context context, final int movieItemLayoutResource, String term, Fragment f) {
+    public MovieAdapter(final Context context, final int lLayout, String term, Fragment f) {
         super(context, 0);
+
         gContext = context;
-        this.movieItemLayoutResource = movieItemLayoutResource;
+        this.gLayout = lLayout;
         this.gTerm = term;
         this.gF = f;
+
+        imgLoader = new ImageLoader(getContext());
     }
 
-    private MovieViewModel gEntry;
+    private String getUrl(){
 
+        gBasePosterUrl = "http://10.0.2.2:8080/poster?p=" + gEntry.getPoster();
+        if (!isEmulator()) {
+            gBasePosterUrl = "http://192.168.1.5:8080/poster?p=" + gEntry.getPoster();
+        }
+
+        return gBasePosterUrl;
+    }
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
 
         // We need to get the best view (re-used if possible) and then
         // retrieve its corresponding ViewHolder, which optimizes lookup efficiency
         final View view = getWorkingView(convertView);
-        final ViewHolder viewHolder = getViewHolder(view);
         gEntry = getItem(position);
 
+        if (gLayout == R.layout.simple_row) {
+            final ViewHolderSimpleRow viewHolderSimpleRow = (ViewHolderSimpleRow) getViewHolder(view);
+            setElements(viewHolderSimpleRow);
+        } else if (gLayout == R.layout.movie_thumb) {
+            final ViewHolderThumb viewHolderSimpleRow = (ViewHolderThumb) getViewHolder(view);
+            setElementsThumb(viewHolderSimpleRow);
+        }
+
+
+        view.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                callMovieFragment(gEntry, gContext);
+            }
+        });
+
+        return view;
+    }
+
+    private void setElements(ViewHolderSimpleRow viewHolderSimpleRow) {
         // Setting the title view is straightforward
         String tituloFilme = gEntry.getName();
         String partOne = "";
@@ -60,29 +94,19 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
             partOne = tituloFilme;
         }
 
-        viewHolder.titleView1.setText(partOne);
-        viewHolder.titleView2.setText(termOriginal);
-        viewHolder.titleView2.setTextColor(Color.GREEN);
-        viewHolder.titleView3.setText(partTwo);
+        viewHolderSimpleRow.titleView1.setText(partOne);
+        viewHolderSimpleRow.titleView2.setText(termOriginal);
+        viewHolderSimpleRow.titleView2.setTextColor(Color.GREEN);
+        viewHolderSimpleRow.titleView3.setText(partTwo);
+        imgLoader.DisplayImage(getUrl(), viewHolderSimpleRow.imgFilmePoster);
+    }
 
+    private void setElementsThumb(ViewHolderThumb viewHolderThumb) {
+        String tituloFilme = gEntry.getName();
 
-        //new DownloadImagemTask((ImageView)gRootView.findViewById(R.id.imgPoster))
-        //       .execute(baseUrl + "poster?p=" + nomeArquivo);
+        viewHolderThumb.txtTitulo.setText(tituloFilme);
 
-        String baseUrl = "http://10.0.2.2:8080/api/poster?p=" + gEntry.getPoster();
-        if (!isEmulator())
-            baseUrl = "http://192.168.1.5:8080/api/poster?p=" + gEntry.getPoster();
-        new DownloadImagemTask(viewHolder.imgFilmePoster).execute(baseUrl);
-
-        //viewHolder.imgFilmePoster.setImageResource(gEntry.getPoster());
-
-        view.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                callMovieFragment(gEntry, gContext);
-            }
-        });
-
-        return view;
+        imgLoader.DisplayImage(getUrl(), viewHolderThumb.imgPosterThumb);
     }
 
     public boolean isEmulator() {
@@ -146,7 +170,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
             final LayoutInflater inflater = (LayoutInflater)context.getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
 
-            workingView = inflater.inflate(movieItemLayoutResource, null);
+            workingView = inflater.inflate(gLayout, null);
         } else {
             workingView = convertView;
         }
@@ -154,34 +178,50 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         return workingView;
     }
 
-    private ViewHolder getViewHolder(final View workingView) {
-        // The viewHolder allows us to avoid re-looking up view references
-        // Since views are recycled, these references will never change
+    private ViewBase getViewHolder(final View workingView) {
+
         final Object tag = workingView.getTag();
-        ViewHolder viewHolder = null;
+        ViewBase viewBase = null;
 
-        if(null == tag || !(tag instanceof ViewHolder)) {
-            viewHolder = new ViewHolder();
-            viewHolder.titleView1 = (TextView) workingView.findViewById(R.id.rowTextView1);
-            viewHolder.titleView2 = (TextView) workingView.findViewById(R.id.rowTextView2);
-            viewHolder.titleView3 = (TextView) workingView.findViewById(R.id.rowTextView3);
-            viewHolder.addRemoveBtn = (Button)workingView.findViewById(R.id.btnAddRemove);
-            viewHolder.imgFilmePoster = (ImageView) workingView.findViewById(R.id.imgFilmePoster);
 
-            workingView.setTag(viewHolder);
+        if (gLayout == R.layout.simple_row) {
+            ViewHolderSimpleRow viewHolderSimpleRow = new ViewHolderSimpleRow();
+            viewHolderSimpleRow.titleView1 = (TextView) workingView.findViewById(R.id.rowTextView1);
+            viewHolderSimpleRow.titleView2 = (TextView) workingView.findViewById(R.id.rowTextView2);
+            viewHolderSimpleRow.titleView3 = (TextView) workingView.findViewById(R.id.rowTextView3);
+            viewHolderSimpleRow.addRemoveBtn = (Button)workingView.findViewById(R.id.btnAddRemove);
+            viewHolderSimpleRow.imgFilmePoster = (ImageView) workingView.findViewById(R.id.imgFilmePoster);
 
-        } else {
-            viewHolder = (ViewHolder) tag;
+            workingView.setTag(viewHolderSimpleRow);
+            viewBase = viewHolderSimpleRow;
+        } else if (gLayout == R.layout.movie_thumb) {
+            ViewHolderThumb viewHolderThumb = new ViewHolderThumb();
+            viewHolderThumb.txtTitulo = (TextView) workingView.findViewById(R.id.txtTituloThumb);
+            viewHolderThumb.imgPosterThumb = (ImageView) workingView.findViewById(R.id.imgPosterThumb);
+
+            workingView.setTag(viewHolderThumb);
+
+            viewBase = viewHolderThumb;
         }
 
-        return viewHolder;
+
+        return viewBase;
     }
 
-    private static class ViewHolder {
+    private static class ViewHolderSimpleRow extends ViewBase {
         public TextView titleView1;
         public TextView titleView2;
         public TextView titleView3;
         public ImageView imgFilmePoster;
         public Button addRemoveBtn;
+    }
+
+    private static class ViewHolderThumb extends ViewBase {
+        public TextView txtTitulo;
+        public ImageView imgPosterThumb;
+    }
+
+    private static class ViewBase {
+
     }
 }

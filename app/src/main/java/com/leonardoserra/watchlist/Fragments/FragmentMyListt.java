@@ -1,4 +1,4 @@
-package com.leonardoserra.watchlist;
+package com.leonardoserra.watchlist.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
+import com.leonardoserra.watchlist.ApiHelper;
+import com.leonardoserra.watchlist.Models.Message;
+import com.leonardoserra.watchlist.Models.MovieViewModel;
+import com.leonardoserra.watchlist.MovieAdapter;
+import com.leonardoserra.watchlist.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,16 +20,16 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentHome extends Fragment {
+public class FragmentMyListt extends Fragment {
 
     private ListView gListView;
     private MovieAdapter gMovieAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home, null);
+        View rootView = inflater.inflate(R.layout.fragment_mylistt, null);
 
-        gListView = (ListView) rootView.findViewById(R.id.listViewFilmesRecomendados);
+        gListView = (ListView) rootView.findViewById(R.id.listViewMyListt);
         gMovieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this);
         gListView.setAdapter(gMovieAdapter);
 
@@ -40,13 +45,13 @@ public class FragmentHome extends Fragment {
 
         String hash = getArguments().get("user_hash").toString();
 
-        Message msg = new ApiHelper(getContext()).obterFilmesRecomendados(hash);
+        Message msg = new ApiHelper(getContext()).obterMyListt(hash);
 
         JSONObject mylisttJson = msg.getObject();
         JSONArray jsonArray = null;
 
         try {
-            jsonArray = mylisttJson.getJSONArray("filmesrecomendados");
+            jsonArray = mylisttJson.getJSONArray("mylistt");
 
             if (jsonArray != null) {
 
@@ -64,5 +69,4 @@ public class FragmentHome extends Fragment {
 
         return myListItems;
     }
-
 }

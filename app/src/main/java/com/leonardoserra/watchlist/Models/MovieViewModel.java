@@ -1,4 +1,4 @@
-package com.leonardoserra.watchlist;
+package com.leonardoserra.watchlist.Models;
 
 import java.io.Serializable;
 

@@ -1,12 +1,8 @@
-package com.leonardoserra.watchlist;
+package com.leonardoserra.watchlist.Fragments;
 
 import android.support.v4.app.Fragment;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-
-import java.io.InputStream;
+import com.leonardoserra.watchlist.ApiHelper;
+import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
+import com.leonardoserra.watchlist.Models.MovieViewModel;
+import com.leonardoserra.watchlist.Models.User;
+import com.leonardoserra.watchlist.R;
 
 public class FragmentMovie extends Fragment {
 
@@ -31,9 +30,12 @@ public class FragmentMovie extends Fragment {
     private User gUser;
     private String gMovieId;
     private View gRootView;
+    private ImageLoader imgLoader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        imgLoader = new ImageLoader(getContext());
+
         gRootView = inflater.inflate(R.layout.fragment_movie, container,false);
 
         remove = getResources().getString(R.string.remove_movie).toString();
@@ -55,8 +57,6 @@ public class FragmentMovie extends Fragment {
         String titulo = movieViewModel.getName();
         tituloTextView.setText(titulo);
 
-        //getSupportActionBar().setTitle(titulo);
-
         //esta na minha lista?
         gIsInMyList = movieViewModel.getIsInMyList();
         //setando botao de acao
@@ -64,13 +64,12 @@ public class FragmentMovie extends Fragment {
         btnAcao.setText(gIsInMyList ? remove : add);
 
         String nomeArquivo = movieViewModel.getPoster();
-        String baseUrl = "http://10.0.2.2:8080/";
+        String baseUrl = "http://10.0.2.2:8080/" + "poster?p=" + nomeArquivo;
 
         if (!isEmulator())
-            baseUrl = "http://192.168.1.5:8080/";
+            baseUrl = "http://192.168.1.5:8080/" + "poster?p=" + nomeArquivo;
 
-        new DownloadImagemTask((ImageView)gRootView.findViewById(R.id.imgPoster))
-                .execute(baseUrl + "poster?p=" + nomeArquivo);
+        imgLoader.DisplayImage(baseUrl, (ImageView)gRootView.findViewById(R.id.imgPoster));
 
         Button btnAddOrRemove = (Button)gRootView.findViewById(R.id.btnAddRemove);
         btnAddOrRemove.setOnClickListener(new View.OnClickListener() {
@@ -102,32 +101,6 @@ public class FragmentMovie extends Fragment {
             Log.d(this.getClass().getName(), "back button pressed");
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 */
     public void addOrRemove(View view) {

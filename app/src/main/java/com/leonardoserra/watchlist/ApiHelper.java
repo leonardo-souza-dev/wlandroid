@@ -5,6 +5,9 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.leonardoserra.watchlist.Models.Message;
+import com.leonardoserra.watchlist.Models.User;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;

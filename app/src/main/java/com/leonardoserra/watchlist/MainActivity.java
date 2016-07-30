@@ -23,6 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.leonardoserra.watchlist.Fragments.FragmentHome;
+import com.leonardoserra.watchlist.Fragments.FragmentMyListt;
+import com.leonardoserra.watchlist.Fragments.FragmentSearchResult;
+import com.leonardoserra.watchlist.Models.Message;
+import com.leonardoserra.watchlist.Models.MovieViewModel;
+import com.leonardoserra.watchlist.Models.User;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
