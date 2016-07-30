@@ -1,8 +1,11 @@
 package com.leonardoserra.watchlist.Fragments;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,8 @@ import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
 import com.leonardoserra.watchlist.Models.User;
 import com.leonardoserra.watchlist.R;
+
+import org.json.JSONObject;
 
 public class FragmentMovie extends Fragment {
 
@@ -126,20 +131,21 @@ public class FragmentMovie extends Fragment {
         btnAcao.setText(gIsInMyList ? remove : add);
     }
 
-    /*
-    @Override
-    public void onBackPressed(){
+//    @Override
+//    public void onBackPressed(){
+//
+//        Intent returnIntent = new Intent();
+//        JSONObject json = new JSONObject();
+//        try {
+//            json.put("movie_id", gMovieId);
+//            json.put("isInMyList", gIsInMyList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        returnIntent.putExtra("action_result", json.toString());
+//        setResult(Activity.RESULT_OK,returnIntent);
+//        finish();
+//    }
 
-        Intent returnIntent = new Intent();
-        JSONObject json = new JSONObject();
-        try {
-            json.put("movie_id", gMovieId);
-            json.put("isInMyList", gIsInMyList);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        returnIntent.putExtra("action_result", json.toString());
-        setResult(Activity.RESULT_OK,returnIntent);
-        finish();
-    } */
+
 }
