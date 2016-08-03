@@ -2,6 +2,7 @@ package com.leonardoserra.watchlist.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,8 @@ public class FragmentHome extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home, null);
 
         gListView = (ListView) rootView.findViewById(R.id.listViewFilmesRecomendados);
-        gMovieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this);
+        FragmentManager fm = getFragmentManager();
+        gMovieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this, fm);
         gListView.setAdapter(gMovieAdapter);
 
         for(final MovieViewModel entry : getNewsEntries()) {

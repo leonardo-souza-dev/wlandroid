@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,17 +54,22 @@ public class MainActivity extends AppCompatActivity {
     private FragmentMyListt fragmentMyListt;
     private FragmentSearchResult fragmentSearchResult;
     private TabLayout allTabs;
+    private FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         criaOuObtemUsuario();
+
+        fm = getSupportFragmentManager();
 
         configuraActionbar();
 
         configurasAbas();
+
 
         //setar banner
         //AdView mAdView = (AdView) findViewById(R.id.adViewMain);
@@ -171,16 +178,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void trocaFragment(Fragment fragment, Bundle b) {
+        Log.d("wl", "Indo para " + fragment.getClass().getName());
         if (b != null) {
             fragment.setArguments(b);
         }
 
-        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frame_container, fragment);
 
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack(null);
         ft.commit();
+        fm.executePendingTransactions();
     }
 
     public void search() {
@@ -337,8 +346,16 @@ public class MainActivity extends AppCompatActivity {
         if(isSearchOpened) {
             handleMenuSearch();
             return;
+        } else {
+            int count = fm.getBackStackEntryCount();
+
+            if (count == 0) {
+                super.onBackPressed();
+                //additional code
+            } else {
+                fm.popBackStack();
+            }
         }
-        super.onBackPressed();
     }
 
     private void doSearch() {

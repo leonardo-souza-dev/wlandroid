@@ -30,7 +30,7 @@ public class FragmentMyListt extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_mylistt, null);
 
         gListView = (ListView) rootView.findViewById(R.id.listViewMyListt);
-        gMovieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this);
+        gMovieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this, getFragmentManager());
         gListView.setAdapter(gMovieAdapter);
 
         for(final MovieViewModel entry : getNewsEntries()) {

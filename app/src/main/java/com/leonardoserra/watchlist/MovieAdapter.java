@@ -1,11 +1,12 @@
 package com.leonardoserra.watchlist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Movie;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -27,12 +28,15 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
     private final String gTerm;
     private Context gContext;
     private Fragment gF;
-    private MovieViewModel gEntry;
+    //private MovieViewModel gEntry;
     private ImageLoader imgLoader;
     private String gBasePosterUrl;
+    private FragmentManager fm;
 
-    public MovieAdapter(final Context context, final int lLayout, String term, Fragment f) {
+    public MovieAdapter(final Context context, final int lLayout, String term, Fragment f, FragmentManager pFm) {
         super(context, 0);
+
+        fm = pFm;
 
         gContext = context;
         this.gLayout = lLayout;
@@ -42,11 +46,11 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         imgLoader = new ImageLoader(getContext());
     }
 
-    private String getUrl(){
+    private String getUrl(String pPoster){
 
-        gBasePosterUrl = "http://10.0.2.2:8080/poster?p=" + gEntry.getPoster();
+        gBasePosterUrl = "http://10.0.2.2:8080/poster?p=" + pPoster;
         if (!isEmulator()) {
-            gBasePosterUrl = "http://192.168.1.5:8080/poster?p=" + gEntry.getPoster();
+            gBasePosterUrl = "http://192.168.1.5:8080/poster?p=" + pPoster;
         }
 
         return gBasePosterUrl;
@@ -54,32 +58,29 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
 
-        // We need to get the best view (re-used if possible) and then
-        // retrieve its corresponding ViewHolder, which optimizes lookup efficiency
         final View view = getWorkingView(convertView);
-        gEntry = getItem(position);
+        final MovieViewModel entry = getItem(position);
 
         if (gLayout == R.layout.simple_row) {
             final ViewHolderSimpleRow viewHolderSimpleRow = (ViewHolderSimpleRow) getViewHolder(view);
-            setElements(viewHolderSimpleRow);
+            setElements(viewHolderSimpleRow, entry);
         } else if (gLayout == R.layout.movie_thumb) {
             final ViewHolderThumb viewHolderSimpleRow = (ViewHolderThumb) getViewHolder(view);
-            setElementsThumb(viewHolderSimpleRow);
+            setElementsThumb(viewHolderSimpleRow, entry);
         }
-
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                callMovieFragment(gEntry, gContext);
+                callMovieFragment(entry, gContext);
             }
         });
 
         return view;
     }
 
-    private void setElements(ViewHolderSimpleRow viewHolderSimpleRow) {
+    private void setElements(ViewHolderSimpleRow viewHolderSimpleRow, MovieViewModel pEntry) {
         // Setting the title view is straightforward
-        String tituloFilme = gEntry.getName();
+        String tituloFilme = pEntry.getName();
         String partOne = "";
         String partTwo = "";
         String termOriginal = "";
@@ -98,15 +99,15 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         viewHolderSimpleRow.titleView2.setText(termOriginal);
         viewHolderSimpleRow.titleView2.setTextColor(Color.GREEN);
         viewHolderSimpleRow.titleView3.setText(partTwo);
-        imgLoader.DisplayImage(getUrl(), viewHolderSimpleRow.imgFilmePoster);
+        imgLoader.DisplayImage(getUrl(pEntry.getPoster()), viewHolderSimpleRow.imgFilmePoster);
     }
 
-    private void setElementsThumb(ViewHolderThumb viewHolderThumb) {
-        String tituloFilme = gEntry.getName();
+    private void setElementsThumb(ViewHolderThumb viewHolderThumb, MovieViewModel pEntry) {
+        String tituloFilme = pEntry.getName();
 
         viewHolderThumb.txtTitulo.setText(tituloFilme);
 
-        imgLoader.DisplayImage(getUrl(), viewHolderThumb.imgPosterThumb);
+        imgLoader.DisplayImage(getUrl(pEntry.getPoster()), viewHolderThumb.imgPosterThumb);
     }
 
     public boolean isEmulator() {
@@ -126,12 +127,13 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         b.putString("movieViewModelEntry", new Gson().toJson(movieViewModelEntry));
         blankFragment.setArguments(b);
 
-        FragmentManager fm = ((FragmentActivity)pContext).getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frame_container, blankFragment);
 
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack(null);
         ft.commit();
+        fm.executePendingTransactions();
     }
 
     /* //TODO: IMPLEMENTAR

@@ -1,11 +1,8 @@
 package com.leonardoserra.watchlist.Fragments;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +19,10 @@ import com.leonardoserra.watchlist.Models.User;
 import com.leonardoserra.watchlist.R;
 
 import org.json.JSONObject;
+
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+import java.util.List;
 
 public class FragmentMovie extends Fragment {
 
@@ -74,7 +75,7 @@ public class FragmentMovie extends Fragment {
         if (!isEmulator())
             baseUrl = "http://192.168.1.5:8080/" + "poster?p=" + nomeArquivo;
 
-        imgLoader.DisplayImage(baseUrl, (ImageView)gRootView.findViewById(R.id.imgPoster));
+        imgLoader.DisplayImage(baseUrl, (ImageView) gRootView.findViewById(R.id.imgPoster));
 
         Button btnAddOrRemove = (Button)gRootView.findViewById(R.id.btnAddRemove);
         btnAddOrRemove.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +84,21 @@ public class FragmentMovie extends Fragment {
                 addOrRemove(v);
             }
         });
+
+//        FragmentManager fm = getFragmentManager();
+//        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+//            @Override
+//            public void onBackStackChanged() {
+//                if (getFragmentManager().getBackStackEntryCount() == 0) {
+//                    try {
+//                        finalize();
+//                    }
+//                    catch (java.lang.Throwable e){
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
 
         return gRootView;
     }
@@ -130,22 +146,4 @@ public class FragmentMovie extends Fragment {
 
         btnAcao.setText(gIsInMyList ? remove : add);
     }
-
-//    @Override
-//    public void onBackPressed(){
-//
-//        Intent returnIntent = new Intent();
-//        JSONObject json = new JSONObject();
-//        try {
-//            json.put("movie_id", gMovieId);
-//            json.put("isInMyList", gIsInMyList);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        returnIntent.putExtra("action_result", json.toString());
-//        setResult(Activity.RESULT_OK,returnIntent);
-//        finish();
-//    }
-
-
 }

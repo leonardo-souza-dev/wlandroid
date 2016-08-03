@@ -29,7 +29,7 @@ public class FragmentSearchResult extends Fragment {
         gNewsEntryListView = (ListView) rootView.findViewById(R.id.listViewResultadoBusca);
         String termo = getArguments().getString("termo");
 
-        gFruitEntryAdapter = new MovieAdapter(getContext(), R.layout.simple_row, termo, this);
+        gFruitEntryAdapter = new MovieAdapter(getContext(), R.layout.simple_row, termo, this, getFragmentManager());
         gNewsEntryListView.setAdapter(gFruitEntryAdapter);
 
         // Populate the list, through the adapter
