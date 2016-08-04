@@ -1,11 +1,10 @@
 package com.leonardoserra.watchlist;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Movie;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -22,26 +22,28 @@ import com.leonardoserra.watchlist.Fragments.FragmentMovie;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
     private final int gLayout;
     private final String gTerm;
     private Context gContext;
-    private Fragment gF;
-    //private MovieViewModel gEntry;
+    private Fragment gFragment;
     private ImageLoader imgLoader;
     private String gBasePosterUrl;
-    private FragmentManager fm;
+    private FragmentManager gFm;
 
-    public MovieAdapter(final Context context, final int lLayout, String term, Fragment f, FragmentManager pFm) {
+    public MovieAdapter(final Context context, final int lLayout, String term, Fragment pFragment,
+                        AtomicReference<Object> pFm) {
         super(context, 0);
 
-        fm = pFm;
-
+        gFm = (FragmentManager)pFm.get();
         gContext = context;
-        this.gLayout = lLayout;
-        this.gTerm = term;
-        this.gF = f;
+        gLayout = lLayout;
+
+        gTerm = term;
+        gFragment = pFragment;
 
         imgLoader = new ImageLoader(getContext());
     }
@@ -55,6 +57,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
         return gBasePosterUrl;
     }
+
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
 
@@ -71,7 +74,12 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                callMovieFragment(entry, gContext);
+                TabLayout tabLayout = ((MainActivity)gContext).getAllTabs();
+                tabLayout.setVisibility(View.INVISIBLE);
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)
+                        tabLayout.getLayoutParams();
+                layoutParams.weight = 1;
+                callMovieFragment(entry);
             }
         });
 
@@ -121,19 +129,19 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
                 || "google_sdk".equals(Build.PRODUCT);
     }
 
-    private void callMovieFragment(MovieViewModel movieViewModelEntry, Context pContext) {
+    private void callMovieFragment(MovieViewModel movieViewModelEntry) {
         FragmentMovie blankFragment = new FragmentMovie();
         Bundle b = new Bundle();
         b.putString("movieViewModelEntry", new Gson().toJson(movieViewModelEntry));
         blankFragment.setArguments(b);
 
-        FragmentTransaction ft = fm.beginTransaction();
+        FragmentTransaction ft = gFm.beginTransaction();
         ft.replace(R.id.frame_container, blankFragment);
 
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(null);
         ft.commit();
-        fm.executePendingTransactions();
+        gFm.executePendingTransactions();
     }
 
     /* //TODO: IMPLEMENTAR

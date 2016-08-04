@@ -2,6 +2,7 @@ package com.leonardoserra.watchlist.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,14 @@ import com.leonardoserra.watchlist.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FragmentSearchResult extends Fragment {
 
     private TextView txtFraseBusca;
     private MovieAdapter gFruitEntryAdapter;
     private ListView gNewsEntryListView;
+    private int nivel = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,8 +31,9 @@ public class FragmentSearchResult extends Fragment {
 
         gNewsEntryListView = (ListView) rootView.findViewById(R.id.listViewResultadoBusca);
         String termo = getArguments().getString("termo");
-
-        gFruitEntryAdapter = new MovieAdapter(getContext(), R.layout.simple_row, termo, this, getFragmentManager());
+        FragmentManager fm = getFragmentManager();
+        AtomicReference<Object> ref = new AtomicReference<Object>(fm);
+        gFruitEntryAdapter = new MovieAdapter(getContext(), R.layout.simple_row, termo, this, ref);
         gNewsEntryListView.setAdapter(gFruitEntryAdapter);
 
         // Populate the list, through the adapter

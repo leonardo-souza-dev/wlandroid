@@ -20,11 +20,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FragmentHome extends Fragment {
 
     private ListView gListView;
     private MovieAdapter gMovieAdapter;
+    private int nivel = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,7 +34,11 @@ public class FragmentHome extends Fragment {
 
         gListView = (ListView) rootView.findViewById(R.id.listViewFilmesRecomendados);
         FragmentManager fm = getFragmentManager();
-        gMovieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this, fm);
+        AtomicReference<Object> ref = new AtomicReference<Object>(fm);
+
+
+
+        gMovieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this, ref);
         gListView.setAdapter(gMovieAdapter);
 
         for(final MovieViewModel entry : getNewsEntries()) {

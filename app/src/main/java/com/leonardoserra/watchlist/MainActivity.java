@@ -20,6 +20,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +36,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
     private FragmentMyListt fragmentMyListt;
     private FragmentSearchResult fragmentSearchResult;
     private TabLayout allTabs;
+    private TabHost gTabHost;
     private FragmentManager fm;
+    private String fragmentAtiva;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configurasAbas() {
-        //obtem abas
         allTabs = (TabLayout) findViewById(R.id.tabs);
 
         allTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void trocaFragment(Fragment fragment, Bundle b) {
-        Log.d("wl", "Indo para " + fragment.getClass().getName());
+        Log.d("wl", "Indo para " + fragment.getClass().getSimpleName());
         if (b != null) {
             fragment.setArguments(b);
         }
@@ -187,9 +188,11 @@ public class MainActivity extends AppCompatActivity {
         ft.replace(R.id.frame_container, fragment);
 
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.addToBackStack(null);
+        ft.addToBackStack(fragment.getClass().getSimpleName());
         ft.commit();
         fm.executePendingTransactions();
+
+        fragmentAtiva = fragment.getClass().getSimpleName();
     }
 
     public void search() {
@@ -265,15 +268,13 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) allTabs.getLayoutParams();
 
         if (isSearchOpened){ //test if the search is open
-            escondeAbas(layoutParams);
+            revelaAbas(layoutParams);
             configuraLayoutActionbarPadrao();
             trocaFragment(fragmentHome, null);
         } else {
             ActionBar action = getSupportActionBar();
             
-            allTabs.setVisibility(View.INVISIBLE);
-            layoutParams.weight = 1;
-            allTabs.setLayoutParams(layoutParams);
+            escondeAbas(layoutParams);
 
             action.setDisplayShowCustomEnabled(true); //enable it to display custom view in the action bar.
             action.setCustomView(R.layout.search_bar);//add the custom view
@@ -319,9 +320,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void escondeAbas(LinearLayout.LayoutParams layoutParams) {
+    private void revelaAbas(LinearLayout.LayoutParams layoutParams) {
         allTabs.setVisibility(View.VISIBLE);
         layoutParams.weight = 0;
+        allTabs.setLayoutParams(layoutParams);
+    }
+
+    private void escondeAbas(LinearLayout.LayoutParams layoutParams) {
+        allTabs.setVisibility(View.INVISIBLE);
+        layoutParams.weight = 1;
         allTabs.setLayoutParams(layoutParams);
     }
 
@@ -343,6 +350,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //ViewParent viewParent = allTabs.getParent();
+        //TabLayout.Tab tab = new TabLayout.Tab(viewParent);
+        int selectTab = allTabs.getSelectedTabPosition();
         if(isSearchOpened) {
             handleMenuSearch();
             return;
@@ -353,14 +363,28 @@ public class MainActivity extends AppCompatActivity {
                 super.onBackPressed();
                 //additional code
             } else {
+                //setCurrentTabFragment(1);
                 fm.popBackStack();
+
+                FragmentManager.BackStackEntry backEntry2 = fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 2);
+                String fragmentAnterior = backEntry2.getName().toString();
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) allTabs.getLayoutParams();
+                if (fragmentAnterior.equals("FragmentHome") && fragmentAtiva.equals("FragmentMyListt")) {
+                    allTabs.getTabAt(0).select();
+                } else if (fragmentAnterior.equals("FragmentMyListt") && fragmentAtiva.equals("FragmentHome")) {
+                    allTabs.getTabAt(1).select();
+                } else if (fragmentAnterior.equals("FragmentHome") && fragmentAtiva.equals("FragmentSearchResult")) {
+                    allTabs.getTabAt(0).select();
+                    revelaAbas(layoutParams);
+                } else if (fragmentAnterior.equals("FragmentMyListt") && fragmentAtiva.equals("FragmentSearchResult")) {
+                    allTabs.getTabAt(1).select();
+                    revelaAbas(layoutParams);
+                }
             }
         }
     }
 
-    private void doSearch() {
-        //
+    public TabLayout getAllTabs(){
+        return allTabs;
     }
-
-
 }
