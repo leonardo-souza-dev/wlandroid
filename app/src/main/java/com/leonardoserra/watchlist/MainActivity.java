@@ -28,6 +28,8 @@ import com.google.gson.Gson;
 import com.leonardoserra.watchlist.Fragments.FragmentHome;
 import com.leonardoserra.watchlist.Fragments.FragmentMyListt;
 import com.leonardoserra.watchlist.Fragments.FragmentSearchResult;
+import com.leonardoserra.watchlist.Helpers.FragWrapper;
+import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.Models.Message;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
 import com.leonardoserra.watchlist.Models.User;
@@ -55,18 +57,27 @@ public class MainActivity extends AppCompatActivity {
     private FragmentSearchResult fragmentSearchResult;
     private TabLayout allTabs;
     private TabHost gTabHost;
-    private FragmentManager fm;
+    //private FragmentManager fm;
     private String fragmentAtiva;
+    //private Bundle gBundle;
+    //private FragWrapper.FragHelper fragHelper;
 
-    @Override
+    private void trocaViaHelper(Fragment f){
+        Singleton.getInstance().trocaFrag(f);
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Singleton.getInstance(getSupportFragmentManager());//INIT CUSTOM FRAGMENTMANAGER
 
+        //fragHelper = new FragWrapper.FragHelper(getSupportFragmentManager(), R.id.frame_container);
 
         criaOuObtemUsuario();
 
-        fm = getSupportFragmentManager();
+        //gBundle = new Bundle();
+        //fm = getSupportFragmentManager();
+
 
         configuraActionbar();
 
@@ -110,14 +121,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //configura abas
-        Bundle bundleUser = new Bundle();
-        bundleUser.putString("user_hash", gUser.getHash());
+
+        //fragHelper.setBundleHash(gUser.getHash());
+        //gBundle.putString("user_hash", gUser.getHash());
 
         fragmentHome = new FragmentHome();
-        fragmentHome.setArguments(bundleUser);
+        //fragmentHome.setArguments(gBundle);
 
         fragmentMyListt = new FragmentMyListt();
-        fragmentMyListt.setArguments(bundleUser);
+        //fragmentMyListt.setArguments(gBundle);
 
         allTabs.addTab(allTabs.newTab().setText("Home"), true);
         allTabs.addTab(allTabs.newTab().setText("MyListt"));
@@ -132,17 +144,21 @@ public class MainActivity extends AppCompatActivity {
 
             sp = getPreferences(MODE_PRIVATE);
             gHash = sp.getString("wl_user_hash", null);
+            Singleton.getInstance().setUserHash(gHash);
 
             Message msgCreateUser = new ApiHelper(this).createuser(gHash);
 
             if (msgCreateUser.getSucess()) {
-                Boolean exists = Boolean.parseBoolean(msgCreateUser.getObject("exists"));
+                //Boolean exists = Boolean.parseBoolean(msgCreateUser.getObject("exists"));
 
-                if (!exists) {
+                //if (!exists) {
                     gHash = msgCreateUser.getObject("hash");
-                    e.putString("wl_user_hash", gHash);
+
+                Singleton.getInstance().setUserHash(gHash);
+                //fragHelper.setBundleHash(gHash);
+                    //e.putString("wl_user_hash", gHash);
                     e.commit();
-                }
+                //}
 
                 Toast.makeText(this, msgCreateUser.getMessage(), Toast.LENGTH_SHORT).show();
 
@@ -154,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
             gUser.setHash(gHash);
 
         } catch (Exception ex) {
+
             ex.printStackTrace();
             Toast.makeText(this, getResources().getString(R.string.some_error_occurred), Toast.LENGTH_SHORT).show();
         }
@@ -167,37 +184,52 @@ public class MainActivity extends AppCompatActivity {
 
     private void setCurrentTabFragment(int tabPosition)
     {
+
         switch (tabPosition)
         {
             case 0 :
-                trocaFragment(fragmentHome, null);
+                trocaViaHelper(fragmentHome);
+                //insereBundleETrocaOFragment(fragmentHome);
                 break;
             case 1 :
-                trocaFragment(fragmentMyListt, null);
+                trocaViaHelper(fragmentMyListt);
+                //insereBundleETrocaOFragment(fragmentMyListt);
                 break;
         }
     }
 
-    public void trocaFragment(Fragment fragment, Bundle b) {
-        Log.d("wl", "Indo para " + fragment.getClass().getSimpleName());
-        if (b != null) {
-            fragment.setArguments(b);
-        }
+    /*public void insereBundleETrocaOFragment(Fragment fragment){
+        Bundle b = fragment.getArguments();
+        boolean fragmentNaoTemBundleSetado = b == null;
 
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.frame_container, fragment);
+        if (fragmentNaoTemBundleSetado) {
+            fragment.setArguments(gBundle);
+        }
+        trocaFragment(fragment);
+    }*/
+
+    public void trocaFragment(Fragment fragment) {
+        Log.d("wl", "Indo para " + fragment.getClass().getSimpleName());
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        ft.replace(R.id.frame_container, fragment, "");
 
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(fragment.getClass().getSimpleName());
         ft.commit();
-        fm.executePendingTransactions();
+
+        getSupportFragmentManager().executePendingTransactions();
 
         fragmentAtiva = fragment.getClass().getSimpleName();
+
+        count++;
+        //gBundle.putInt("count_fragments", count);
     }
 
     public void search() {
         fragmentSearchResult = new FragmentSearchResult();
-        //obtem ter_mo da busca
+
         termoTextView = (EditText) findViewById(R.id.edtSearch);
         searchTerm = "";
         if (!termoTextView.getText().equals(""))
@@ -227,12 +259,21 @@ public class MainActivity extends AppCompatActivity {
                         list.add(f);
                     }
 
-                    Bundle b = new Bundle();
-                    b.putSerializable("bundle_searchResult", list);
-                    b.putString("termo", searchTerm);
-                    b.putInt("qtd", len);
-                    trocaFragment(fragmentSearchResult, b);
+                    //insere resultado da busca, termo da busca, qtd encontrada e historico de nav
+                    Singleton.getInstance().setBundleSearchResult(list);
+                    //fragHelper.setBundleSearchResult(list);
+                    //gBundle.putSerializable("bundle_searchResult", list);
 
+                    Singleton.getInstance().setTermo(searchTerm);
+                    //fragHelper.setTermo(searchTerm);
+                    //gBundle.putString("termo", searchTerm);
+
+                    Singleton.getInstance().setQtd(len);
+                    //fragHelper.setQtd(len);
+                    //gBundle.putInt("qtd", len);
+
+                    Singleton.getInstance().trocaFrag(fragmentSearchResult);
+                    //fragHelper.trocaFrag(fragmentSearchResult);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -270,7 +311,13 @@ public class MainActivity extends AppCompatActivity {
         if (isSearchOpened){ //test if the search is open
             revelaAbas(layoutParams);
             configuraLayoutActionbarPadrao();
-            trocaFragment(fragmentHome, null);
+
+            //gBundle.putInt("count_fragments", count);
+            Singleton.getInstance().trocaFrag(fragmentHome);
+
+            //fragHelper.trocaFrag(fragmentHome);
+            //insereBundleETrocaOFragment(fragmentHome);
+
         } else {
             ActionBar action = getSupportActionBar();
             
@@ -348,38 +395,44 @@ public class MainActivity extends AppCompatActivity {
         isSearchOpened = false;
     }
 
+    private int count = 0;
+
     @Override
     public void onBackPressed() {
         //ViewParent viewParent = allTabs.getParent();
         //TabLayout.Tab tab = new TabLayout.Tab(viewParent);
-        int selectTab = allTabs.getSelectedTabPosition();
+        //int selectTab = allTabs.getSelectedTabPosition();
         if(isSearchOpened) {
             handleMenuSearch();
             return;
         } else {
-            int count = fm.getBackStackEntryCount();
+            int qtd = Singleton.getInstance().getHistoricoSize();
 
-            if (count == 0) {
+            if (qtd == 1){
+                Singleton.getInstance().popBackStackk();
                 super.onBackPressed();
-                //additional code
-            } else {
-                //setCurrentTabFragment(1);
-                fm.popBackStack();
+            } else{
 
-                FragmentManager.BackStackEntry backEntry2 = fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 2);
-                String fragmentAnterior = backEntry2.getName().toString();
+                String ultimoFragment = Singleton.getInstance().getNomeUltimoFragment();
+                String penultimaFragment = Singleton.getInstance().getNomePenultimoFragment();
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) allTabs.getLayoutParams();
-                if (fragmentAnterior.equals("FragmentHome") && fragmentAtiva.equals("FragmentMyListt")) {
-                    allTabs.getTabAt(0).select();
-                } else if (fragmentAnterior.equals("FragmentMyListt") && fragmentAtiva.equals("FragmentHome")) {
+                Singleton.getInstance().popBackStackk();
+                if (ultimoFragment.equals("FragmentHome") && penultimaFragment.equals("FragmentMyListt")) {
                     allTabs.getTabAt(1).select();
-                } else if (fragmentAnterior.equals("FragmentHome") && fragmentAtiva.equals("FragmentSearchResult")) {
+                } else if (ultimoFragment.equals("FragmentMyListt") && penultimaFragment.equals("FragmentHome")) {
+                    allTabs.getTabAt(0).select();//ok
+                } else if (ultimoFragment.equals("FragmentHome") && penultimaFragment.equals("FragmentSearchResult")) {
                     allTabs.getTabAt(0).select();
                     revelaAbas(layoutParams);
-                } else if (fragmentAnterior.equals("FragmentMyListt") && fragmentAtiva.equals("FragmentSearchResult")) {
+                } else if (ultimoFragment.equals("FragmentMyListt") && penultimaFragment.equals("FragmentSearchResult")) {
                     allTabs.getTabAt(1).select();
+                    revelaAbas(layoutParams);
+                } else if (ultimoFragment.equals("FragmentMovie") && penultimaFragment.equals("FragmentHome")){
+                    allTabs.getTabAt(0);
                     revelaAbas(layoutParams);
                 }
+
+                //gBundle.putInt("count_fragments", count);
             }
         }
     }

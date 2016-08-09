@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.leonardoserra.watchlist.ApiHelper;
+import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
 import com.leonardoserra.watchlist.Models.User;
@@ -37,23 +38,25 @@ public class FragmentMovie extends Fragment {
     private String gMovieId;
     private View gRootView;
     private ImageLoader imgLoader;
+    private int gCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         imgLoader = new ImageLoader(getContext());
 
-        gRootView = inflater.inflate(R.layout.fragment_movie, container,false);
+        gRootView = inflater.inflate(R.layout.fragment_movie, container, false);
 
         remove = getResources().getString(R.string.remove_movie).toString();
         add = getResources().getString(R.string.add_movie).toString();
 
         //receber dados do filme
-        movieViewModel = null;
-        savedInstanceState = getArguments();
-        if (savedInstanceState != null) {
-            jsonMyObject = savedInstanceState.getString("movieViewModelEntry");
+        movieViewModel =  Singleton.getInstance().getMovieViewModel();
+        /*Bundle bundleQueChegou = getArguments();
+        if (bundleQueChegou != null) {
+            jsonMyObject = bundleQueChegou.getString("movieViewModelEntry");
             movieViewModel = new Gson().fromJson(jsonMyObject, MovieViewModel.class);
-        }
+        }*/
 
         //setando user que veio da tela de resultado da busca
         gUser = movieViewModel.getUser();

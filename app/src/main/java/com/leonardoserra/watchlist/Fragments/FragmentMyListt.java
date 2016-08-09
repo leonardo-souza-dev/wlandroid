@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.leonardoserra.watchlist.ApiHelper;
+import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.Models.Message;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
 import com.leonardoserra.watchlist.MovieAdapter;
@@ -26,16 +28,22 @@ public class FragmentMyListt extends Fragment {
 
     private ListView gListView;
     private MovieAdapter gMovieAdapter;
+    private View rootView;
+    private TextView txtMsg;
+    private int gCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_mylistt, null);
+        rootView = inflater.inflate(R.layout.fragment_mylistt, null);
 
         gListView = (ListView) rootView.findViewById(R.id.listViewMyListt);
-        FragmentManager fm = getFragmentManager();
-        AtomicReference<Object> ref = new AtomicReference<Object>(fm);
-        gMovieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this, ref);
+        //FragmentManager fm = getFragmentManager();
+        //AtomicReference<Object> ref = new AtomicReference<Object>(fm);
+        //gCount = getArguments().getInt("count_fragments");
+        gMovieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this, gCount);
         gListView.setAdapter(gMovieAdapter);
+
+        txtMsg = (TextView)rootView.findViewById(R.id.txtMsg);
 
         for(final MovieViewModel entry : getNewsEntries()) {
             gMovieAdapter.add(entry);
@@ -47,7 +55,8 @@ public class FragmentMyListt extends Fragment {
     private List<MovieViewModel> getNewsEntries() {
         ArrayList<MovieViewModel> myListItems = new ArrayList<>();
 
-        String hash = getArguments().get("user_hash").toString();
+        //String hash = getArguments().get("user_hash").toString();
+        String hash = Singleton.getInstance().getUserHash();
 
         Message msg = new ApiHelper(getContext()).obterMyListt(hash);
 
@@ -61,10 +70,20 @@ public class FragmentMyListt extends Fragment {
 
                 int len = jsonArray.length();
 
-                for (int i = 0; i < len; i++) {
-                    String str = jsonArray.get(i).toString();
-                    MovieViewModel f = new Gson().fromJson(str, MovieViewModel.class);
-                    myListItems.add(f);
+                if (len != 0) {
+
+                    for (int i = 0; i < len; i++) {
+                        String str = jsonArray.get(i).toString();
+                        MovieViewModel f = new Gson().fromJson(str, MovieViewModel.class);
+                        myListItems.add(f);
+                    }
+                    txtMsg.setEnabled(false);
+                    txtMsg.setVisibility(View.INVISIBLE);
+                    txtMsg.setText("");
+                } else {
+                    txtMsg.setEnabled(true);
+                    txtMsg.setVisibility(View.VISIBLE);
+                    txtMsg.setText("There's no movies in your WatchListt :(");
                 }
             }
         } catch (Exception e) {

@@ -40,10 +40,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity
-            android:name=".TesteAbaHomeActivity"
-            android:label="@string/title_activity_teste_aba_home"
-            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

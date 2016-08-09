@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.leonardoserra.watchlist.Fragments.FragmentMovie;
+import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
 
@@ -33,15 +34,40 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
     private ImageLoader imgLoader;
     private String gBasePosterUrl;
     private FragmentManager gFm;
+    private int gCount;
 
     public MovieAdapter(final Context context, final int lLayout, String term, Fragment pFragment,
-                        AtomicReference<Object> pFm) {
+                        AtomicReference<Object> pFm, int pCount) {
         super(context, 0);
 
+        gCount = pCount;
         gFm = (FragmentManager)pFm.get();
         gContext = context;
         gLayout = lLayout;
+        gTerm = term;
+        gFragment = pFragment;
 
+        imgLoader = new ImageLoader(getContext());
+    }
+
+    public MovieAdapter(final Context context, final int lLayout, String term, Fragment pFragment) {
+        super(context, 0);
+
+        gContext = context;
+        gLayout = lLayout;
+        gTerm = term;
+        gFragment = pFragment;
+
+        imgLoader = new ImageLoader(getContext());
+    }
+
+    public MovieAdapter(final Context context, final int lLayout, String term, Fragment pFragment,
+                        int pCount) {
+        super(context, 0);
+
+        gCount = pCount;
+        gContext = context;
+        gLayout = lLayout;
         gTerm = term;
         gFragment = pFragment;
 
@@ -79,7 +105,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)
                         tabLayout.getLayoutParams();
                 layoutParams.weight = 1;
-                callMovieFragment(entry);
+                callMovieFragmentSingleton(entry);
             }
         });
 
@@ -129,14 +155,20 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
                 || "google_sdk".equals(Build.PRODUCT);
     }
 
+    private void callMovieFragmentSingleton(MovieViewModel movieViewModel){
+        Singleton.getInstance().setMovieViewModel(movieViewModel);
+        Singleton.getInstance().trocaFrag(new FragmentMovie());
+    }
+
     private void callMovieFragment(MovieViewModel movieViewModelEntry) {
-        FragmentMovie blankFragment = new FragmentMovie();
+        FragmentMovie fragmentMovie = new FragmentMovie();
         Bundle b = new Bundle();
         b.putString("movieViewModelEntry", new Gson().toJson(movieViewModelEntry));
-        blankFragment.setArguments(b);
+        b.putInt("count_fragments", gCount);
+        fragmentMovie.setArguments(b);
 
         FragmentTransaction ft = gFm.beginTransaction();
-        ft.replace(R.id.frame_container, blankFragment);
+        ft.replace(R.id.frame_container, fragmentMovie);
 
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(null);
