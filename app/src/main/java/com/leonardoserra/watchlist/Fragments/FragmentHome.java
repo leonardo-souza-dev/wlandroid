@@ -12,6 +12,7 @@ import com.leonardoserra.watchlist.Helpers.FragWrapper;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.Models.Message;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
+import com.leonardoserra.watchlist.Models.User;
 import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
 
@@ -26,48 +27,37 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class FragmentHome extends Fragment {
 
-    private ListView gListView;
-    private MovieAdapter gMovieAdapter;
-    private int gCount;
-    private View gRootView;
-    private FragWrapper.FragHelper fragHelper;
+    private ListView listView;
+    private MovieAdapter movieAdapter;
+    private View rootView;
+    private User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getContext();
-        gRootView = inflater.inflate(R.layout.fragment_home, null);
-        fragHelper = new FragWrapper.FragHelper(getFragmentManager(), R.id.frame_container);
-        gListView = (ListView) gRootView.findViewById(R.id.listViewFilmesRecomendados);
+        user = Singleton.getInstance().getUser();
+        rootView = inflater.inflate(R.layout.fragment_home, null);
+        listView = (ListView) rootView.findViewById(R.id.listViewFilmesRecomendados);
 
-        AtomicReference<Object> ref = new AtomicReference<Object>(getFragmentManager());
-
-        //comentado temporariamente ate acertar o fragHelpper
-        //gCount = getArguments().getInt("count_fragments");
-
-        gMovieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this, ref, gCount);
-        gListView.setAdapter(gMovieAdapter);
+        movieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this);
+        listView.setAdapter(movieAdapter);
 
         for(final MovieViewModel entry : getNewsEntries()) {
-            gMovieAdapter.add(entry);
+            movieAdapter.add(entry);
         }
 
-
-        return gRootView;
+        return rootView;
     }
 
     private List<MovieViewModel> getNewsEntries() {
 
         ArrayList<MovieViewModel> myListItems = new ArrayList<>();
 
-        //String hash = getArguments().get("user_hash").toString();
-        //String hash = fragHelper.getBundleHash();
         String hashSingleton = Singleton.getInstance().getUserHash();
-
 
         Message msg = new ApiHelper(getContext()).obterFilmesRecomendados(hashSingleton);
 
         JSONObject mylisttJson = msg.getObject();
-        JSONArray jsonArray = null;
+        JSONArray jsonArray;
 
         try {
             jsonArray = mylisttJson.getJSONArray("filmesrecomendados");
@@ -79,6 +69,7 @@ public class FragmentHome extends Fragment {
                 for (int i = 0; i < len; i++) {
                     String str = jsonArray.get(i).toString();
                     MovieViewModel f = new Gson().fromJson(str, MovieViewModel.class);
+                    f.setUser(user);
                     myListItems.add(f);
                 }
             }

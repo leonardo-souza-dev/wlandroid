@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.leonardoserra.watchlist.Models.MovieViewModel;
+import com.leonardoserra.watchlist.Models.User;
 import com.leonardoserra.watchlist.R;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Singleton  {
     private MovieViewModel movieViewModel;
     private String userHash;
     private Bundle bundle;
+    private User user;
 
     private Singleton(){
         mString = "Hello";
@@ -56,6 +58,14 @@ public class Singleton  {
 
     public void setUserHash(String pHash){
         userHash = pHash;
+    }
+
+    public void setUser(User pUser){
+        user = pUser;
+    }
+
+    public User getUser(){
+        return user;
     }
 
     public String getUserHash(){
@@ -99,12 +109,16 @@ public class Singleton  {
         return bundle.getInt("qtd");
     }
 
-    public String getNomeUltimoFragment(){
-        return Singleton.historico.getNomeUltimoFragment();
+    public Fragment getFragmentAtual(){
+        return Singleton.historico.getFragmentAtual();
     }
 
-    public String getNomePenultimoFragment(){
-        return Singleton.historico.getNomePenultimoFragment();
+    public String getNomeFragmentAtual(){
+        return Singleton.historico.getNomeFragmentAtual();
+    }
+
+    public String getNomeFragmentAnterior(){
+        return Singleton.historico.getNomeFragmentAnterior();
     }
 
     public int getHistoricoSize(){
@@ -125,6 +139,9 @@ public class Singleton  {
 
     }
 
+    /*
+        HistoricoItem
+     */
     private class HistoricoItem{
         private Fragment fragment;
         private int ordem;
@@ -158,7 +175,15 @@ public class Singleton  {
             ordem++;
         }
 
-        private String getNomeUltimoFragment(){
+        private Fragment getFragmentAtual(){
+            if (items.size() > 0) {
+                HistoricoItem hi = items.get(items.size() - 1);
+                return hi.fragment;
+            }
+            return null;
+        }
+
+        private String getNomeFragmentAtual(){
             String nome = "";
             if (items.size() >0 ) {
                 HistoricoItem hi = items.get(items.size() - 1);
@@ -167,7 +192,7 @@ public class Singleton  {
             return nome;
         }
 
-        private String getNomePenultimoFragment(){
+        private String getNomeFragmentAnterior(){
             String nome = "";
             if (items.size() > 1){
                 HistoricoItem hi = items.get(items.size() - 2);

@@ -4,13 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +16,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +23,6 @@ import com.google.gson.Gson;
 import com.leonardoserra.watchlist.Fragments.FragmentHome;
 import com.leonardoserra.watchlist.Fragments.FragmentMyListt;
 import com.leonardoserra.watchlist.Fragments.FragmentSearchResult;
-import com.leonardoserra.watchlist.Helpers.FragWrapper;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.Models.Message;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
@@ -43,11 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     //fonte: http://blog.rhesoft.com/2015/03/30/tutorial-android-actionbar-with-material-design-and-search-field/
     private Toolbar mToolbar;
-
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
     private EditText edtSeach;
-
     private TextView termoTextView;
     private String searchTerm;
     private User gUser;
@@ -56,33 +48,18 @@ public class MainActivity extends AppCompatActivity {
     private FragmentMyListt fragmentMyListt;
     private FragmentSearchResult fragmentSearchResult;
     private TabLayout allTabs;
-    private TabHost gTabHost;
-    //private FragmentManager fm;
-    private String fragmentAtiva;
-    //private Bundle gBundle;
-    //private FragWrapper.FragHelper fragHelper;
-
-    private void trocaViaHelper(Fragment f){
-        Singleton.getInstance().trocaFrag(f);
-    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Singleton.getInstance(getSupportFragmentManager());//INIT CUSTOM FRAGMENTMANAGER
 
-        //fragHelper = new FragWrapper.FragHelper(getSupportFragmentManager(), R.id.frame_container);
-
         criaOuObtemUsuario();
-
-        //gBundle = new Bundle();
-        //fm = getSupportFragmentManager();
-
 
         configuraActionbar();
 
         configurasAbas();
-
 
         //setar banner
         //AdView mAdView = (AdView) findViewById(R.id.adViewMain);
@@ -95,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
     private void configuraActionbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        String nomeApp = getResources().getString(R.string.app_name);
+        String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" :
+            getResources().getString(R.string.app_name);
         getSupportActionBar().setTitle(nomeApp);
     }
 
@@ -120,18 +98,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //configura abas
-
-        //fragHelper.setBundleHash(gUser.getHash());
-        //gBundle.putString("user_hash", gUser.getHash());
-
         fragmentHome = new FragmentHome();
-        //fragmentHome.setArguments(gBundle);
+        allTabs.addTab(allTabs.newTab().setText("Home"), true);
 
         fragmentMyListt = new FragmentMyListt();
-        //fragmentMyListt.setArguments(gBundle);
-
-        allTabs.addTab(allTabs.newTab().setText("Home"), true);
         allTabs.addTab(allTabs.newTab().setText("MyListt"));
     }
 
@@ -149,25 +119,19 @@ public class MainActivity extends AppCompatActivity {
             Message msgCreateUser = new ApiHelper(this).createuser(gHash);
 
             if (msgCreateUser.getSucess()) {
-                //Boolean exists = Boolean.parseBoolean(msgCreateUser.getObject("exists"));
-
-                //if (!exists) {
-                    gHash = msgCreateUser.getObject("hash");
-
+                gHash = msgCreateUser.getObject("hash");
                 Singleton.getInstance().setUserHash(gHash);
-                //fragHelper.setBundleHash(gHash);
-                    //e.putString("wl_user_hash", gHash);
-                    e.commit();
-                //}
+
+                e.commit();
 
                 Toast.makeText(this, msgCreateUser.getMessage(), Toast.LENGTH_SHORT).show();
-
             } else {
                 Toast.makeText(this, msgCreateUser.getMessage(), Toast.LENGTH_LONG).show();
                 return;
             }
 
             gUser.setHash(gHash);
+            Singleton.getInstance().setUser(gUser);
 
         } catch (Exception ex) {
 
@@ -182,49 +146,16 @@ public class MainActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    private void setCurrentTabFragment(int tabPosition)
-    {
-
+    private void setCurrentTabFragment(int tabPosition){
         switch (tabPosition)
         {
             case 0 :
-                trocaViaHelper(fragmentHome);
-                //insereBundleETrocaOFragment(fragmentHome);
+                Singleton.getInstance().trocaFrag(fragmentHome);
                 break;
             case 1 :
-                trocaViaHelper(fragmentMyListt);
-                //insereBundleETrocaOFragment(fragmentMyListt);
+                Singleton.getInstance().trocaFrag(fragmentMyListt);
                 break;
         }
-    }
-
-    /*public void insereBundleETrocaOFragment(Fragment fragment){
-        Bundle b = fragment.getArguments();
-        boolean fragmentNaoTemBundleSetado = b == null;
-
-        if (fragmentNaoTemBundleSetado) {
-            fragment.setArguments(gBundle);
-        }
-        trocaFragment(fragment);
-    }*/
-
-    public void trocaFragment(Fragment fragment) {
-        Log.d("wl", "Indo para " + fragment.getClass().getSimpleName());
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-        ft.replace(R.id.frame_container, fragment, "");
-
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.addToBackStack(fragment.getClass().getSimpleName());
-        ft.commit();
-
-        getSupportFragmentManager().executePendingTransactions();
-
-        fragmentAtiva = fragment.getClass().getSimpleName();
-
-        count++;
-        //gBundle.putInt("count_fragments", count);
     }
 
     public void search() {
@@ -312,11 +243,10 @@ public class MainActivity extends AppCompatActivity {
             revelaAbas(layoutParams);
             configuraLayoutActionbarPadrao();
 
-            //gBundle.putInt("count_fragments", count);
-            Singleton.getInstance().trocaFrag(fragmentHome);
-
-            //fragHelper.trocaFrag(fragmentHome);
-            //insereBundleETrocaOFragment(fragmentHome);
+            if (Singleton.getInstance().getNomeFragmentAtual().equals("FragmentSearchResult")){
+                escondeAbas(layoutParams);
+            }
+            Singleton.getInstance().trocaFrag(Singleton.getInstance().getFragmentAtual());
 
         } else {
             ActionBar action = getSupportActionBar();
@@ -395,8 +325,6 @@ public class MainActivity extends AppCompatActivity {
         isSearchOpened = false;
     }
 
-    private int count = 0;
-
     @Override
     public void onBackPressed() {
         //ViewParent viewParent = allTabs.getParent();
@@ -413,22 +341,31 @@ public class MainActivity extends AppCompatActivity {
                 super.onBackPressed();
             } else{
 
-                String ultimoFragment = Singleton.getInstance().getNomeUltimoFragment();
-                String penultimaFragment = Singleton.getInstance().getNomePenultimoFragment();
+                String fragmentAtual = Singleton.getInstance().getNomeFragmentAtual();
+                String fragmentAnterior = Singleton.getInstance().getNomeFragmentAnterior();
+
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) allTabs.getLayoutParams();
+
                 Singleton.getInstance().popBackStackk();
-                if (ultimoFragment.equals("FragmentHome") && penultimaFragment.equals("FragmentMyListt")) {
+
+                if (fragmentAtual.equals("FragmentHome") && fragmentAnterior.equals("FragmentMyListt")) {
                     allTabs.getTabAt(1).select();
-                } else if (ultimoFragment.equals("FragmentMyListt") && penultimaFragment.equals("FragmentHome")) {
+                } else if (fragmentAtual.equals("FragmentMyListt") && fragmentAnterior.equals("FragmentHome")) {
                     allTabs.getTabAt(0).select();//ok
-                } else if (ultimoFragment.equals("FragmentHome") && penultimaFragment.equals("FragmentSearchResult")) {
+                } else if (fragmentAtual.equals("FragmentHome") && fragmentAnterior.equals("FragmentSearchResult")) {
                     allTabs.getTabAt(0).select();
                     revelaAbas(layoutParams);
-                } else if (ultimoFragment.equals("FragmentMyListt") && penultimaFragment.equals("FragmentSearchResult")) {
+                } else if (fragmentAtual.equals("FragmentMyListt") && fragmentAnterior.equals("FragmentSearchResult")) {
                     allTabs.getTabAt(1).select();
                     revelaAbas(layoutParams);
-                } else if (ultimoFragment.equals("FragmentMovie") && penultimaFragment.equals("FragmentHome")){
+                } else if (fragmentAtual.equals("FragmentMovie") && fragmentAnterior.equals("FragmentHome")){
                     allTabs.getTabAt(0);
+                    revelaAbas(layoutParams);
+                } else if (fragmentAtual.equals("FragmentSearchResult") && fragmentAnterior.equals("FragmentHome")){
+                    allTabs.getTabAt(0);
+                    revelaAbas(layoutParams);
+                } else if (fragmentAtual.equals("FragmentSearchResult") && fragmentAnterior.equals("FragmentMyListt")){
+                    allTabs.getTabAt(1);
                     revelaAbas(layoutParams);
                 }
 

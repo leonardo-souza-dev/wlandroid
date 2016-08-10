@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.leonardoserra.watchlist.ApiHelper;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
@@ -19,47 +18,33 @@ import com.leonardoserra.watchlist.Models.MovieViewModel;
 import com.leonardoserra.watchlist.Models.User;
 import com.leonardoserra.watchlist.R;
 
-import org.json.JSONObject;
-
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.util.List;
-
 public class FragmentMovie extends Fragment {
 
     private Button btnAcao;
-    private String jsonMyObject;
     private MovieViewModel movieViewModel;
     private TextView tituloTextView;
     private Boolean gIsInMyList;
     private String remove;
     private String add;
-    private User gUser;
+    private User user;
     private String gMovieId;
     private View gRootView;
     private ImageLoader imgLoader;
-    private int gCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         imgLoader = new ImageLoader(getContext());
 
         gRootView = inflater.inflate(R.layout.fragment_movie, container, false);
 
-        remove = getResources().getString(R.string.remove_movie).toString();
-        add = getResources().getString(R.string.add_movie).toString();
+        remove = getResources().getString(R.string.remove_movie);
+        add = getResources().getString(R.string.add_movie);
 
         //receber dados do filme
         movieViewModel =  Singleton.getInstance().getMovieViewModel();
-        /*Bundle bundleQueChegou = getArguments();
-        if (bundleQueChegou != null) {
-            jsonMyObject = bundleQueChegou.getString("movieViewModelEntry");
-            movieViewModel = new Gson().fromJson(jsonMyObject, MovieViewModel.class);
-        }*/
 
         //setando user que veio da tela de resultado da busca
-        gUser = movieViewModel.getUser();
+        user = Singleton.getInstance().getUser();
 
         //setando titulo do filme
         tituloTextView = (TextView)gRootView.findViewById(R.id.txtMovieTitle);
@@ -129,19 +114,20 @@ public class FragmentMovie extends Fragment {
 */
     public void addOrRemove(View view) {
 
-        //User lUser = movieViewModel.getUser();
-        String hash = gUser.getHash();
+        String hash = Singleton.getInstance().getUserHash();
         gMovieId = movieViewModel.get_id();
 
         ApiHelper api = new ApiHelper(gRootView.getContext());
 
         if (gIsInMyList) {
             api.removeMovie(hash, gMovieId);
-            gUser.removeFilme(new MovieViewModel(gMovieId, false));
+            user.removeFilme(new MovieViewModel(gMovieId, false));
+
             Toast.makeText(gRootView.getContext(), "filme retirado da sua lista", Toast.LENGTH_LONG).show();
         } else {
             api.addMovie(hash, gMovieId);
-            gUser.adicionaFilme(new MovieViewModel(gMovieId, true));
+            user.adicionaFilme(new MovieViewModel(gMovieId, true));
+
             Toast.makeText(gRootView.getContext(), "filme adicionado à sua lista", Toast.LENGTH_LONG).show();
         }
 
