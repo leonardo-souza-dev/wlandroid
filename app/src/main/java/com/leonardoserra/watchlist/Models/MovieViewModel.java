@@ -2,7 +2,7 @@ package com.leonardoserra.watchlist.Models;
 
 import java.io.Serializable;
 
-public class MovieViewModel implements Serializable {
+public class MovieViewModel implements Serializable, Cloneable {
 
     private String name;
     private String _id; //movieId

@@ -253,12 +253,9 @@ public class MainActivity extends AppCompatActivity {
             
             escondeAbas(layoutParams);
 
-            action
-                    .setDisplayShowCustomEnabled(true); //enable it to display custom view in the action bar.
-            action
-                    .setCustomView(R.layout.search_bar); //add the custom view
-            action
-                    .setDisplayShowTitleEnabled(false); //hide the title
+            action.setDisplayShowCustomEnabled(true); //enable it to display custom view in the action bar.
+            action.setCustomView(R.layout.search_bar); //add the custom view
+            action.setDisplayShowTitleEnabled(false); //hide the title
 
             edtSeach = (EditText)action.getCustomView().findViewById(R.id.edtSearch); //the text editor
 
@@ -330,9 +327,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //ViewParent viewParent = allTabs.getParent();
-        //TabLayout.Tab tab = new TabLayout.Tab(viewParent);
-        //int selectTab = allTabs.getSelectedTabPosition();
+
         if(isSearchOpened) {
             handleMenuSearch();
             return;
@@ -370,6 +365,11 @@ public class MainActivity extends AppCompatActivity {
                 } else if (fragmentAtual.equals("FragmentSearchResult") && fragmentAnterior.equals("FragmentMyListt")){
                     allTabs.getTabAt(1);
                     revelaAbas(layoutParams);
+                } else if (fragmentAtual.toLowerCase().equals("fragmentmovie") &&
+                        fragmentAnterior.toLowerCase().equals("fragmentsearchresult")){
+                    //allTabs.getTabAt(1);
+                    //int a = 1;
+                    //escondeAbas(layoutParams);
                 }
 
                 //gBundle.putInt("count_fragments", count);

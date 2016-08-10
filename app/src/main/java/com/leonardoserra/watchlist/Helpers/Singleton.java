@@ -1,5 +1,7 @@
 package com.leonardoserra.watchlist.Helpers;
 
+import android.graphics.Movie;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +24,7 @@ public class Singleton  {
     private String userHash;
     private Bundle bundle;
     private User user;
+    private MovieViewModel movieUpdate;
 
     private Singleton(){
         mString = "Hello";
@@ -125,6 +128,14 @@ public class Singleton  {
         return historico.items.size();
     }
 
+    public void setMovieUpdate(MovieViewModel m){
+        movieUpdate = m;
+    }
+
+    public MovieViewModel getMovieUpdate(){
+        return movieUpdate;
+    }
+
     public void trocaFrag(Fragment fragment){
         //fragment.setArguments(bundle);
         historico.addItem(fragment);
@@ -137,6 +148,17 @@ public class Singleton  {
         ft.commit();
         fm.executePendingTransactions();
 
+    }
+
+    public boolean isEmulator() {
+        return Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || "google_sdk".equals(Build.PRODUCT);
     }
 
     /*

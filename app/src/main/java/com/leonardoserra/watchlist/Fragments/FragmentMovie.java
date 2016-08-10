@@ -60,7 +60,7 @@ public class FragmentMovie extends Fragment {
         String nomeArquivo = movieViewModel.getPoster();
         String baseUrl = "http://10.0.2.2:8080/" + "poster?p=" + nomeArquivo;
 
-        if (!isEmulator())
+        if (!Singleton.getInstance().isEmulator())
             baseUrl = "http://192.168.1.5:8080/" + "poster?p=" + nomeArquivo;
 
         imgLoader.DisplayImage(baseUrl, (ImageView) gRootView.findViewById(R.id.imgPoster));
@@ -73,34 +73,10 @@ public class FragmentMovie extends Fragment {
             }
         });
 
-//        FragmentManager fm = getFragmentManager();
-//        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-//            @Override
-//            public void onBackStackChanged() {
-//                if (getFragmentManager().getBackStackEntryCount() == 0) {
-//                    try {
-//                        finalize();
-//                    }
-//                    catch (java.lang.Throwable e){
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        });
-
         return gRootView;
     }
 
-    public boolean isEmulator() {
-        return Build.FINGERPRINT.startsWith("generic")
-                || Build.FINGERPRINT.startsWith("unknown")
-                || Build.MODEL.contains("google_sdk")
-                || Build.MODEL.contains("Emulator")
-                || Build.MODEL.contains("Android SDK built for x86")
-                || Build.MANUFACTURER.contains("Genymotion")
-                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
-                || "google_sdk".equals(Build.PRODUCT);
-    }
+
 
     /*
     @Override
@@ -122,11 +98,13 @@ public class FragmentMovie extends Fragment {
         if (gIsInMyList) {
             api.removeMovie(hash, gMovieId);
             user.removeFilme(new MovieViewModel(gMovieId, false));
+            movieViewModel.setIsInMyList(false);
 
             Toast.makeText(gRootView.getContext(), "filme retirado da sua lista", Toast.LENGTH_LONG).show();
         } else {
             api.addMovie(hash, gMovieId);
             user.adicionaFilme(new MovieViewModel(gMovieId, true));
+            movieViewModel.setIsInMyList(true);
 
             Toast.makeText(gRootView.getContext(), "filme adicionado à sua lista", Toast.LENGTH_LONG).show();
         }
@@ -134,5 +112,7 @@ public class FragmentMovie extends Fragment {
         gIsInMyList = !gIsInMyList;
 
         btnAcao.setText(gIsInMyList ? remove : add);
+
+        Singleton.getInstance().setMovieUpdate(movieViewModel);
     }
 }

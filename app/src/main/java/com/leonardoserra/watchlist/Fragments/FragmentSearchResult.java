@@ -30,24 +30,14 @@ public class FragmentSearchResult extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_search_result, container, false);
-
         gNewsEntryListView = (ListView) rootView.findViewById(R.id.listViewResultadoBusca);
 
-        //String termo = getArguments().getString("termo");
         String termo = Singleton.getInstance().getTermo();
-
-        FragmentManager fm = getFragmentManager();
-        //AtomicReference<Object> ref = new AtomicReference<Object>(fm);
-        //gCount = getArguments().getInt("count_fragments");
         gFruitEntryAdapter = new MovieAdapter(getContext(), R.layout.simple_row, termo, this);
+
         gNewsEntryListView.setAdapter(gFruitEntryAdapter);
 
-        // Populate the list, through the adapter
-        for(final MovieViewModel entry : getNewsEntries()) {
-
-            gFruitEntryAdapter.add(entry);
-
-        }
+        setEntryAdapter(getNewsEntries(null));
 
         txtFraseBusca = (TextView)rootView.findViewById(R.id.txtFraseBusca);
         String suaBuscaPara = getResources().getString(R.string.sua_busca_para);
@@ -59,25 +49,37 @@ public class FragmentSearchResult extends Fragment {
         return rootView;
     }
 
-    /*
+    private void setEntryAdapter(List<MovieViewModel> newEntries){
+        for(final MovieViewModel entry : newEntries) {
+            gFruitEntryAdapter.add(entry);
+        }
+    }
+
     @Override
     public void onResume(){
         super.onResume();
-        Bundle b = getIntent().getBundleExtra("updateuser");
-        // put your code here...
+        MovieViewModel movieUpdate = Singleton.getInstance().getMovieUpdate();
+        setEntryAdapter(getNewsEntries(movieUpdate));
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        gFruitEntryAdapter.onActivityResult(requestCode, resultCode, data);
-    }
-*/
-    //obtem resultados da busca
-    private List<MovieViewModel> getNewsEntries() {
-        ArrayList<MovieViewModel> myListItems = null;
+    private List<MovieViewModel> getNewsEntries(MovieViewModel movieUpdate) {
+        ArrayList<MovieViewModel> myListItems, myListItemsUpdated;
         myListItems = Singleton.getInstance().getBundleSearchResult();
-        //myListItems = (ArrayList<MovieViewModel>)getArguments().getSerializable("bundle_searchResult");
 
-        return myListItems;
+        if (movieUpdate == null) {
+            return myListItems;
+        } else {
+            myListItemsUpdated = new ArrayList<>();
+            for(MovieViewModel m : myListItems){
+                if (m.get_id() == movieUpdate.get_id()) {
+                    myListItemsUpdated.add(movieUpdate);
+                }
+                myListItemsUpdated.add(m);
+            }
+
+            return myListItemsUpdated;
+        }
+
+
     }
 }
