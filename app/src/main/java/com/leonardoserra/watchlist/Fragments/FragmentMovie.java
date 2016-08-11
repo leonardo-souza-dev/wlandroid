@@ -1,7 +1,6 @@
 package com.leonardoserra.watchlist.Fragments;
 
 import android.support.v4.app.Fragment;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leonardoserra.watchlist.ApiHelper;
+import com.leonardoserra.watchlist.Helpers.ApiHelper;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
@@ -76,18 +75,6 @@ public class FragmentMovie extends Fragment {
         return gRootView;
     }
 
-
-
-    /*
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-
-            Log.d(this.getClass().getName(), "back button pressed");
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-*/
     public void addOrRemove(View view) {
 
         String hash = Singleton.getInstance().getUserHash();
@@ -113,6 +100,8 @@ public class FragmentMovie extends Fragment {
 
         btnAcao.setText(gIsInMyList ? remove : add);
 
-        Singleton.getInstance().setMovieUpdate(movieViewModel);
+        if (Singleton.getInstance().getNomeFragmentAnterior().toLowerCase().equals("fragmentsearchresult")) {
+            Singleton.getInstance().updateSearchResult(movieViewModel);
+        }
     }
 }

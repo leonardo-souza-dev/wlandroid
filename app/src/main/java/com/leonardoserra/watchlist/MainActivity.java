@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.leonardoserra.watchlist.Fragments.FragmentHome;
 import com.leonardoserra.watchlist.Fragments.FragmentMyListt;
 import com.leonardoserra.watchlist.Fragments.FragmentSearchResult;
+import com.leonardoserra.watchlist.Helpers.ApiHelper;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.Models.Message;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
@@ -190,21 +191,10 @@ public class MainActivity extends AppCompatActivity {
                         list.add(f);
                     }
 
-                    //insere resultado da busca, termo da busca, qtd encontrada e historico de nav
                     Singleton.getInstance().setBundleSearchResult(list);
-                    //fragHelper.setBundleSearchResult(list);
-                    //gBundle.putSerializable("bundle_searchResult", list);
-
                     Singleton.getInstance().setTermo(searchTerm);
-                    //fragHelper.setTermo(searchTerm);
-                    //gBundle.putString("termo", searchTerm);
-
                     Singleton.getInstance().setQtd(len);
-                    //fragHelper.setQtd(len);
-                    //gBundle.putInt("qtd", len);
-
                     Singleton.getInstance().trocaFrag(fragmentSearchResult);
-                    //fragHelper.trocaFrag(fragmentSearchResult);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

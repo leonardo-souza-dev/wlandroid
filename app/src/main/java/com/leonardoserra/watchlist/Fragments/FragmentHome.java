@@ -7,8 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
-import com.leonardoserra.watchlist.ApiHelper;
-import com.leonardoserra.watchlist.Helpers.FragWrapper;
+import com.leonardoserra.watchlist.Helpers.ApiHelper;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.Models.Message;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
@@ -17,13 +16,11 @@ import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class FragmentHome extends Fragment {
 

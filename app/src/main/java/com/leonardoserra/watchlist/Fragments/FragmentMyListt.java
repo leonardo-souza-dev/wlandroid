@@ -2,7 +2,6 @@ package com.leonardoserra.watchlist.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.leonardoserra.watchlist.ApiHelper;
+import com.leonardoserra.watchlist.Helpers.ApiHelper;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.Models.Message;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
@@ -22,7 +21,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class FragmentMyListt extends Fragment {
 
@@ -30,17 +28,13 @@ public class FragmentMyListt extends Fragment {
     private MovieAdapter gMovieAdapter;
     private View rootView;
     private TextView txtMsg;
-    private int gCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_mylistt, null);
 
         gListView = (ListView) rootView.findViewById(R.id.listViewMyListt);
-        //FragmentManager fm = getFragmentManager();
-        //AtomicReference<Object> ref = new AtomicReference<Object>(fm);
-        //gCount = getArguments().getInt("count_fragments");
-        gMovieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this, gCount);
+        gMovieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this);
         gListView.setAdapter(gMovieAdapter);
 
         txtMsg = (TextView)rootView.findViewById(R.id.txtMsg);
@@ -55,7 +49,6 @@ public class FragmentMyListt extends Fragment {
     private List<MovieViewModel> getNewsEntries() {
         ArrayList<MovieViewModel> myListItems = new ArrayList<>();
 
-        //String hash = getArguments().get("user_hash").toString();
         String hash = Singleton.getInstance().getUserHash();
 
         Message msg = new ApiHelper(getContext()).obterMyListt(hash);

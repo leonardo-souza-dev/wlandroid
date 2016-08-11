@@ -1,12 +1,12 @@
-package com.leonardoserra.watchlist;
+package com.leonardoserra.watchlist.Helpers;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
-import android.os.Build;
 
 import com.leonardoserra.watchlist.Models.Message;
 import com.leonardoserra.watchlist.Models.User;
+import com.leonardoserra.watchlist.R;
 
 import org.json.JSONObject;
 
@@ -103,24 +103,13 @@ public class ApiHelper {
 
         private String searchTerm;
 
-        public boolean isEmulator() {
-            return Build.FINGERPRINT.startsWith("generic")
-                    || Build.FINGERPRINT.startsWith("unknown")
-                    || Build.MODEL.contains("google_sdk")
-                    || Build.MODEL.contains("Emulator")
-                    || Build.MODEL.contains("Android SDK built for x86")
-                    || Build.MANUFACTURER.contains("Genymotion")
-                    || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
-                    || "google_sdk".equals(Build.PRODUCT);
-        }
-
         @Override
         protected String doInBackground(String... params) {
 
             String responseStr = "", lHash = "";
             String baseUrl = "http://10.0.2.2:8080/api/";
 
-            if (!isEmulator())
+            if (!Singleton.getInstance().isEmulator())
                 baseUrl = "http://192.168.1.5:8080/api/";
 
             try {
@@ -179,42 +168,7 @@ public class ApiHelper {
 
         @Override
         protected void onPostExecute(String s) {
-/*
-            if (s == null) {
-                //Toast.makeText(MainActivity.this, "Erro ao buscar", Toast.LENGTH_LONG).show();
-                return;
-            }
 
-            try {
-
-                if (gAction == CREATEUSER) {
-                    JSONObject json = new JSONObject(s);
-                    String temp  = json.getString("hash");
-                    gHash = temp.toString();
-                    return;
-                }
-
-                if (gAction == SEARCH) {
-                    int len;
-                    JSONObject jsonObject = new JSONObject(s);
-
-                    if (jsonObject != null) {
-
-                        ArrayList<MovieViewModel> f = new ArrayList<>();
-                        JSONObject object = jsonObject.getJSONObject("object");
-                        JSONArray movies = object.getJSONArray("movies");
-                        len = movies.length();
-
-                        for (int i = 0; i < len; i++) {
-                            String str = movies.get(i).toString();
-                            MovieViewModel m = new Gson().fromJson(str, MovieViewModel.class);
-                            f.add(m);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
         }
     }
 }

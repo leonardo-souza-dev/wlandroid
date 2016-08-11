@@ -1,6 +1,5 @@
 package com.leonardoserra.watchlist.Helpers;
 
-import android.graphics.Movie;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +24,7 @@ public class Singleton  {
     private Bundle bundle;
     private User user;
     private MovieViewModel movieUpdate;
+    private ArrayList<MovieViewModel> bundleSearchResult;
 
     private Singleton(){
         mString = "Hello";
@@ -93,7 +93,23 @@ public class Singleton  {
     }
 
     public ArrayList<MovieViewModel> getBundleSearchResult(){
-        return (ArrayList<MovieViewModel>)bundle.getSerializable("bundle_searchResult");
+        bundleSearchResult =
+                (ArrayList<MovieViewModel>)bundle.getSerializable("bundle_searchResult");
+        return bundleSearchResult;
+    }
+
+    public void updateSearchResult(MovieViewModel movieUpdate){
+        ArrayList<MovieViewModel> myListItemsUpdated = new ArrayList<>();
+
+        for(MovieViewModel local : bundleSearchResult){
+            if (local.get_id() == movieUpdate.get_id()) {
+                myListItemsUpdated.add(movieUpdate);
+            } else {
+                myListItemsUpdated.add(local);
+            }
+        }
+
+        bundleSearchResult = myListItemsUpdated;
     }
 
     public void setTermo(String termo){
@@ -128,16 +144,7 @@ public class Singleton  {
         return historico.items.size();
     }
 
-    public void setMovieUpdate(MovieViewModel m){
-        movieUpdate = m;
-    }
-
-    public MovieViewModel getMovieUpdate(){
-        return movieUpdate;
-    }
-
     public void trocaFrag(Fragment fragment){
-        //fragment.setArguments(bundle);
         historico.addItem(fragment);
 
         FragmentTransaction ft = fm.beginTransaction();
@@ -147,7 +154,6 @@ public class Singleton  {
         ft.addToBackStack(fragment.getClass().getSimpleName());
         ft.commit();
         fm.executePendingTransactions();
-
     }
 
     public boolean isEmulator() {

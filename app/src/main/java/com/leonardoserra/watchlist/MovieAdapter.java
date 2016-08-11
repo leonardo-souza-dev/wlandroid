@@ -36,20 +36,6 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
     private FragmentManager gFm;
     private int gCount;
 
-    public MovieAdapter(final Context context, final int lLayout, String term, Fragment pFragment,
-                        AtomicReference<Object> pFm, int pCount) {
-        super(context, 0);
-
-        gCount = pCount;
-        gFm = (FragmentManager)pFm.get();
-        gContext = context;
-        gLayout = lLayout;
-        gTerm = term;
-        gFragment = pFragment;
-
-        imgLoader = new ImageLoader(getContext());
-    }
-
     public MovieAdapter(final Context context, final int lLayout, String term, Fragment pFragment) {
         super(context, 0);
 
