@@ -33,6 +33,9 @@ public class ApiHelper {
         gContext = current;
     }
 
+    public ApiHelper() {
+    }
+
     private Resources getResources(){
         return gContext.getResources();
     }

@@ -5,10 +5,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
 
+import com.google.gson.Gson;
+import com.leonardoserra.watchlist.Models.Message;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
 import com.leonardoserra.watchlist.Models.User;
 import com.leonardoserra.watchlist.R;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -16,15 +22,18 @@ import java.util.ArrayList;
 public class Singleton  {
 
     private static Singleton mInstance = null;
-    private String mString;
     private static FragmentManager fm;
     private static Historico historico = null;
+
+    private String mString;
     private MovieViewModel movieViewModel;
     private String userHash;
     private Bundle bundle;
     private User user;
-    private MovieViewModel movieUpdate;
     private ArrayList<MovieViewModel> bundleSearchResult;
+    private ArrayList<MovieViewModel> recomendados;
+    private String basePosterUrl;
+    private Integer qtdMyListt;
 
     private Singleton(){
         mString = "Hello";
@@ -51,6 +60,16 @@ public class Singleton  {
             mInstance = new Singleton();
         }
         return mInstance;
+    }
+
+    public String getUrl(String pPoster){
+
+        basePosterUrl = "http://10.0.2.2:8080/poster?p=" + pPoster;
+        if (!isEmulator()) {
+            basePosterUrl = "http://192.168.1.5:8080/poster?p=" + pPoster;
+        }
+
+        return basePosterUrl;
     }
 
     public String getString(){ return this.mString; }
@@ -88,6 +107,71 @@ public class Singleton  {
         fm.popBackStackImmediate();
     }
 
+    public int getQtdMyListt(){
+        return qtdMyListt;
+    }
+
+    public ArrayList<MovieViewModel> getMyListt(){
+        ArrayList<MovieViewModel> myListItems = new ArrayList<>();
+
+        Message msg = new ApiHelper().obterMyListt(userHash);
+
+        JSONObject mylisttJson = msg.getObject();
+        JSONArray jsonArray;
+
+        try {
+            jsonArray = mylisttJson.getJSONArray("mylistt");
+
+            if (jsonArray != null) {
+
+                qtdMyListt = jsonArray.length();
+
+                if (qtdMyListt > 0) {
+
+                    for (int i = 0; i < qtdMyListt; i++) {
+                        String str = jsonArray.get(i).toString();
+                        MovieViewModel f = new Gson().fromJson(str, MovieViewModel.class);
+                        myListItems.add(f);
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return myListItems;
+    }
+
+    public ArrayList<MovieViewModel> getRecomendados(){
+        recomendados = new ArrayList<>();
+
+        Message msg = new ApiHelper().obterFilmesRecomendados(userHash);
+
+        JSONObject mylisttJson = msg.getObject();
+        JSONArray jsonArray;
+
+        try {
+            jsonArray = mylisttJson.getJSONArray("filmesrecomendados");
+
+            if (jsonArray != null) {
+
+                int len = jsonArray.length();
+
+                for (int i = 0; i < len; i++) {
+                    String str = jsonArray.get(i).toString();
+                    MovieViewModel f = new Gson().fromJson(str, MovieViewModel.class);
+                    f.setUser(user);
+                    recomendados.add(f);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return recomendados;
+    }
+
     public void setBundleSearchResult(ArrayList<MovieViewModel> list){
         bundle.putSerializable("bundle_searchResult", list);
     }
@@ -110,6 +194,20 @@ public class Singleton  {
         }
 
         bundleSearchResult = myListItemsUpdated;
+    }
+
+    public void updateRecomendados(MovieViewModel movieUpdate){
+        ArrayList<MovieViewModel> myListItemsUpdated = new ArrayList<>();
+
+        for(MovieViewModel recomendado : recomendados){
+            if (recomendado.get_id() == movieUpdate.get_id()) {
+                myListItemsUpdated.add(movieUpdate);
+            } else {
+                myListItemsUpdated.add(recomendado);
+            }
+        }
+
+        recomendados = myListItemsUpdated;
     }
 
     public void setTermo(String termo){

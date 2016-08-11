@@ -73,8 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private void configuraActionbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" :
-            getResources().getString(R.string.app_name);
+        String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
         getSupportActionBar().setTitle(nomeApp);
     }
 
@@ -107,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void criaOuObtemUsuario(){
+
         SharedPreferences sp = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor e = sp.edit();
 

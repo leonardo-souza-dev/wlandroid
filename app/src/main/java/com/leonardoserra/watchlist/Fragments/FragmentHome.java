@@ -29,52 +29,21 @@ public class FragmentHome extends Fragment {
     private View rootView;
     private User user;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        user = Singleton.getInstance().getUser();
-        rootView = inflater.inflate(R.layout.fragment_home, null);
+        rootView = inflater.inflate(R.layout.fragment_home, container, false);
         listView = (ListView) rootView.findViewById(R.id.listViewFilmesRecomendados);
 
-        movieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "", this);
+        user = Singleton.getInstance().getUser();
+
+        movieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "");
         listView.setAdapter(movieAdapter);
 
-        for(final MovieViewModel entry : getNewsEntries()) {
+        for(final MovieViewModel entry : Singleton.getInstance().getRecomendados()) {
             movieAdapter.add(entry);
         }
 
         return rootView;
     }
-
-    private List<MovieViewModel> getNewsEntries() {
-
-        ArrayList<MovieViewModel> myListItems = new ArrayList<>();
-
-        String hashSingleton = Singleton.getInstance().getUserHash();
-
-        Message msg = new ApiHelper(getContext()).obterFilmesRecomendados(hashSingleton);
-
-        JSONObject mylisttJson = msg.getObject();
-        JSONArray jsonArray;
-
-        try {
-            jsonArray = mylisttJson.getJSONArray("filmesrecomendados");
-
-            if (jsonArray != null) {
-
-                int len = jsonArray.length();
-
-                for (int i = 0; i < len; i++) {
-                    String str = jsonArray.get(i).toString();
-                    MovieViewModel f = new Gson().fromJson(str, MovieViewModel.class);
-                    f.setUser(user);
-                    myListItems.add(f);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return myListItems;
-    }
-
 }

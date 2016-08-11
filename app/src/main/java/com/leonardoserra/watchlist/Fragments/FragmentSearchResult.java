@@ -16,25 +16,24 @@ import com.leonardoserra.watchlist.R;
 
 public class FragmentSearchResult extends Fragment {
 
-    private TextView txtFraseBusca;
-    private MovieAdapter gFruitEntryAdapter;
-    private ListView gNewsEntryListView;
+    private ListView listView;
+    private MovieAdapter movieAdapter;
     private View rootView;
+    private TextView txtFraseBusca;
     private String termo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_search_result, container, false);
-        gNewsEntryListView = (ListView) rootView.findViewById(R.id.listViewResultadoBusca);
+        listView = (ListView) rootView.findViewById(R.id.listViewResultadoBusca);
 
         termo = Singleton.getInstance().getTermo();
 
-        gFruitEntryAdapter = new MovieAdapter(getContext(), R.layout.simple_row, termo, this);
-
-        gNewsEntryListView.setAdapter(gFruitEntryAdapter);
+        movieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, termo);
+        listView.setAdapter(movieAdapter);
 
         for(final MovieViewModel entry : Singleton.getInstance().getBundleSearchResult()) {
-            gFruitEntryAdapter.add(entry);
+            movieAdapter.add(entry);
         }
 
         txtFraseBusca = (TextView)rootView.findViewById(R.id.txtFraseBusca);
