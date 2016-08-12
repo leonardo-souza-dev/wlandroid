@@ -9,6 +9,7 @@ public class MovieViewModel implements Serializable, Cloneable {
     private Boolean isInMyList;
     private User user;
     private String poster;
+    private int ano;
 
     public MovieViewModel(String _id, Boolean pIsInMyList) {
         this._id = _id;
@@ -19,8 +20,8 @@ public class MovieViewModel implements Serializable, Cloneable {
         return this.name;
     }
 
-    public User getUser() {
-        return this.user;
+    public String getAno() {
+        return Integer.toString(this.ano);
     }
 
     public void setUser(User user) {

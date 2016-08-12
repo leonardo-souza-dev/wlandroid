@@ -27,15 +27,14 @@ public class FragmentHome extends Fragment {
     private ListView listView;
     private MovieAdapter movieAdapter;
     private View rootView;
-    private User user;
-
+    //private User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         listView = (ListView) rootView.findViewById(R.id.listViewFilmesRecomendados);
 
-        user = Singleton.getInstance().getUser();
+        //user = Singleton.getInstance().getUser();
 
         movieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "");
         listView.setAdapter(movieAdapter);

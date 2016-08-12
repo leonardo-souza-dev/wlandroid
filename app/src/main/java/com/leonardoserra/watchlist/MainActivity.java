@@ -36,7 +36,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    //fonte: http://blog.rhesoft.com/2015/03/30/tutorial-android-actionbar-with-material-design-and-search-field/
     private Toolbar mToolbar;
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
@@ -122,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
             if (msgCreateUser.getSucess()) {
                 gHash = msgCreateUser.getObject("hash");
                 Singleton.getInstance().setUserHash(gHash);
+
+                e.putString("wl_user_hash", gHash);
 
                 e.commit();
 
@@ -216,8 +217,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_settings:
-                return true;
+            //case R.id.action_settings:
+            //    return true;
             case R.id.action_search:
                 handleMenuSearch();
                 return true;

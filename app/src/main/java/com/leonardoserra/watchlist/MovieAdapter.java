@@ -43,9 +43,9 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         if (gLayout == R.layout.simple_row) {
             final ViewHolderSimpleRow viewHolderSimpleRow = (ViewHolderSimpleRow) getViewHolder(view);
             setElements(viewHolderSimpleRow, entry);
-        } else if (gLayout == R.layout.movie_thumb) {
-            final ViewHolderThumb viewHolderSimpleRow = (ViewHolderThumb) getViewHolder(view);
-            setElementsThumb(viewHolderSimpleRow, entry);
+        } else if (gLayout == R.layout.linha) {
+            final ViewHolderLinha viewHolderLinha = (ViewHolderLinha) getViewHolder(view);
+            setElementsLinha(viewHolderLinha, entry);
         }
 
         view.setOnClickListener(new View.OnClickListener() {
@@ -86,12 +86,13 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         imgLoader.DisplayImage(Singleton.getInstance().getUrl(pEntry.getPoster()), viewHolderSimpleRow.imgFilmePoster);
     }
 
-    private void setElementsThumb(ViewHolderThumb viewHolderThumb, MovieViewModel pEntry) {
-        String tituloFilme = pEntry.getName();
+    private void setElementsLinha(ViewHolderLinha viewHolderLinha, MovieViewModel pEntry) {
+        String titulo = pEntry.getName();
+        String ano = pEntry.getAno();
 
-        viewHolderThumb.txtTitulo.setText(tituloFilme);
-
-        imgLoader.DisplayImage(Singleton.getInstance().getUrl(pEntry.getPoster()), viewHolderThumb.imgPosterThumb);
+        viewHolderLinha.txtTitulo.setText(titulo);
+        viewHolderLinha.txtAno.setText(ano);
+        imgLoader.DisplayImage(Singleton.getInstance().getUrl(pEntry.getPoster()), viewHolderLinha.imgPoster);
     }
 
     private void callMovieFragmentSingleton(MovieViewModel movieViewModel){
@@ -131,14 +132,15 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
             workingView.setTag(viewHolderSimpleRow);
             viewBase = viewHolderSimpleRow;
-        } else if (gLayout == R.layout.movie_thumb) {
-            ViewHolderThumb viewHolderThumb = new ViewHolderThumb();
-            viewHolderThumb.txtTitulo = (TextView) workingView.findViewById(R.id.txtTituloThumb);
-            viewHolderThumb.imgPosterThumb = (ImageView) workingView.findViewById(R.id.imgPosterThumb);
+        } else if (gLayout == R.layout.linha) {
+            ViewHolderLinha viewHolderLinha = new ViewHolderLinha();
+            viewHolderLinha.txtTitulo = (TextView) workingView.findViewById(R.id.txtTitulo);
+            viewHolderLinha.txtAno = (TextView) workingView.findViewById(R.id.txtAno);
+            viewHolderLinha.imgPoster = (ImageView) workingView.findViewById(R.id.imgPoster);
 
-            workingView.setTag(viewHolderThumb);
+            workingView.setTag(viewHolderLinha);
 
-            viewBase = viewHolderThumb;
+            viewBase = viewHolderLinha;
         }
 
 
@@ -153,9 +155,10 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         public Button addRemoveBtn;
     }
 
-    private static class ViewHolderThumb extends ViewBase {
+    private static class ViewHolderLinha extends ViewBase {
         public TextView txtTitulo;
-        public ImageView imgPosterThumb;
+        public TextView txtAno;
+        public ImageView imgPoster;
     }
 
     private static class ViewBase {

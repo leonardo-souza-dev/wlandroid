@@ -37,7 +37,7 @@ public class FragmentMyListt extends Fragment {
 
         txtMsg = (TextView)rootView.findViewById(R.id.txtMsg);
 
-        movieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "");
+        movieAdapter = new MovieAdapter(getContext(), R.layout.linha, "");
         listView.setAdapter(movieAdapter);
 
         for(final MovieViewModel entry : Singleton.getInstance().getMyListt()) {
