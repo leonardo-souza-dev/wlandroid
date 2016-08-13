@@ -86,6 +86,7 @@ public class FragmentMovie extends Fragment {
 
             api.removeMovie(hash, gMovieId);
             user.removeFilme(new MovieViewModel(gMovieId, false));
+
             movieViewModel.setIsInMyList(false);
 
             Toast.makeText(gRootView.getContext(), "filme retirado da sua lista", Toast.LENGTH_LONG).show();
@@ -102,10 +103,10 @@ public class FragmentMovie extends Fragment {
 
         btnAcao.setText(gIsInMyList ? remove : add);
 
-        if (Singleton.getInstance().getNomeFragmentAnterior().toLowerCase().equals("fragmentsearchresult")) {
+        /*if (Singleton.getInstance().getNomeFragmentAnterior().toLowerCase().equals("fragmentsearchresult")) {
             Singleton.getInstance().updateSearchResult(movieViewModel);
         } else if (Singleton.getInstance().getNomeFragmentAnterior().toLowerCase().equals("fragmenthome")) {
             Singleton.getInstance().updateRecomendados(movieViewModel);
-        }
+        }*/
     }
 }
