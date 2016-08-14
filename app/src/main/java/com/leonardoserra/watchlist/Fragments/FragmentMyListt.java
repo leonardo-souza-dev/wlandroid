@@ -2,6 +2,7 @@ package com.leonardoserra.watchlist.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,8 @@ public class FragmentMyListt extends Fragment {
             txtMsg.setVisibility(View.VISIBLE);
             txtMsg.setText("There's no movies in your WatchListt :(");
         }
+
+        Log.d("nav", ">MY_LISTT: " + Singleton.getInstance().getQtdMyListt());
 
         return rootView;
     }

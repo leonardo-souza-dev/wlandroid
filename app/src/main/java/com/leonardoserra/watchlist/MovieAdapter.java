@@ -97,7 +97,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
     private void callMovieFragmentSingleton(MovieViewModel movieViewModel){
         Singleton.getInstance().setMovieViewModel(movieViewModel);
-        Singleton.getInstance().trocaFrag(new FragmentMovie());
+        Singleton.getInstance().trocaFrag(new FragmentMovie(), false);
     }
 
     private View getWorkingView(final View convertView) {

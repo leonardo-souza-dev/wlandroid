@@ -1,6 +1,7 @@
 package com.leonardoserra.watchlist.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,21 +28,19 @@ public class FragmentHome extends Fragment {
     private ListView listView;
     private MovieAdapter movieAdapter;
     private View rootView;
-    //private User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         listView = (ListView) rootView.findViewById(R.id.listViewFilmesRecomendados);
-
-        //user = Singleton.getInstance().getUser();
-
         movieAdapter = new MovieAdapter(getContext(), R.layout.simple_row, "");
         listView.setAdapter(movieAdapter);
 
         for(final MovieViewModel entry : Singleton.getInstance().getRecomendados()) {
             movieAdapter.add(entry);
         }
+
+        Log.d("nav", ">HOME");
 
         return rootView;
     }

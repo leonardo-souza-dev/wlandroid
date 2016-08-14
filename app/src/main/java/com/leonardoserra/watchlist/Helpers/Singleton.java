@@ -1,13 +1,16 @@
 package com.leonardoserra.watchlist.Helpers;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 
 import com.google.gson.Gson;
+import com.leonardoserra.watchlist.Fragments.FragmentSearchResult;
 import com.leonardoserra.watchlist.Models.Message;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
 import com.leonardoserra.watchlist.Models.User;
@@ -23,22 +26,25 @@ public class Singleton  {
 
     private static Singleton mInstance = null;
     private static FragmentManager fm;
-    private static Historico historico = null;
+    private static Context context;
+    private static Historico historicoFragment = null;
+    private static Resources resources;
 
     private String mString;
     private MovieViewModel movieViewModel;
     private String userHash;
     private Bundle bundle;
     private User user;
-    private ArrayList<MovieViewModel> bundleSearchResult;
+    //private ArrayList<MovieViewModel> resultadosDaBusca;
     private ArrayList<MovieViewModel> recomendados;
     private String basePosterUrl;
     private Integer qtdMyListt;
+    private ResultadoBuscaViewModel resultadoDaBuscaViewModel;
 
     private Singleton(){
         mString = "Hello";
-        if (historico == null) {
-            historico = new Historico();
+        if (historicoFragment == null) {
+            historicoFragment = new Historico();
         }
         if (bundle == null){
             bundle = new Bundle();
@@ -53,8 +59,11 @@ public class Singleton  {
         return mInstance;
     }
 
-    public static Singleton getInstance(FragmentManager pFm){
+    public static Singleton getInstance(Context pContext, Resources pResources, FragmentManager pFm){
+        context = pContext;
         fm = pFm;
+        resources = pResources;
+
         if(mInstance == null)
         {
             mInstance = new Singleton();
@@ -82,6 +91,101 @@ public class Singleton  {
         userHash = pHash;
     }
 
+    public String criaOuObtemUsuario(){
+        SharedPreferences sp = context.getSharedPreferences("", context.MODE_PRIVATE);
+        SharedPreferences.Editor e = sp.edit();
+        String resultado;
+
+        try {
+            user = new User();
+
+            //sp = getPreferences(MODE_PRIVATE);
+            userHash = sp.getString("wl_user_hash", null);
+            //Singleton.getInstance().setUserHash(gHash);
+
+            Message msgCreateUser = new ApiHelper(context).createuser(userHash);
+
+            userHash = msgCreateUser.getObject("hash");
+
+            e.putString("wl_user_hash", userHash);
+            e.commit();
+
+            resultado = msgCreateUser.getMessage();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            resultado = resources.getString(R.string.some_error_occurred);
+        }
+
+        return resultado;
+    }
+
+    public void buscaFilme(String searchTerm){
+
+        Message msg = new ApiHelper(context).search(userHash, searchTerm);
+
+        try {
+
+            JSONObject object = msg.getObject();
+            JSONArray jsonArray = object.getJSONArray("movies");
+
+            if (jsonArray != null) {
+
+                ArrayList<MovieViewModel> list = new ArrayList<>();
+                int len = jsonArray.length();
+
+                for (int i = 0; i < len; i++) {
+                    String str = jsonArray.get(i).toString();
+                    MovieViewModel f = new Gson().fromJson(str, MovieViewModel.class);
+                    f.setUser(user);
+                    list.add(f);
+                }
+
+                ResultadoBuscaViewModel r = new ResultadoBuscaViewModel(list, searchTerm, len);
+
+                insereNoHistoricoDeBuscas(r);
+
+                //Singleton.getInstance().setResultadosDaBusca(list);
+                //Singleton.getInstance().setTermo(searchTerm);
+                //Singleton.getInstance().setQtd(len);
+                Singleton.getInstance().trocaFrag(new FragmentSearchResult(), false);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void insereNoHistoricoDeBuscas(ResultadoBuscaViewModel r){
+        if (buscas == null) {
+            buscas = new ArrayList<>();
+        }
+        buscas.add(r);
+
+    }
+
+    private ArrayList<ResultadoBuscaViewModel> buscas;
+
+    public ArrayList<ResultadoBuscaViewModel> getBuscas(){
+        return buscas;
+    }
+
+    public ResultadoBuscaViewModel getResultadoBuscaViewModel(){
+        int qtdTotal = buscas.size();
+        ResultadoBuscaViewModel ultima = buscas.get(qtdTotal-1);
+
+        return ultima;
+    }
+
+    public void mostraPenultimoResultadoBusca(Boolean removeUltimo){
+
+        int qtdTotal = buscas.size();
+        buscas.remove(qtdTotal-1);
+        //historicoFragment.removeUltimo();
+
+        Singleton.getInstance().trocaFrag(new FragmentSearchResult(), removeUltimo);
+    }
+
     public void setUser(User pUser){
         user = pUser;
     }
@@ -102,9 +206,8 @@ public class Singleton  {
         return movieViewModel;
     }
 
-    public void popBackStackk(){
-        Singleton.historico.removeUltimo();
-        fm.popBackStackImmediate();
+    public void removeUltimoFragmentDoHistorico(){
+        Singleton.historicoFragment.removeUltimo();
     }
 
     public int getQtdMyListt(){
@@ -172,20 +275,21 @@ public class Singleton  {
         return recomendados;
     }
 
-    public void setBundleSearchResult(ArrayList<MovieViewModel> list){
-        bundle.putSerializable("bundle_searchResult", list);
-    }
+    //public void setResultadosDaBusca(ArrayList<MovieViewModel> list){
+    //    resultadosDaBusca = list;
+        //bundle.putSerializable("bundle_searchResult", list);
+    //}
 
-    public ArrayList<MovieViewModel> getBundleSearchResult(){
-        bundleSearchResult =
-                (ArrayList<MovieViewModel>)bundle.getSerializable("bundle_searchResult");
-        return bundleSearchResult;
-    }
+    //public ArrayList<MovieViewModel> getResultadosDaBusca(){
+        //resultadosDaBusca = (ArrayList<MovieViewModel>)bundle.getSerializable("bundle_searchResult");
+    //    return resultadosDaBusca;
+    //}
 
+    /*
     public void updateSearchResult(MovieViewModel movieUpdate){
         ArrayList<MovieViewModel> myListItemsUpdated = new ArrayList<>();
 
-        for(MovieViewModel local : bundleSearchResult){
+        for(MovieViewModel local : resultadosDaBusca){
             if (local.get_id() == movieUpdate.get_id()) {
                 myListItemsUpdated.add(movieUpdate);
             } else {
@@ -193,9 +297,11 @@ public class Singleton  {
             }
         }
 
-        bundleSearchResult = myListItemsUpdated;
+        resultadosDaBusca = myListItemsUpdated;
     }
+    */
 
+    /*
     public void updateRecomendados(MovieViewModel movieUpdate){
         ArrayList<MovieViewModel> myListItemsUpdated = new ArrayList<>();
 
@@ -209,6 +315,7 @@ public class Singleton  {
 
         recomendados = myListItemsUpdated;
     }
+    */
 
     public void setTermo(String termo){
         bundle.putSerializable("termo", termo);
@@ -227,31 +334,40 @@ public class Singleton  {
     }
 
     public Fragment getFragmentAtual(){
-        return Singleton.historico.getFragmentAtual();
+        return Singleton.historicoFragment.getFragmentAtual();
     }
 
     public String getNomeFragmentAtual(){
-        return Singleton.historico.getNomeFragmentAtual();
+        return Singleton.historicoFragment.getNomeFragmentAtual();
     }
 
     public String getNomeFragmentAnterior(){
-        return Singleton.historico.getNomeFragmentAnterior();
+        return Singleton.historicoFragment.getNomeFragmentAnterior();
     }
 
     public int getHistoricoSize(){
-        return historico.items.size();
+
+        return historicoFragment.items.size();
     }
 
-    public void trocaFrag(Fragment fragment){
-        historico.addItem(fragment);
+    public void trocaFrag(Fragment fragment, Boolean removeUltimo){
+
+        if (historicoFragment == null) {
+            historicoFragment = new Historico();
+        }
+
+        if (removeUltimo)
+            Singleton.historicoFragment.removeUltimo();
+
+        historicoFragment.addItem(fragment);
 
         FragmentTransaction ft = fm.beginTransaction();
 
         ft.replace(R.id.frame_container, fragment, "");
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.addToBackStack(fragment.getClass().getSimpleName());
+        //ft.addToBackStack(fragment.getClass().getSimpleName());
         ft.commit();
-        fm.executePendingTransactions();
+        //fm.executePendingTransactions();
     }
 
     public boolean isEmulator() {
@@ -328,7 +444,38 @@ public class Singleton  {
         }
 
         public void removeUltimo(){
-            items.remove(items.size()-1);
+            if (items.size() > 0) {
+                items.remove(items.size() - 1);
+            }
         }
+    }
+
+    /*
+        ResultadoDaBusca
+     */
+    public class ResultadoBuscaViewModel{
+
+        private ArrayList<MovieViewModel> resultadoDaBusca;
+        private String termoBusca;
+        private Integer qtd;
+
+        public ResultadoBuscaViewModel(ArrayList<MovieViewModel> pResultadoDaBusca, String pTermoBusca, Integer pQtd ){
+            resultadoDaBusca = pResultadoDaBusca;
+            termoBusca = pTermoBusca;
+            qtd = pQtd;
+        }
+
+        public ArrayList<MovieViewModel> getResultadoDaBusca(){
+            return resultadoDaBusca;
+        }
+
+        public String getTermoBusca(){
+            return termoBusca;
+        }
+
+        public Integer getQtd(){
+            return qtd;
+        }
+
     }
 }

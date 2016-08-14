@@ -12,16 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--
-        <activity
-            android:name=".SearchResultActivity"
-            android:label="@string/title_activity_search_results"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".MovieActivity"
-            android:label="@string/title_activity_movie_activity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        -->
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_first"

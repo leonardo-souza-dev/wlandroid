@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
  * Created by leonardo on 29/07/16.
  * http://www.technotalkative.com/android-load-images-from-web-and-caching/
  */
-public class ImageLoader {
+public class ImageLoader{
 
     MemoryCache memoryCache=new MemoryCache();
     FileCache fileCache;
@@ -39,27 +39,23 @@ public class ImageLoader {
     }
 
     final int stub_id= R.drawable.ic_close_search;
-    public void DisplayImage(String url, ImageView imageView)
-    {
+    public void DisplayImage(String url, ImageView imageView){
         imageViews.put(imageView, url);
         Bitmap bitmap=memoryCache.get(url);
         if(bitmap!=null)
             imageView.setImageBitmap(bitmap);
-        else
-        {
+        else{
             queuePhoto(url, imageView);
             imageView.setImageResource(stub_id);
         }
     }
 
-    private void queuePhoto(String url, ImageView imageView)
-    {
+    private void queuePhoto(String url, ImageView imageView){
         PhotoToLoad p=new PhotoToLoad(url, imageView);
         executorService.submit(new PhotosLoader(p));
     }
 
-    private Bitmap getBitmap(String url)
-    {
+    private Bitmap getBitmap(String url){
         File f=fileCache.getFile(url);
 
         //from SD cache
@@ -118,8 +114,7 @@ public class ImageLoader {
     }
 
     //Task for the queue
-    private class PhotoToLoad
-    {
+    private class PhotoToLoad{
         public String url;
         public ImageView imageView;
         public PhotoToLoad(String u, ImageView i){
@@ -156,8 +151,7 @@ public class ImageLoader {
     }
 
     //Used to display bitmap in the UI thread
-    class BitmapDisplayer implements Runnable
-    {
+    class BitmapDisplayer implements Runnable{
         Bitmap bitmap;
         PhotoToLoad photoToLoad;
         public BitmapDisplayer(Bitmap b, PhotoToLoad p){bitmap=b;photoToLoad=p;}

@@ -74,8 +74,8 @@ public class ApiHelper {
         return msg;
     }
 
-    public Message search(User user, String term) {
-        String[] lParameters = { SEARCH, user.getHash(), term};
+    public Message search(String hash, String term) {
+        String[] lParameters = { SEARCH, hash, term};
         Message msg = call(true, lParameters);
 
         return msg;
@@ -95,6 +95,7 @@ public class ApiHelper {
 
             msg = new Message(success, message, object);
         } catch (Exception e) {
+
             msg = new Message(false, getResources().getString(R.string.some_error_occurred), null);
             e.printStackTrace();
         }

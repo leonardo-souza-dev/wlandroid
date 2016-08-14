@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recommended for you"
+        android:text="Recommended for youu"
         android:id="@+id/txtHash"
         android:layout_below="@id/txtHash"
         android:layout_centerHorizontal="true"

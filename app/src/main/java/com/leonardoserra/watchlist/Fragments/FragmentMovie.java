@@ -2,6 +2,7 @@ package com.leonardoserra.watchlist.Fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,8 @@ public class FragmentMovie extends Fragment {
                 addOrRemove(v);
             }
         });
+
+        Log.d("nav", "MOVIE: " + titulo);
 
         return gRootView;
     }
