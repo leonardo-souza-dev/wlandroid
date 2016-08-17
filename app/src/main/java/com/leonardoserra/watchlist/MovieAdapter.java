@@ -1,7 +1,10 @@
 package com.leonardoserra.watchlist;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.leonardoserra.watchlist.Fragments.FragmentMovie;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
@@ -31,7 +35,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         gLayout = lLayout;
         gTerm = term;
 
-        imgLoader = new ImageLoader(getContext());
+        imgLoader = new ImageLoader(context);
     }
 
     @Override
@@ -50,17 +54,39 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                TabLayout tabLayout = ((MainActivity)gContext).getAllTabs();
-                tabLayout.setVisibility(View.INVISIBLE);
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)
-                        tabLayout.getLayoutParams();
-                layoutParams.weight = 1;
-                callMovieFragmentSingleton(entry);
+                callFruitActivity(entry, position);
             }
         });
 
         return view;
     }
+
+    private void callFruitActivity(MovieViewModel fruitEntry, int position) {
+        Activity origin = (Activity)gContext;
+        Intent intent = new Intent(gContext, Filme2Activity.class);
+
+        Bundle b = new Bundle();
+        b.putString("filme2_titulo", fruitEntry.getName());
+        b.putBoolean("filme2_estaNaMyListt", fruitEntry.getIsInMyList());
+        b.putString("filme2_nomeArquivo", fruitEntry.getPoster());
+        b.putString("filme2_filmeId", fruitEntry.get_id());
+        b.putInt("filme2_position", position);
+
+        intent.putExtras(b);
+
+        origin.startActivityForResult(intent, 13);
+    }
+
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == 13) {
+//           if(resultCode == Activity.RESULT_OK){
+//               Boolean estaNaMyListt = data.getExtras().getBoolean("filme2_estaNaMyListt");
+//           }
+//           if (resultCode == Activity.RESULT_CANCELED) {
+//               //Write your code if there's no result
+//           }
+//        }
+//    }
 
     private void setElements(ViewHolderSimpleRow viewHolderSimpleRow, MovieViewModel pEntry) {
         // Setting the title view is straightforward
@@ -97,7 +123,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
     private void callMovieFragmentSingleton(MovieViewModel movieViewModel){
         Singleton.getInstance().setMovieViewModel(movieViewModel);
-        Singleton.getInstance().trocaFrag(new FragmentMovie(), false);
+        Singleton.getInstance().trocaFrag(new FragmentMovie());
     }
 
     private View getWorkingView(final View convertView) {

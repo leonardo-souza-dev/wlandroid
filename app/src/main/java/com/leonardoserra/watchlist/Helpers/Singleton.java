@@ -21,6 +21,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import javax.xml.parsers.FactoryConfigurationError;
+
 //https://gist.github.com/Akayh/5566992
 public class Singleton  {
 
@@ -120,9 +122,10 @@ public class Singleton  {
         return resultado;
     }
 
-    public void buscaFilme(String searchTerm){
+    public ArrayList<MovieViewModel> buscaFilme(String termoBusca){
+        ArrayList<MovieViewModel> resultadoDaBusca = null;
 
-        Message msg = new ApiHelper(context).search(userHash, searchTerm);
+        Message msg = new ApiHelper(context).search(userHash, termoBusca);
 
         try {
 
@@ -131,29 +134,21 @@ public class Singleton  {
 
             if (jsonArray != null) {
 
-                ArrayList<MovieViewModel> list = new ArrayList<>();
+                resultadoDaBusca = new ArrayList<>();
                 int len = jsonArray.length();
 
                 for (int i = 0; i < len; i++) {
                     String str = jsonArray.get(i).toString();
                     MovieViewModel f = new Gson().fromJson(str, MovieViewModel.class);
                     f.setUser(user);
-                    list.add(f);
+                    resultadoDaBusca.add(f);
                 }
-
-                ResultadoBuscaViewModel r = new ResultadoBuscaViewModel(list, searchTerm, len);
-
-                insereNoHistoricoDeBuscas(r);
-
-                //Singleton.getInstance().setResultadosDaBusca(list);
-                //Singleton.getInstance().setTermo(searchTerm);
-                //Singleton.getInstance().setQtd(len);
-                Singleton.getInstance().trocaFrag(new FragmentSearchResult(), false);
-
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return resultadoDaBusca;
     }
 
     private void insereNoHistoricoDeBuscas(ResultadoBuscaViewModel r){
@@ -177,13 +172,13 @@ public class Singleton  {
         return ultima;
     }
 
-    public void mostraPenultimoResultadoBusca(Boolean removeUltimo){
+    public void mostraPenultimoResultadoBusca(){
 
         int qtdTotal = buscas.size();
         buscas.remove(qtdTotal-1);
         //historicoFragment.removeUltimo();
 
-        Singleton.getInstance().trocaFrag(new FragmentSearchResult(), removeUltimo);
+        Singleton.getInstance().trocaFrag(new FragmentSearchResult());
     }
 
     public void setUser(User pUser){
@@ -350,24 +345,25 @@ public class Singleton  {
         return historicoFragment.items.size();
     }
 
-    public void trocaFrag(Fragment fragment, Boolean removeUltimo){
-
-        if (historicoFragment == null) {
-            historicoFragment = new Historico();
-        }
-
-        if (removeUltimo)
-            Singleton.historicoFragment.removeUltimo();
-
-        historicoFragment.addItem(fragment);
-
+    public void trocaFrag(Fragment fragment){
         FragmentTransaction ft = fm.beginTransaction();
 
         ft.replace(R.id.frame_container, fragment, "");
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        //ft.addToBackStack(fragment.getClass().getSimpleName());
         ft.commit();
-        //fm.executePendingTransactions();
+    }
+
+    public void trocaFragEInsereNoHistorico(Fragment f){
+        trocaFrag(f);
+        insereNoHistorico(f);
+    }
+
+    public void insereNoHistorico(Fragment f){
+        if (historicoFragment == null) {
+            historicoFragment = new Historico();
+        }
+
+        historicoFragment.addItem(f);
     }
 
     public boolean isEmulator() {

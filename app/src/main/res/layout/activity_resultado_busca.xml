@@ -4,28 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ResultadoBuscaActivity">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edtSearchAMovie"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="180dp" />
-
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search a Movie"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:id="@+id/btnSearchAMovie"
-        android:layout_gravity="center_horizontal"
-        android:onClick="busca" />
+        android:text="New Text"
+        android:id="@+id/txtFraseBusca" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:id="@+id/listViewResultadoBusca"
+        android:layout_marginTop="24dp"/>
 </LinearLayout>
