@@ -1,9 +1,15 @@
 package com.leonardoserra.watchlist;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText edtSearch;
     private String termoDaBusca;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -57,9 +64,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configuraActionbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbarra);
         setSupportActionBar(mToolbar);
+
         String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
+
         getSupportActionBar().setTitle(nomeApp);
+        getSupportActionBar().setIcon(android.R.drawable.ic_menu_camera);
+
+        Spannable text = new SpannableString(getSupportActionBar().getTitle());
+        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.colorTextTitle)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        getSupportActionBar().setTitle(text);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_mylistt:
+                Intent intentMyListt = new Intent(this, MyListtActivity.class);
+                startActivity(intentMyListt);
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    public void vaiParaMyListt(View view){
+        Intent intentMyListt = new Intent(this, MyListtActivity.class);
+        startActivity(intentMyListt);
     }
 }

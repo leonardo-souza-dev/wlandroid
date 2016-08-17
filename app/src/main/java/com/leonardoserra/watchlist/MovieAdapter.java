@@ -106,9 +106,11 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         }
 
         viewHolderSimpleRow.titleView1.setText(partOne);
+        viewHolderSimpleRow.titleView1.setTextColor(Color.WHITE);
         viewHolderSimpleRow.titleView2.setText(termOriginal);
         viewHolderSimpleRow.titleView2.setTextColor(Color.GREEN);
         viewHolderSimpleRow.titleView3.setText(partTwo);
+        viewHolderSimpleRow.titleView3.setTextColor(Color.WHITE);
         imgLoader.DisplayImage(Singleton.getInstance().getUrl(pEntry.getPoster()), viewHolderSimpleRow.imgFilmePoster);
     }
 

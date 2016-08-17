@@ -6,7 +6,11 @@ import android.graphics.Movie;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -58,15 +62,21 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     }
 
     private void configuraActionbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbarra);
         setSupportActionBar(mToolbar);
+
         String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
+
         getSupportActionBar().setTitle(nomeApp);
+        getSupportActionBar().setIcon(android.R.drawable.ic_menu_camera);
+
+        Spannable text = new SpannableString(getSupportActionBar().getTitle());
+        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.colorTextTitle)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        getSupportActionBar().setTitle(text);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //movieAdapter.onActivityResult(requestCode, resultCode, data);
         Bundle b = data.getExtras();
 
         for(int i = 0; i < resultado.size(); i++){
@@ -75,5 +85,9 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
                 resultado.get(i).setIsInMyList(esta);
             }
         }
+    }
+    public void vaiParaMyListt(View view){
+        Intent intentMyListt = new Intent(this, MyListtActivity.class);
+        startActivity(intentMyListt);
     }
 }

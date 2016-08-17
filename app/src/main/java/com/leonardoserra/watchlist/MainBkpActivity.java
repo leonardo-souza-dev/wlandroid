@@ -52,7 +52,7 @@ public class MainBkpActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        mSearchAction = menu.findItem(R.id.action_search);
+        mSearchAction = menu.findItem(R.id.action_mylistt);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -93,7 +93,7 @@ public class MainBkpActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_search:
+            case R.id.action_mylistt:
                 handleMenuSearch();
                 return true;
         }

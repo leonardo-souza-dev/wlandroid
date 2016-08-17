@@ -4,19 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#111111"
+    android:weightSum="1"
     tools:context=".ResultadoBuscaActivity">
 
     <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
+        layout="@layout/tool_bar"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:text="New Text"
-        android:id="@+id/txtFraseBusca" />
+        android:id="@+id/txtFraseBusca"
+        android:textColor="#AAAAAA" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -24,5 +27,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:id="@+id/listViewResultadoBusca"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginTop="24dp"
+        android:divider="#666666"
+        android:dividerHeight="1dp" />
 </LinearLayout>

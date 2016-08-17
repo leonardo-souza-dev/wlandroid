@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar">
+        layout="@layout/tool_bar">
     </include>
 
     <android.support.design.widget.TabLayout

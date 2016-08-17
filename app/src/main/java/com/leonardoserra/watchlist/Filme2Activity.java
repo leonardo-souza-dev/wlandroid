@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +29,7 @@ public class Filme2Activity extends AppCompatActivity {
     private String ADD;
     private Boolean estaNaMyListt;
     private Bundle bundle;
-    private Toolbar toolbar;
+    private Toolbar mToolbar;
     private String filmeId;
 
     @Override
@@ -72,24 +75,15 @@ public class Filme2Activity extends AppCompatActivity {
     }
 
     public void addOrRemove(View view) {
-
         String hash = Singleton.getInstance().getUserHash();
-
 
         ApiHelper api = new ApiHelper(this);
 
         if (estaNaMyListt) {
             api.removeMovie(hash, filmeId);
-            //user.removeFilme(new MovieViewModel(gMovieId, false));
-            //movieViewModel.setIsInMyList(false);
-
             Toast.makeText(this, "filme retirado da sua lista", Toast.LENGTH_LONG).show();
-
         } else {
             api.addMovie(hash, filmeId);
-            //user.adicionaFilme(new MovieViewModel(gMovieId, true));
-            //movieViewModel.setIsInMyList(true);
-
             Toast.makeText(this, "filme adicionado à sua lista", Toast.LENGTH_LONG).show();
         }
 
@@ -99,10 +93,17 @@ public class Filme2Activity extends AppCompatActivity {
     }
 
     private void configuraActionbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbarra);
+        setSupportActionBar(mToolbar);
+
         String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
+
         getSupportActionBar().setTitle(nomeApp);
+        getSupportActionBar().setIcon(android.R.drawable.ic_menu_camera);
+
+        Spannable text = new SpannableString(getSupportActionBar().getTitle());
+        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.colorTextTitle)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        getSupportActionBar().setTitle(text);
     }
 
     @Override
@@ -113,7 +114,10 @@ public class Filme2Activity extends AppCompatActivity {
         returnIntent.putExtra("filme2_filmeId", filmeId);
         setResult(Activity.RESULT_OK, returnIntent);
 
-
         super.onBackPressed();
+    }
+    public void vaiParaMyListt(View view){
+        Intent intentMyListt = new Intent(this, MyListtActivity.class);
+        startActivity(intentMyListt);
     }
 }
