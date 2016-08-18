@@ -31,7 +31,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".ResultadoBuscaActivity" />
-        <activity android:name=".Filme2Activity" />
+        <activity android:name=".FilmeActivity" />
         <activity android:name=".MyListtActivity"></activity>
     </application>
 

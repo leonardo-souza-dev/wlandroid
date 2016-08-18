@@ -14,13 +14,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listViewMyListt"
-        android:layout_margin="24dp" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="16dp"
+        android:divider="#666666"
+        android:dividerHeight="1dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:textColor="#FFFFFF"
-        android:id="@+id/txtMsg" />
+        android:id="@+id/txtMsg"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/colorTextTitle"
+        android:id="@+id/btnVaiParaBusca"
+        android:layout_gravity="center"
+        android:onClick="vaiParaBusca"
+        android:background="#111111" />
 
 </LinearLayout>

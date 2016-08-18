@@ -26,8 +26,8 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     private String termo;
     private MovieAdapter movieAdapter;
     private TextView txtFraseBusca;
-    private Toolbar mToolbar;
-    private ArrayList<MovieViewModel> resultado;
+    private Toolbar toolbar;
+    private ArrayList<MovieViewModel> lista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +43,16 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
 
         listView.setAdapter(movieAdapter);
 
-        resultado = (ArrayList<MovieViewModel>) bundle.getSerializable("resultadodabusca_lista");
+        lista = (ArrayList<MovieViewModel>) bundle.getSerializable("resultadodabusca_lista");
 
-        for(final MovieViewModel entry : resultado) {
+        for(final MovieViewModel entry : lista) {
             movieAdapter.add(entry);
         }
 
         txtFraseBusca = (TextView) findViewById(R.id.txtFraseBusca);
         String suaBuscaPara = r.getString(R.string.sua_busca_para);
         String retornou = r.getString(R.string.retornou);
-        Integer qtd = resultado.size();
+        Integer qtd = lista.size();
         String resultados = qtd == 1 ? r.getString(R.string.resultado) : r.getString(R.string.resultados);
         txtFraseBusca.setText(suaBuscaPara + " \"" + termo + "\" " + retornou + " " + qtd + " " + resultados);
 
@@ -62,13 +62,12 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     }
 
     private void configuraActionbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbarra);
-        setSupportActionBar(mToolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbarra);
+        setSupportActionBar(toolbar);
 
         String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
 
         getSupportActionBar().setTitle(nomeApp);
-        getSupportActionBar().setIcon(android.R.drawable.ic_menu_camera);
 
         Spannable text = new SpannableString(getSupportActionBar().getTitle());
         text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.colorTextTitle)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
@@ -79,13 +78,14 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Bundle b = data.getExtras();
 
-        for(int i = 0; i < resultado.size(); i++){
-            if (resultado.get(i).get_id().equals(b.getString("filme2_filmeId"))){
-                Boolean esta = b.getBoolean("filme2_estaNaMyListt");
-                resultado.get(i).setIsInMyList(esta);
+        for(int i = 0; i < lista.size(); i++){
+            if (lista.get(i).get_id().equals(b.getString("filme_filmeId"))){
+                Boolean esta = b.getBoolean("filme_estaNaMyListt");
+                lista.get(i).setIsInMyList(esta);
             }
         }
     }
+
     public void vaiParaMyListt(View view){
         Intent intentMyListt = new Intent(this, MyListtActivity.class);
         startActivity(intentMyListt);

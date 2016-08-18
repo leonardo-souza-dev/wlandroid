@@ -1,41 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:orientation="vertical"
+    android:background="#111111"
+    tools:context=".FilmeActivity">
+
+    <include layout="@layout/tool_bar"/>
 
     <ImageView
         android:id="@+id/imgPoster"
         android:layout_width="150dp"
         android:layout_height="222dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
         android:src="@drawable/img" />
 
     <TextView
         android:id="@+id/txtMovieTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imgPoster"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
+        android:textColor="#FFFFFF"
         android:text="@string/titulo_filme"
-        android:textSize="24dp" />
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/btnAddRemove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtMovieTitle"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
-        android:onClick="addOrRemove"
+        android:padding="8dp"
+        android:onClick="adicionarOuRetirar"
+        android:background="#f35100"
+        android:textColor="#000000"
         android:text="@string/botao_adiciona_remove"/>
 
-</RelativeLayout>
+</LinearLayout>

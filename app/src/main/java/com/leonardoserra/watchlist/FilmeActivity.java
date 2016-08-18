@@ -19,7 +19,7 @@ import com.leonardoserra.watchlist.Helpers.ApiHelper;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 
-public class Filme2Activity extends AppCompatActivity {
+public class FilmeActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private TextView textView;
@@ -35,7 +35,7 @@ public class Filme2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filme2);
+        setContentView(R.layout.activity_filme);
 
         imageView = (ImageView)findViewById(R.id.imgPoster);
         textView = (TextView)findViewById(R.id.txtMovieTitle);
@@ -99,7 +99,6 @@ public class Filme2Activity extends AppCompatActivity {
         String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
 
         getSupportActionBar().setTitle(nomeApp);
-        getSupportActionBar().setIcon(android.R.drawable.ic_menu_camera);
 
         Spannable text = new SpannableString(getSupportActionBar().getTitle());
         text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.colorTextTitle)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
@@ -110,8 +109,8 @@ public class Filme2Activity extends AppCompatActivity {
     public void onBackPressed()
     {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("filme2_estaNaMyListt", estaNaMyListt);
-        returnIntent.putExtra("filme2_filmeId", filmeId);
+        returnIntent.putExtra("filme_estaNaMyListt", estaNaMyListt);
+        returnIntent.putExtra("filme_filmeId", filmeId);
         setResult(Activity.RESULT_OK, returnIntent);
 
         super.onBackPressed();

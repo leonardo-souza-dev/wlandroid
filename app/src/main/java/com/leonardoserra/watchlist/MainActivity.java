@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
 
         getSupportActionBar().setTitle(nomeApp);
-        getSupportActionBar().setIcon(android.R.drawable.ic_menu_camera);
 
         Spannable text = new SpannableString(getSupportActionBar().getTitle());
         text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.colorTextTitle)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);

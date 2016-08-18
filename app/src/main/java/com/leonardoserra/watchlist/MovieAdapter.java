@@ -5,18 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.leonardoserra.watchlist.Fragments.FragmentMovie;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
@@ -47,9 +43,6 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         if (gLayout == R.layout.simple_row) {
             final ViewHolderSimpleRow viewHolderSimpleRow = (ViewHolderSimpleRow) getViewHolder(view);
             setElements(viewHolderSimpleRow, entry);
-        } else if (gLayout == R.layout.linha) {
-            final ViewHolderLinha viewHolderLinha = (ViewHolderLinha) getViewHolder(view);
-            setElementsLinha(viewHolderLinha, entry);
         }
 
         view.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +56,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
     private void callFruitActivity(MovieViewModel fruitEntry, int position) {
         Activity origin = (Activity)gContext;
-        Intent intent = new Intent(gContext, Filme2Activity.class);
+        Intent intent = new Intent(gContext, FilmeActivity.class);
 
         Bundle b = new Bundle();
         b.putString("filme2_titulo", fruitEntry.getName());
@@ -76,17 +69,6 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
         origin.startActivityForResult(intent, 13);
     }
-
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == 13) {
-//           if(resultCode == Activity.RESULT_OK){
-//               Boolean estaNaMyListt = data.getExtras().getBoolean("filme2_estaNaMyListt");
-//           }
-//           if (resultCode == Activity.RESULT_CANCELED) {
-//               //Write your code if there's no result
-//           }
-//        }
-//    }
 
     private void setElements(ViewHolderSimpleRow viewHolderSimpleRow, MovieViewModel pEntry) {
         // Setting the title view is straightforward
@@ -112,20 +94,6 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         viewHolderSimpleRow.titleView3.setText(partTwo);
         viewHolderSimpleRow.titleView3.setTextColor(Color.WHITE);
         imgLoader.DisplayImage(Singleton.getInstance().getUrl(pEntry.getPoster()), viewHolderSimpleRow.imgFilmePoster);
-    }
-
-    private void setElementsLinha(ViewHolderLinha viewHolderLinha, MovieViewModel pEntry) {
-        String titulo = pEntry.getName();
-        String ano = pEntry.getAno();
-
-        viewHolderLinha.txtTitulo.setText(titulo);
-        viewHolderLinha.txtAno.setText(ano);
-        imgLoader.DisplayImage(Singleton.getInstance().getUrl(pEntry.getPoster()), viewHolderLinha.imgPoster);
-    }
-
-    private void callMovieFragmentSingleton(MovieViewModel movieViewModel){
-        Singleton.getInstance().setMovieViewModel(movieViewModel);
-        Singleton.getInstance().trocaFrag(new FragmentMovie());
     }
 
     private View getWorkingView(final View convertView) {
@@ -160,17 +128,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
             workingView.setTag(viewHolderSimpleRow);
             viewBase = viewHolderSimpleRow;
-        } else if (gLayout == R.layout.linha) {
-            ViewHolderLinha viewHolderLinha = new ViewHolderLinha();
-            viewHolderLinha.txtTitulo = (TextView) workingView.findViewById(R.id.txtTitulo);
-            viewHolderLinha.txtAno = (TextView) workingView.findViewById(R.id.txtAno);
-            viewHolderLinha.imgPoster = (ImageView) workingView.findViewById(R.id.imgPoster);
-
-            workingView.setTag(viewHolderLinha);
-
-            viewBase = viewHolderLinha;
         }
-
 
         return viewBase;
     }
@@ -183,11 +141,6 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         public Button addRemoveBtn;
     }
 
-    private static class ViewHolderLinha extends ViewBase {
-        public TextView txtTitulo;
-        public TextView txtAno;
-        public ImageView imgPoster;
-    }
 
     private static class ViewBase {
 
