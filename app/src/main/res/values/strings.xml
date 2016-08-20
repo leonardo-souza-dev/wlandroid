@@ -29,4 +29,5 @@
     <string name="ano">2016</string>
     <string name="home">Home</string>
     <string name="mylistt">MyListt</string>
+    <string name="chamada">Search a movie to add to your WatchListt</string>
 </resources>

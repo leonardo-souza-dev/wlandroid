@@ -1,21 +1,22 @@
-package com.leonardoserra.watchlist;
+package com.leonardoserra.watchlist.Activities;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
+import com.leonardoserra.watchlist.R;
 
 import java.util.ArrayList;
 
@@ -54,26 +55,34 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<MovieViewModel> resultado = Singleton.getInstance().buscaFilme(termoDaBusca);
         bundle.putSerializable("resultadodabusca_lista", resultado);
         bundle.putString("resultadodabusca_termo", termoDaBusca);
+        bundle.putString("nomeActivityAnterior", "Home");
         intent.putExtras(bundle);
         startActivity(intent);
     }
 
     private void criaOuObtemUsuario(){
         String resultado = Singleton.getInstance().criaOuObtemUsuario();
-        Toast.makeText(this, resultado, Toast.LENGTH_SHORT).show();
+        Log.d("usuario", resultado);
     }
 
     private void configuraActionbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbarra);
         setSupportActionBar(mToolbar);
 
-        String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
+        String titulo = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
 
-        getSupportActionBar().setTitle(nomeApp);
+        getSupportActionBar().setTitle(titulo);
 
         Spannable text = new SpannableString(getSupportActionBar().getTitle());
-        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.colorTextTitle)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.laranja)),
+                0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new AbsoluteSizeSpan(34),
+                0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new TextAppearanceSpan(this, R.style.FonteBold),
+                0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+
         getSupportActionBar().setTitle(text);
+
 
     }
 
@@ -94,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void vaiParaMyListt(View view){
         Intent intentMyListt = new Intent(this, MyListtActivity.class);
+        Bundle b = new Bundle();
+        b.putString("nomeActivityAnterior", "Home");
+        intentMyListt.putExtras(b);
+
         startActivity(intentMyListt);
     }
 }

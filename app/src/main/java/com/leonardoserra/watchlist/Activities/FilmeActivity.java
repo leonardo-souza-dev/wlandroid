@@ -1,14 +1,19 @@
-package com.leonardoserra.watchlist;
+package com.leonardoserra.watchlist.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,10 +23,10 @@ import android.widget.Toast;
 import com.leonardoserra.watchlist.Helpers.ApiHelper;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
+import com.leonardoserra.watchlist.R;
 
 public class FilmeActivity extends AppCompatActivity {
 
-    private ImageView imageView;
     private TextView textView;
     private Button button;
     private ImageLoader imgLoader;
@@ -29,7 +34,7 @@ public class FilmeActivity extends AppCompatActivity {
     private String ADD;
     private Boolean estaNaMyListt;
     private Bundle bundle;
-    private Toolbar mToolbar;
+    private Toolbar toolbar;
     private String filmeId;
 
     @Override
@@ -37,7 +42,6 @@ public class FilmeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filme);
 
-        imageView = (ImageView)findViewById(R.id.imgPoster);
         textView = (TextView)findViewById(R.id.txtMovieTitle);
         button = (Button)findViewById(R.id.btnAddRemove);
         imgLoader = new ImageLoader(this);
@@ -65,7 +69,7 @@ public class FilmeActivity extends AppCompatActivity {
         btnAddOrRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addOrRemove(v);
+                adicionarOuRetirar(v);
             }
         });
 
@@ -74,7 +78,7 @@ public class FilmeActivity extends AppCompatActivity {
         Log.d("nav", "MOVIE: " + titulo);
     }
 
-    public void addOrRemove(View view) {
+    public void adicionarOuRetirar(View view) {
         String hash = Singleton.getInstance().getUserHash();
 
         ApiHelper api = new ApiHelper(this);
@@ -93,16 +97,21 @@ public class FilmeActivity extends AppCompatActivity {
     }
 
     private void configuraActionbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbarra);
-        setSupportActionBar(mToolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbarra);
+        setSupportActionBar(toolbar);
 
-        String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
-
-        getSupportActionBar().setTitle(nomeApp);
-
+        //configuraActionBarTitle
+        String nomeActivityAnterior = bundle.getString("nomeActivityAnterior");
+        getSupportActionBar().setTitle(nomeActivityAnterior);
         Spannable text = new SpannableString(getSupportActionBar().getTitle());
-        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.colorTextTitle)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.laranja)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         getSupportActionBar().setTitle(text);
+
+        //botao voltar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(getResources().getColor(R.color.laranja), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
     }
 
     @Override
@@ -115,8 +124,24 @@ public class FilmeActivity extends AppCompatActivity {
 
         super.onBackPressed();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     public void vaiParaMyListt(View view){
         Intent intentMyListt = new Intent(this, MyListtActivity.class);
+        Bundle b = new Bundle();
+        b.putString("nomeActivityAnterior", "Back");
+        intentMyListt.putExtras(b);
+
         startActivity(intentMyListt);
     }
 }

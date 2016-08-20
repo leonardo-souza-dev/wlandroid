@@ -1,13 +1,17 @@
-package com.leonardoserra.watchlist;
+package com.leonardoserra.watchlist.Activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -16,6 +20,8 @@ import android.widget.TextView;
 
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
+import com.leonardoserra.watchlist.MovieAdapter;
+import com.leonardoserra.watchlist.R;
 
 import java.util.ArrayList;
 
@@ -25,21 +31,23 @@ public class MyListtActivity extends AppCompatActivity {
     private ListView listView;
 
     private MovieAdapter movieAdapter;
-    private String hash;
     private Toolbar toolbar;
     private ArrayList<MovieViewModel> lista;
     private TextView msg;
     private Button btnVaiParaBusca;
+    private String nomeActivityAnterior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_listt);
 
+        bundle = getIntent().getExtras();
+        nomeActivityAnterior = bundle.getString("nomeActivityAnterior");
+
         msg = (TextView)findViewById(R.id.txtMsg);
         btnVaiParaBusca = (Button)findViewById(R.id.btnVaiParaBusca);
 
-        bundle = getIntent().getExtras();
         listView = (ListView) findViewById(R.id.listViewMyListt);
 
         movieAdapter = new MovieAdapter(this, R.layout.simple_row, "");
@@ -57,14 +65,14 @@ public class MyListtActivity extends AppCompatActivity {
             msg.setEnabled(false);
             btnVaiParaBusca.setEnabled(false);
 
-        }else {
+        } else {
 
             msg.setText(getResources().getString(R.string.there_is_no_movies));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            params.setMargins(24, 200, 24, 24);
+            params.setMargins(24, 140, 24, 24);
             msg.setLayoutParams(params);
 
             btnVaiParaBusca.setText(getResources().getString(R.string.search_movies));
@@ -77,17 +85,22 @@ public class MyListtActivity extends AppCompatActivity {
 
     public void vaiParaBusca(View view){
         Intent intent = new Intent(this, MainActivity.class);
+        Bundle b = new Bundle();
+        b.putString("nomeActivityAnterior","MyListt");
+        intent.putExtras(b);
         startActivity(intent);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Bundle b = data.getExtras();
+        if (data != null) {
+            Bundle b = data.getExtras();
 
-        for(int i = 0; i < lista.size(); i++){
-            if (lista.get(i).get_id().equals(b.getString("filme_filmeId"))){
-                Boolean esta = b.getBoolean("filme_estaNaMyListt");
-                lista.get(i).setIsInMyList(esta);
+            for (int i = 0; i < lista.size(); i++) {
+                if (lista.get(i).get_id().equals(b.getString("filme_filmeId"))) {
+                    Boolean esta = b.getBoolean("filme_estaNaMyListt");
+                    lista.get(i).setIsInMyList(esta);
+                }
             }
         }
     }
@@ -96,12 +109,45 @@ public class MyListtActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarra);
         setSupportActionBar(toolbar);
 
-        String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
+        getSupportActionBar().setTitle(nomeActivityAnterior);
 
-        getSupportActionBar().setTitle(nomeApp);
+        configuraActionBatTitle();
 
+
+        TextView txtMenuItem = (TextView)toolbar.findViewById(R.id.txtItemMenuMyListt);
+        txtMenuItem.setVisibility(View.GONE);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(getResources().getColor(R.color.laranja), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+    }
+
+    private void configuraActionBatTitle() {
         Spannable text = new SpannableString(getSupportActionBar().getTitle());
-        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.colorTextTitle)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.laranja)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         getSupportActionBar().setTitle(text);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void vaiParaMyListt(View view){
+        Intent intentMyListt = new Intent(this, MyListtActivity.class);
+        Bundle b = new Bundle();
+        b.putString("nomeActivityAnterior","MyListt");
+        intentMyListt.putExtras(b);
+
+        startActivity(intentMyListt);
     }
 }

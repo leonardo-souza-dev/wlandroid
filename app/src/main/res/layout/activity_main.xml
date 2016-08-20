@@ -6,10 +6,24 @@
     android:orientation="vertical"
     android:background="#111111"
     android:weightSum="1"
-    tools:context=".MainActivity">
+    tools:context=".Activities.MainActivity">
 
     <include
         layout="@layout/tool_bar"/>
+
+    <TextView
+        android:layout_width="217dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/chamada"
+        android:layout_marginTop="80dp"
+        android:textColor="#f35100"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="viewStart"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="10dp" />
 
     <EditText
         android:layout_width="match_parent"
@@ -17,10 +31,20 @@
         android:id="@+id/edtSearchAMovie"
         android:layout_gravity="center_horizontal"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="16dp"
         android:background="#999999"
-        android:layout_weight="0.07" />
+        android:layout_weight="0.05"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:textStyle="normal"
+        android:scrollIndicators="none"
+        android:lines="1"
+        android:inputType="text"
+        android:gravity="center_horizontal"
+        android:enabled="true"
+        android:allowUndo="true" />
 
     <Button
         android:layout_width="180dp"
@@ -31,7 +55,7 @@
         android:id="@+id/btnSearchAMovie"
         android:layout_gravity="center_horizontal"
         android:onClick="busca"
-        android:padding="8dp"
+        android:padding="4dp"
         android:layout_marginTop="8dp"
         android:background="#f35100"
         android:textColor="#000000" />

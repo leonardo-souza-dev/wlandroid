@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#111111"
     android:weightSum="1"
-    tools:context=".ResultadoBuscaActivity">
+    tools:context=".Activities.ResultadoBuscaActivity">
 
     <include
         layout="@layout/tool_bar"/>

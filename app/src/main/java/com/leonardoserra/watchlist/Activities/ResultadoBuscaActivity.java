@@ -1,21 +1,25 @@
-package com.leonardoserra.watchlist;
+package com.leonardoserra.watchlist.Activities;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Movie;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
+import com.leonardoserra.watchlist.MovieAdapter;
+import com.leonardoserra.watchlist.R;
 
 import java.util.ArrayList;
 
@@ -35,6 +39,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_resultado_busca);
 
         bundle = getIntent().getExtras();
+
         listView = (ListView) findViewById(R.id.listViewResultadoBusca);
         termo = bundle.getString("resultadodabusca_termo");
         movieAdapter = new MovieAdapter(this, R.layout.simple_row, termo);
@@ -64,30 +69,52 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     private void configuraActionbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbarra);
         setSupportActionBar(toolbar);
+        String titulo = bundle.getString("nomeActivityAnterior");
 
-        String nomeApp = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
-
-        getSupportActionBar().setTitle(nomeApp);
-
+        //configuraActionBarTitle
+        getSupportActionBar().setTitle(titulo);
         Spannable text = new SpannableString(getSupportActionBar().getTitle());
-        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.colorTextTitle)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.laranja)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         getSupportActionBar().setTitle(text);
+
+        //botao voltar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(getResources().getColor(R.color.laranja), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Bundle b = data.getExtras();
+        if (data != null) {
+            Bundle b = data.getExtras();
 
-        for(int i = 0; i < lista.size(); i++){
-            if (lista.get(i).get_id().equals(b.getString("filme_filmeId"))){
-                Boolean esta = b.getBoolean("filme_estaNaMyListt");
-                lista.get(i).setIsInMyList(esta);
+            for (int i = 0; i < lista.size(); i++) {
+                if (lista.get(i).get_id().equals(b.getString("filme_filmeId"))) {
+                    Boolean esta = b.getBoolean("filme_estaNaMyListt");
+                    lista.get(i).setIsInMyList(esta);
+                }
             }
         }
     }
 
     public void vaiParaMyListt(View view){
         Intent intentMyListt = new Intent(this, MyListtActivity.class);
+        Bundle b = new Bundle();
+        b.putString("nomeActivityAnterior", "Search");
+        intentMyListt.putExtras(b);
+
         startActivity(intentMyListt);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

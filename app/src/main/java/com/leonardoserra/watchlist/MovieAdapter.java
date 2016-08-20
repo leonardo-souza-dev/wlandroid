@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.leonardoserra.watchlist.Activities.FilmeActivity;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
@@ -23,11 +24,20 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
     private final String gTerm;
     private Context gContext;
     private ImageLoader imgLoader;
+    private String nomeActivityAnterior;
 
     public MovieAdapter(final Context context, final int lLayout, String term) {
         super(context, 0);
 
         gContext = context;
+        switch (gContext.getClass().getSimpleName().toLowerCase()){
+            case "mylisttactivity":
+                nomeActivityAnterior = "MyListt";
+                break;
+            case "resultadobuscaactivity":
+                nomeActivityAnterior = "Search";
+                break;
+        }
         gLayout = lLayout;
         gTerm = term;
 
@@ -47,14 +57,14 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                callFruitActivity(entry, position);
+                vaiParaActivity(entry, position);
             }
         });
 
         return view;
     }
 
-    private void callFruitActivity(MovieViewModel fruitEntry, int position) {
+    private void vaiParaActivity(MovieViewModel fruitEntry, int position) {
         Activity origin = (Activity)gContext;
         Intent intent = new Intent(gContext, FilmeActivity.class);
 
@@ -64,6 +74,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         b.putString("filme2_nomeArquivo", fruitEntry.getPoster());
         b.putString("filme2_filmeId", fruitEntry.get_id());
         b.putInt("filme2_position", position);
+        b.putString("nomeActivityAnterior", nomeActivityAnterior);
 
         intent.putExtras(b);
 
