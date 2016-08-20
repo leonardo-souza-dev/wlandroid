@@ -42,7 +42,6 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         gTerm = term;
 
         imgLoader = new ImageLoader(context);
-
     }
 
     @Override
