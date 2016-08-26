@@ -69,19 +69,18 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     private void configuraActionbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbarra);
         setSupportActionBar(toolbar);
-        String titulo = bundle.getString("nomeActivityAnterior");
 
-        //configuraActionBarTitle
-        getSupportActionBar().setTitle(titulo);
-        Spannable text = new SpannableString(getSupportActionBar().getTitle());
-        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.laranja)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        getSupportActionBar().setTitle(text);
+        getSupportActionBar().setTitle("");
 
         //botao voltar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         upArrow.setColorFilter(getResources().getColor(R.color.laranja), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        //titulo central
+        TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
+        txtTitulo.setText("Search");
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
@@ -23,8 +24,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private EditText termoTextView;
-
-    private Toolbar mToolbar;
+    private Toolbar toolbar;
     private EditText edtSearch;
     private String termoDaBusca;
 
@@ -66,15 +66,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configuraActionbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbarra);
-        setSupportActionBar(mToolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbarra);
+        setSupportActionBar(toolbar);
 
         String titulo = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
 
         getSupportActionBar().setTitle(titulo);
 
         Spannable text = new SpannableString(getSupportActionBar().getTitle());
-        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.laranja)),
+        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.cinze)),
                 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         text.setSpan(new AbsoluteSizeSpan(34),
                 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
@@ -83,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(text);
 
-
+        //titulo central
+        TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
+        txtTitulo.setText("");
     }
 
     @Override

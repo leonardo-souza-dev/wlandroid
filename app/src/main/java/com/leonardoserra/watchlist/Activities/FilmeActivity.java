@@ -42,13 +42,14 @@ public class FilmeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filme);
 
+        bundle = getIntent().getExtras();
+
         textView = (TextView)findViewById(R.id.txtMovieTitle);
         button = (Button)findViewById(R.id.btnAddRemove);
         imgLoader = new ImageLoader(this);
         REMOVE = getResources().getString(R.string.remove_movie);
         ADD = getResources().getString(R.string.add_movie);
 
-        bundle = getIntent().getExtras();
 
         String titulo = bundle.getString("filme2_titulo");
         textView.setText(titulo);
@@ -85,10 +86,10 @@ public class FilmeActivity extends AppCompatActivity {
 
         if (estaNaMyListt) {
             api.removeMovie(hash, filmeId);
-            Toast.makeText(this, "filme retirado da sua lista", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "movie removed from your WatchListt", Toast.LENGTH_LONG).show();
         } else {
             api.addMovie(hash, filmeId);
-            Toast.makeText(this, "filme adicionado à sua lista", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "movie added to your WatchListt", Toast.LENGTH_LONG).show();
         }
 
         estaNaMyListt = !estaNaMyListt;
@@ -100,18 +101,31 @@ public class FilmeActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarra);
         setSupportActionBar(toolbar);
 
-        //configuraActionBarTitle
-        String nomeActivityAnterior = bundle.getString("nomeActivityAnterior");
-        getSupportActionBar().setTitle(nomeActivityAnterior);
-        Spannable text = new SpannableString(getSupportActionBar().getTitle());
-        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.laranja)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        getSupportActionBar().setTitle(text);
+        getSupportActionBar().setTitle("");
 
         //botao voltar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         upArrow.setColorFilter(getResources().getColor(R.color.laranja), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        //titulo central
+        TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
+        String nomeFilme = bundle.getString("filme2_titulo");
+        if (nomeFilme.length() > 16) {
+
+            nomeFilme = nomeFilme.substring(0, 16) + "...";
+            //Spannable text = new SpannableString(getSupportActionBar().getTitle());
+            Spannable text = new SpannableString(nomeFilme);
+            text.setSpan(new AbsoluteSizeSpan(20),
+                    0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            txtTitulo.setText(text);
+
+        } else {
+
+            txtTitulo.setText(nomeFilme);
+
+        }
     }
 
     @Override

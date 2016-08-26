@@ -19,7 +19,7 @@
         android:layout_marginLeft="16dp"
         android:text="New Text"
         android:id="@+id/txtFraseBusca"
-        android:textColor="#AAAAAA" />
+        android:textColor="@color/cinze" />
 
     <ListView
         android:layout_width="wrap_content"

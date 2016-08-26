@@ -111,7 +111,8 @@ public class ApiHelper {
         protected String doInBackground(String... params) {
 
             String responseStr = "", lHash = "";
-            String baseUrl = "http://10.0.2.2:8080/api/";
+            //String baseUrl = "http://10.0.2.2:8080/api/";
+            String baseUrl = "https://wlistt.herokuapp.com/api/";
 
             if (!Singleton.getInstance().isEmulator())
                 baseUrl = "http://192.168.1.5:8080/api/";

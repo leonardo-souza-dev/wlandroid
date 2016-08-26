@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#111111"
     tools:context=".Activities.FilmeActivity">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#111111">
 
     <include layout="@layout/tool_bar"/>
 
@@ -15,7 +20,8 @@
         android:layout_height="266dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
-        android:src="@drawable/img" />
+        android:src="@drawable/img"
+        android:contentDescription="poster" />
 
     <TextView
         android:id="@+id/txtMovieTitle"
@@ -23,9 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/cinze"
         android:text="@string/titulo_filme"
-        android:textSize="18sp" />
+        android:textSize="18dp" />
 
     <Button
         android:id="@+id/btnAddRemove"
@@ -41,3 +47,4 @@
         android:text="@string/botao_adiciona_remove"/>
 
 </LinearLayout>
+</ScrollView>

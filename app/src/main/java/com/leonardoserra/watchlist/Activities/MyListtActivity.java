@@ -35,15 +35,15 @@ public class MyListtActivity extends AppCompatActivity {
     private ArrayList<MovieViewModel> lista;
     private TextView msg;
     private Button btnVaiParaBusca;
-    private String nomeActivityAnterior;
+    //private String nomeActivityAnterior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_listt);
 
-        bundle = getIntent().getExtras();
-        nomeActivityAnterior = bundle.getString("nomeActivityAnterior");
+        //bundle = getIntent().getExtras();
+        //nomeActivityAnterior = bundle.getString("nomeActivityAnterior");
 
         msg = (TextView)findViewById(R.id.txtMsg);
         btnVaiParaBusca = (Button)findViewById(R.id.btnVaiParaBusca);
@@ -109,27 +109,23 @@ public class MyListtActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarra);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle(nomeActivityAnterior);
+        getSupportActionBar().setTitle("");
 
-        configuraActionBatTitle();
-
-
-        TextView txtMenuItem = (TextView)toolbar.findViewById(R.id.txtItemMenuMyListt);
-        txtMenuItem.setVisibility(View.GONE);
-
+        //botao voltar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         upArrow.setColorFilter(getResources().getColor(R.color.laranja), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
-    }
 
-    private void configuraActionBatTitle() {
-        Spannable text = new SpannableString(getSupportActionBar().getTitle());
-        text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.laranja)), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        getSupportActionBar().setTitle(text);
-    }
+        //titulo central
+        TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
+        txtTitulo.setText("MyListt");
 
+        //botao mylistt
+        TextView txtMenuItem = (TextView)toolbar.findViewById(R.id.txtItemMenuMyListt);
+        txtMenuItem.setVisibility(View.GONE);
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -64,7 +64,8 @@ public class Singleton  {
 
     public String getUrl(String pPoster){
 
-        basePosterUrl = "http://10.0.2.2:8080/poster?p=" + pPoster;
+        //basePosterUrl = "http://10.0.2.2:8080/poster?p=" + pPoster;
+        basePosterUrl = "https://wlistt.herokuapp.com/poster?p=" + pPoster;
         if (!isEmulator()) {
             basePosterUrl = "http://192.168.1.5:8080/poster?p=" + pPoster;
         }

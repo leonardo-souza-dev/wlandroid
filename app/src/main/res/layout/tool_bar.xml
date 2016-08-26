@@ -5,9 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="4dp"
-    android:background="#222222"
+    android:background="#333333"
     android:id="@+id/toolbarra"
     app:titleTextAppearance="@style/Toolbar.TitleText" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtTituloToolbar"
+        android:layout_gravity="center_horizontal"
+        android:text="WatchListt"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/cinze"
+        android:layout_marginRight="16dp" />
 
     <TextView
         android:layout_width="wrap_content"
