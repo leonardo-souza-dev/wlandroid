@@ -24,7 +24,6 @@ import java.util.ArrayList;
 public class Singleton  {
 
     private static Singleton mInstance = null;
-    private static FragmentManager fm;
     private static Context context;
     private static Resources resources;
 
@@ -50,9 +49,8 @@ public class Singleton  {
         return mInstance;
     }
 
-    public static Singleton getInstance(Context pContext, Resources pResources, FragmentManager pFm){
+    public static Singleton getInstance(Context pContext, Resources pResources){
         context = pContext;
-        fm = pFm;
         resources = pResources;
 
         if(mInstance == null)
@@ -62,13 +60,37 @@ public class Singleton  {
         return mInstance;
     }
 
-    public String getUrl(String pPoster){
+    public void enviarLog(String msg){
+        ApiHelper apiHelper = new ApiHelper();
+        apiHelper.enviarLog(msg, userHash);
+    }
 
-        //basePosterUrl = "http://10.0.2.2:8080/poster?p=" + pPoster;
-        basePosterUrl = "https://wlistt.herokuapp.com/poster?p=" + pPoster;
-        if (!isEmulator()) {
-            basePosterUrl = "http://192.168.1.5:8080/poster?p=" + pPoster;
+    public String obterUrlBase(){
+        String urlBase;
+
+        String testarApiLocal = context.getResources().getString(R.string.testarApiLocal);
+
+        if (testarApiLocal.equals("true")) {
+            if (isEmulator()) {
+                urlBase = context.getResources().getString(R.string.baseUrlLocalEmulator);
+            }else{
+                urlBase = context.getResources().getString(R.string.baseUrlLocalDevice);
+            }
+        } else {
+            urlBase = context.getResources().getString(R.string.baseUrlNuvem);
+
         }
+        return urlBase;
+    }
+
+    public String obterUrlBasePoster(String pPoster){
+        basePosterUrl = obterUrlBase() + "/poster?p=" + pPoster;
+
+        return basePosterUrl;
+    }
+
+    public String obterUrlBaseApi(){
+        basePosterUrl = obterUrlBase() + "/api";
 
         return basePosterUrl;
     }

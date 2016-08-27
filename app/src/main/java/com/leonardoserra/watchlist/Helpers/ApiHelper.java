@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 
 import com.leonardoserra.watchlist.Models.Message;
-import com.leonardoserra.watchlist.Models.User;
 import com.leonardoserra.watchlist.R;
 
 import org.json.JSONObject;
@@ -18,9 +17,8 @@ import java.net.URL;
 
 public class ApiHelper {
 
-    private Context gContext;
-    private String gToken;
-    private String gAction;
+    private Context context;
+    private String action;
 
     private final String SEARCH = "search";
     private final String CREATEUSER = "createuser";
@@ -28,16 +26,22 @@ public class ApiHelper {
     private final String REMOVEMOVIE = "removemovie";
     private final String OBTERMYLISTT = "obtermylistt";
     private final String OBTERFILMESRECOMENDADOS = "obterfilmesrecomendados";
+    private final String ENVIARLOG = "enviarlog";
 
     public ApiHelper(Context current) {
-        gContext = current;
+        context = current;
     }
 
     public ApiHelper() {
     }
 
     private Resources getResources(){
-        return gContext.getResources();
+        return context.getResources();
+    }
+
+    public void enviarLog(String msg, String pHash){
+        String[] parametros = {ENVIARLOG, pHash};
+        Message message = call(true, parametros);
     }
 
     public Message obterFilmesRecomendados(String pHash) {
@@ -111,17 +115,15 @@ public class ApiHelper {
         protected String doInBackground(String... params) {
 
             String responseStr = "", lHash = "";
-            //String baseUrl = "http://10.0.2.2:8080/api/";
-            String baseUrl = "https://wlistt.herokuapp.com/api/";
-
-            if (!Singleton.getInstance().isEmulator())
-                baseUrl = "http://192.168.1.5:8080/api/";
+            String baseUrlApi = Singleton.getInstance().obterUrlBaseApi() + "/";
 
             try {
 
-                gAction = params[0];
-                lHash = (gAction == OBTERFILMESRECOMENDADOS || gAction == OBTERMYLISTT || gAction == CREATEUSER || gAction == SEARCH || gAction == ADDMOVIE || gAction == REMOVEMOVIE) ? params[1] : "";
-                String uri = baseUrl + gAction;
+                action = params[0];
+                lHash = (action == OBTERFILMESRECOMENDADOS || action == OBTERMYLISTT ||
+                        action == CREATEUSER || action == SEARCH || action == ADDMOVIE ||
+                        action == REMOVEMOVIE || action == ENVIARLOG) ? params[1] : "";
+                String uri = baseUrlApi + action;
 
                 URL url = new URL(uri);
                 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -130,18 +132,21 @@ public class ApiHelper {
                 connection.setRequestProperty("Content-Type", "application/json");
                 JSONObject jsonParam = new JSONObject();
 
-                if (gAction == SEARCH) {
+                if (action == SEARCH) {
                     if (params[2].equals("")) {
                         return null;
                     }
                     searchTerm = params[2].trim().replace(",", "").replace("-", "").replace(".", "");
                     jsonParam.put("searchterm", searchTerm);
                     jsonParam.put("hash", lHash);
-                } else if (gAction == ADDMOVIE || gAction == REMOVEMOVIE) {
+                } else if (action == ADDMOVIE || action == REMOVEMOVIE) {
                     jsonParam.put("movieid", params[2]);
                     jsonParam.put("hash", lHash);
-                } else if (gAction == CREATEUSER || gAction == OBTERMYLISTT || gAction == OBTERFILMESRECOMENDADOS) {
+                } else if (action == CREATEUSER || action == OBTERMYLISTT || action == OBTERFILMESRECOMENDADOS) {
                     jsonParam.put("hash", lHash);
+                } else if (action == ENVIARLOG) {
+                    jsonParam.put("hash", lHash);
+                    jsonParam.put("logmsg", params[2]);
                 }
 
                 byte[] outputBytes = jsonParam.toString().getBytes();

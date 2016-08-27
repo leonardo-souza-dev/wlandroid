@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.Models.MovieViewModel;
 import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
@@ -48,7 +49,8 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
 
         listView.setAdapter(movieAdapter);
 
-        lista = (ArrayList<MovieViewModel>) bundle.getSerializable("resultadodabusca_lista");
+        lista = Singleton.getInstance().buscaFilme(termo);
+        //lista = (ArrayList<MovieViewModel>) bundle.getSerializable("resultadodabusca_lista");
 
         for(final MovieViewModel entry : lista) {
             movieAdapter.add(entry);

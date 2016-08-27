@@ -16,10 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.leonardoserra.watchlist.Helpers.Singleton;
-import com.leonardoserra.watchlist.Models.MovieViewModel;
 import com.leonardoserra.watchlist.R;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Singleton.getInstance(getBaseContext(), getResources(), getSupportFragmentManager());//INIT CUSTOM FRAGMENTMANAGER
+        Singleton.getInstance(getBaseContext(), getResources());//INIT CUSTOM FRAGMENTMANAGER
 
         criaOuObtemUsuario();
 
@@ -43,21 +40,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void busca(View view) {
-        termoTextView = (EditText) findViewById(R.id.edtSearchAMovie);
-        termoDaBusca = "";
-        if (!termoTextView.getText().equals(""))
-            termoDaBusca = termoTextView.getText().toString();
-        else
-            return;
+        try {
+            termoTextView = (EditText) findViewById(R.id.edtSearchAMovie);
+            termoDaBusca = "";
+            if (!termoTextView.getText().toString().equals(""))
+                termoDaBusca = termoTextView.getText().toString();
+            else
+                return;
 
-        Intent intent = new Intent(this,ResultadoBuscaActivity.class);
-        Bundle bundle = new Bundle();
-        ArrayList<MovieViewModel> resultado = Singleton.getInstance().buscaFilme(termoDaBusca);
-        bundle.putSerializable("resultadodabusca_lista", resultado);
-        bundle.putString("resultadodabusca_termo", termoDaBusca);
-        bundle.putString("nomeActivityAnterior", "Home");
-        intent.putExtras(bundle);
-        startActivity(intent);
+            Intent intent = new Intent(this, ResultadoBuscaActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("resultadodabusca_termo", termoDaBusca);
+            intent.putExtras(bundle);
+            startActivity(intent);
+
+        } catch(Exception ex){
+            String msgErro =ex.getMessage();
+            Singleton.getInstance().enviarLog(msgErro);
+        }
     }
 
     private void criaOuObtemUsuario(){
