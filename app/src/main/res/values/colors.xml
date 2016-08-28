@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="laranja">#f25100</color>
-    <color name="cinze">#DCDCCC</color>
+    <color name="cinze">#BABAAA</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 </resources>

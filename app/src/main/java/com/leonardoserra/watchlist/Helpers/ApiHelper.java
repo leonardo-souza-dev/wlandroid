@@ -28,6 +28,8 @@ public class ApiHelper {
     private final String OBTERFILMESRECOMENDADOS = "obterfilmesrecomendados";
     private final String ENVIARLOG = "enviarlog";
 
+    private final String UNKNOWHOSTEXCEPTION = "unknowhostexception";
+
     public ApiHelper(Context current) {
         context = current;
     }
@@ -86,18 +88,26 @@ public class ApiHelper {
     }
 
     public Message call(boolean sync, String... params) {
+
         Message msg;
+
         try {
+
             WLWebApi api = new WLWebApi();
             String response = sync ? api.execute(params).get() : null;
 
-            JSONObject hashToken = new JSONObject(response);
+            if (!response.equals(UNKNOWHOSTEXCEPTION)) {
 
-            boolean success = Boolean.parseBoolean(hashToken.getString("success"));
-            String message = hashToken.getString("message");
-            JSONObject object = hashToken.getJSONObject("object");
+                JSONObject hashToken = new JSONObject(response);
 
-            msg = new Message(success, message, object);
+                boolean success = Boolean.parseBoolean(hashToken.getString("success"));
+                String message = hashToken.getString("message");
+                JSONObject object = hashToken.getJSONObject("object");
+
+                msg = new Message(success, message, object);
+            } else {
+                msg = new Message(false, UNKNOWHOSTEXCEPTION, null);
+            }
         } catch (Exception e) {
 
             msg = new Message(false, getResources().getString(R.string.some_error_occurred), null);
@@ -159,17 +169,16 @@ public class ApiHelper {
 
                     String line = "";
                     StringBuilder response = new StringBuilder();
-
                     while ((line = stream.readLine()) != null) {
                         response.append(line);
                     }
-
                     connection.disconnect();
-
                     responseStr = response.toString();
-
                 }
-            } catch (Exception e) {
+            } catch (java.net.UnknownHostException e) {
+                e.printStackTrace();
+                responseStr = UNKNOWHOSTEXCEPTION;
+            }catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 return responseStr;

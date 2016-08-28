@@ -1,6 +1,9 @@
 package com.leonardoserra.watchlist.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,16 +17,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.R;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText termoTextView;
     private Toolbar toolbar;
-    private EditText edtSearch;
+    //private EditText edtSearch;
     private String termoDaBusca;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void criaOuObtemUsuario(){
         String resultado = Singleton.getInstance().criaOuObtemUsuario();
+
+        if(!resultado.equals("")) {
+            Toast.makeText(this, resultado, Toast.LENGTH_LONG).show();
+        }
+
         Log.d("usuario", resultado);
     }
 

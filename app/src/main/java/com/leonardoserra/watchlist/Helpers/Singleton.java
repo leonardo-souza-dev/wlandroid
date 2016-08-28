@@ -20,7 +20,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-//https://gist.github.com/Akayh/5566992
 public class Singleton  {
 
     private static Singleton mInstance = null;
@@ -113,13 +112,20 @@ public class Singleton  {
 
             Message msgCreateUser = new ApiHelper(context).createuser(userHash);
 
-            userHash = msgCreateUser.getObject("hash");
+            if(msgCreateUser.getSucess()) {
+                userHash = msgCreateUser.getObject("hash");
 
-            e.putString("wl_user_hash", userHash);
-            e.commit();
+                e.putString("wl_user_hash", userHash);
+                e.commit();
 
-            resultado = msgCreateUser.getMessage();
-
+                resultado = "";//msgCreateUser.getMessage();
+            }else{
+                if (msgCreateUser.getMessage().toUpperCase().equals("UNKNOWHOSTEXCEPTION")){
+                    resultado = "Check your internet connection";
+                } else{
+                    resultado = resources.getString(R.string.some_error_occurred);
+                }
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             resultado = resources.getString(R.string.some_error_occurred);
