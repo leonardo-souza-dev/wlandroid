@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtras(bundle);
             startActivity(intent);
 
-        } catch(Exception ex){
+        } catch(Exception ex) {
             String msgErro =ex.getMessage();
             Singleton.getInstance().enviarLog(msgErro);
         }

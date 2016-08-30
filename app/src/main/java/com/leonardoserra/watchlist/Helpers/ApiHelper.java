@@ -3,6 +3,7 @@ package com.leonardoserra.watchlist.Helpers;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.util.Base64;
 
 import com.leonardoserra.watchlist.Models.Message;
 import com.leonardoserra.watchlist.R;
@@ -117,6 +118,8 @@ public class ApiHelper {
         return msg;
     }
 
+
+
     private class WLWebApi extends AsyncTask<String, Void, String> {
 
         private String searchTerm;
@@ -126,7 +129,7 @@ public class ApiHelper {
 
             String responseStr = "", lHash = "";
             String baseUrlApi = Singleton.getInstance().obterUrlBaseApi() + "/";
-
+            HttpURLConnection connection = null;
             try {
 
                 action = params[0];
@@ -136,10 +139,14 @@ public class ApiHelper {
                 String uri = baseUrlApi + action;
 
                 URL url = new URL(uri);
-                HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+                connection = (HttpURLConnection)url.openConnection();
 
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
+
+                final String basicAuth = "Basic " + Base64.encodeToString("asd:qwe".getBytes(), Base64.NO_WRAP);
+                connection.setRequestProperty("Authorization", basicAuth);
+
                 JSONObject jsonParam = new JSONObject();
 
                 if (action == SEARCH) {
@@ -181,6 +188,7 @@ public class ApiHelper {
             }catch (Exception e) {
                 e.printStackTrace();
             } finally {
+                connection.disconnect();
                 return responseStr;
             }
         }

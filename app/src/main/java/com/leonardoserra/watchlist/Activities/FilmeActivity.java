@@ -112,9 +112,9 @@ public class FilmeActivity extends AppCompatActivity {
         //titulo central
         TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
         String nomeFilme = bundle.getString("filme2_titulo");
-        if (nomeFilme.length() > 16) {
+        if (nomeFilme.length() > 17) {
 
-            nomeFilme = nomeFilme.substring(0, 16) + "...";
+            nomeFilme = nomeFilme.substring(0, 17) + "...";
             //Spannable text = new SpannableString(getSupportActionBar().getTitle());
             Spannable text = new SpannableString(nomeFilme);
             text.setSpan(new AbsoluteSizeSpan(20),
