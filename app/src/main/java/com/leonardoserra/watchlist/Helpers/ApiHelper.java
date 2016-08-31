@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 
 public class ApiHelper {
 
@@ -42,8 +43,8 @@ public class ApiHelper {
         return context.getResources();
     }
 
-    public void enviarLog(String msg, String pHash){
-        String[] parametros = {ENVIARLOG, pHash};
+    public void enviarLog(String msg){
+        String[] parametros = {ENVIARLOG, msg};
         Message message = call(true, parametros);
     }
 
@@ -144,7 +145,7 @@ public class ApiHelper {
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
 
-                final String basicAuth = "Basic " + Base64.encodeToString("asd:qwe".getBytes(), Base64.NO_WRAP);
+                final String basicAuth = "Basic " + Base64.encodeToString("asd:watxi1izTTPWD*".getBytes(), Base64.NO_WRAP);
                 connection.setRequestProperty("Authorization", basicAuth);
 
                 JSONObject jsonParam = new JSONObject();
@@ -163,7 +164,7 @@ public class ApiHelper {
                     jsonParam.put("hash", lHash);
                 } else if (action == ENVIARLOG) {
                     jsonParam.put("hash", lHash);
-                    jsonParam.put("logmsg", params[2]);
+                    jsonParam.put("logmsg", params[1]);
                 }
 
                 byte[] outputBytes = jsonParam.toString().getBytes();

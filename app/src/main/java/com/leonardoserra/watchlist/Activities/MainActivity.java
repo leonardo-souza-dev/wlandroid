@@ -23,6 +23,7 @@ import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.R;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
         } catch(Exception ex) {
-            String msgErro =ex.getMessage();
-            Singleton.getInstance().enviarLog(msgErro);
+            Singleton.getInstance().enviarLogException(ex);
         }
     }
 

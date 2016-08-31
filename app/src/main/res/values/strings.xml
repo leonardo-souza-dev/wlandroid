@@ -31,7 +31,7 @@
     <string name="mylistt">MyListt</string>
     <string name="chamada">Search a movie to add to your WatchListt</string>
 
-    <string name="testarApiLocal">false</string>
+    <string name="testarApiLocal">true</string>
     <string name="baseUrlNuvem">https://wlistt.herokuapp.com</string>
     <string name="baseUrlLocalDevice">http://192.168.1.5:5000</string>
     <string name="baseUrlLocalEmulator">http://10.0.2.2:5000</string>

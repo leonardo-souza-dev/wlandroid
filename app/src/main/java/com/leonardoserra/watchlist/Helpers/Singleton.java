@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.leonardoserra.watchlist.Models.Message;
@@ -19,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Singleton  {
 
@@ -59,11 +61,6 @@ public class Singleton  {
         return mInstance;
     }
 
-    public void enviarLog(String msg){
-        ApiHelper apiHelper = new ApiHelper();
-        apiHelper.enviarLog(msg, userHash);
-    }
-
     public String obterUrlBase(){
         String urlBase;
 
@@ -88,12 +85,19 @@ public class Singleton  {
         return basePosterUrl;
     }
 
+    public void enviarLogException(Exception e){
+        ApiHelper apiHelper = new ApiHelper();
+
+        //apiHelper.enviarLog(Arrays.toString(e.getStackTrace()));
+        apiHelper.enviarLog(TextUtils.join("\r\n", e.getStackTrace()));
+    }
+
+
     public String obterUrlBaseApi(){
         basePosterUrl = obterUrlBase() + "/api";
 
         return basePosterUrl;
     }
-
     public String getString(){ return this.mString; }
 
     public void setString(String value){
