@@ -50,7 +50,6 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         listView.setAdapter(movieAdapter);
 
         lista = Singleton.getInstance().buscaFilme(termo);
-        //lista = (ArrayList<MovieViewModel>) bundle.getSerializable("resultadodabusca_lista");
 
         for(final MovieViewModel entry : lista) {
             movieAdapter.add(entry);

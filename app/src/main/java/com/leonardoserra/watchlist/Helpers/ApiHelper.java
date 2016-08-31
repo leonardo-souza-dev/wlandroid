@@ -15,7 +15,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
 
 public class ApiHelper {
 
@@ -112,6 +111,7 @@ public class ApiHelper {
             }
         } catch (Exception e) {
 
+            Singleton.getInstance().enviarLogException(e);
             msg = new Message(false, getResources().getString(R.string.some_error_occurred), null);
             e.printStackTrace();
         }
@@ -186,8 +186,10 @@ public class ApiHelper {
             } catch (java.net.UnknownHostException e) {
                 e.printStackTrace();
                 responseStr = UNKNOWHOSTEXCEPTION;
+                Singleton.getInstance().enviarLogException(e);
             }catch (Exception e) {
                 e.printStackTrace();
+                Singleton.getInstance().enviarLogException(e);
             } finally {
                 connection.disconnect();
                 return responseStr;

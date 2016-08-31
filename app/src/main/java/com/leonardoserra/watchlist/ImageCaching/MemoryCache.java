@@ -3,6 +3,8 @@ package com.leonardoserra.watchlist.ImageCaching;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.leonardoserra.watchlist.Helpers.Singleton;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -36,6 +38,7 @@ public class MemoryCache {
             return cache.get(id);
         }catch(NullPointerException ex){
             ex.printStackTrace();
+            Singleton.getInstance().enviarLogException(ex);
             return null;
         }
     }
@@ -73,6 +76,7 @@ public class MemoryCache {
             cache.clear();
             size=0;
         }catch(NullPointerException ex){
+            Singleton.getInstance().enviarLogException(ex);
             ex.printStackTrace();
         }
     }

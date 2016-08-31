@@ -35,15 +35,11 @@ public class MyListtActivity extends AppCompatActivity {
     private ArrayList<MovieViewModel> lista;
     private TextView msg;
     private Button btnVaiParaBusca;
-    //private String nomeActivityAnterior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_listt);
-
-        //bundle = getIntent().getExtras();
-        //nomeActivityAnterior = bundle.getString("nomeActivityAnterior");
 
         msg = (TextView)findViewById(R.id.txtMsg);
         btnVaiParaBusca = (Button)findViewById(R.id.btnVaiParaBusca);

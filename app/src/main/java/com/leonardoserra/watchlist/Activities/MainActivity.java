@@ -22,17 +22,11 @@ import android.widget.Toast;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.R;
 
-import java.io.IOException;
-import java.util.Arrays;
-
 public class MainActivity extends AppCompatActivity {
 
     private EditText termoTextView;
     private Toolbar toolbar;
-    //private EditText edtSearch;
     private String termoDaBusca;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void criaOuObtemUsuario(){
+
         String resultado = Singleton.getInstance().criaOuObtemUsuario();
 
         if(!resultado.equals("")) {

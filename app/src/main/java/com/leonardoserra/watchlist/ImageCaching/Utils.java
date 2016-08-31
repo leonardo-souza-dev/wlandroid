@@ -1,5 +1,7 @@
 package com.leonardoserra.watchlist.ImageCaching;
 
+import com.leonardoserra.watchlist.Helpers.Singleton;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -21,6 +23,8 @@ public class Utils {
                 os.write(bytes, 0, count);
             }
         }
-        catch(Exception ex){}
+        catch(Exception ex){
+            Singleton.getInstance().enviarLogException(ex);
+        }
     }
 }

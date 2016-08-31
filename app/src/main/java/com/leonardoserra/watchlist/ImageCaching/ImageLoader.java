@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
+import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.R;
 
 import java.io.File;
@@ -109,7 +110,9 @@ public class ImageLoader{
             BitmapFactory.Options o2 = new BitmapFactory.Options();
             o2.inSampleSize=scale;
             return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
-        } catch (FileNotFoundException e) {}
+        } catch (FileNotFoundException e) {
+            Singleton.getInstance().enviarLogException(e);
+        }
         return null;
     }
 

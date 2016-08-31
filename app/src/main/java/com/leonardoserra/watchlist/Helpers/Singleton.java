@@ -87,17 +87,15 @@ public class Singleton  {
 
     public void enviarLogException(Exception e){
         ApiHelper apiHelper = new ApiHelper();
-
-        //apiHelper.enviarLog(Arrays.toString(e.getStackTrace()));
         apiHelper.enviarLog(TextUtils.join("\r\n", e.getStackTrace()));
     }
-
 
     public String obterUrlBaseApi(){
         basePosterUrl = obterUrlBase() + "/api";
 
         return basePosterUrl;
     }
+
     public String getString(){ return this.mString; }
 
     public void setString(String value){
@@ -132,6 +130,7 @@ public class Singleton  {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+            Singleton.getInstance().enviarLogException(ex);
             resultado = resources.getString(R.string.some_error_occurred);
         }
 
@@ -161,6 +160,7 @@ public class Singleton  {
                 }
             }
         } catch (Exception e) {
+            Singleton.getInstance().enviarLogException(e);
             e.printStackTrace();
         }
 
@@ -197,6 +197,7 @@ public class Singleton  {
                 }
             }
         } catch (Exception e) {
+            Singleton.getInstance().enviarLogException(e);
             e.printStackTrace();
         }
 
