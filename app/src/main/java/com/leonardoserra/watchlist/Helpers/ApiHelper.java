@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Base64;
 
-import com.leonardoserra.watchlist.Models.Message;
+import com.leonardoserra.watchlist.ViewModels.Message;
 import com.leonardoserra.watchlist.R;
 
 import org.json.JSONObject;

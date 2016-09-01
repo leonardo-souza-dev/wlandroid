@@ -1,6 +1,4 @@
-package com.leonardoserra.watchlist.Models;
-
-import com.leonardoserra.watchlist.Models.MovieViewModel;
+package com.leonardoserra.watchlist.ViewModels;
 
 import java.io.Serializable;
 import java.util.ArrayList;

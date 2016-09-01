@@ -6,10 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,8 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.leonardoserra.watchlist.Domain.Filme;
+import com.leonardoserra.watchlist.FilmeBusiness;
 import com.leonardoserra.watchlist.Helpers.Singleton;
-import com.leonardoserra.watchlist.Models.MovieViewModel;
+import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
 
@@ -35,11 +33,15 @@ public class MyListtActivity extends AppCompatActivity {
     private ArrayList<MovieViewModel> lista;
     private TextView msg;
     private Button btnVaiParaBusca;
+    private String hash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_listt);
+
+        bundle = getIntent().getExtras();
+        hash = bundle.getString("hash");
 
         msg = (TextView)findViewById(R.id.txtMsg);
         btnVaiParaBusca = (Button)findViewById(R.id.btnVaiParaBusca);
@@ -50,7 +52,11 @@ public class MyListtActivity extends AppCompatActivity {
 
         listView.setAdapter(movieAdapter);
 
-        lista = Singleton.getInstance().getMyListt();
+        FilmeBusiness filmeBusiness = new FilmeBusiness(hash);
+        ArrayList<Filme> filmes = filmeBusiness.obterMyListt();
+
+        //lista = Singleton.getInstance().getMyListt();
+        lista = ToViewModel(filmes);
 
         if (lista.size() > 0){
 
@@ -77,6 +83,22 @@ public class MyListtActivity extends AppCompatActivity {
         configuraActionbar();
 
         Log.d("nav", ">MY_LISTT");
+    }
+
+    private ArrayList<MovieViewModel> ToViewModel(ArrayList<Filme> filmes){
+
+        ArrayList<MovieViewModel> models = new ArrayList<>();
+        for (Filme f : filmes){
+            MovieViewModel m = new MovieViewModel();
+            m.set_id(f.get_id());
+            m.setNome(f.getName());
+            m.setIsInMyList(f.getIsInMyList());
+            m.setPoster(f.getPoster());
+            m.setAno(f.getAno());
+
+            models.add(m);
+        }
+        return models;
     }
 
     public void vaiParaBusca(View view){

@@ -5,22 +5,18 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.leonardoserra.watchlist.Models.Message;
-import com.leonardoserra.watchlist.Models.MovieViewModel;
-import com.leonardoserra.watchlist.Models.User;
+import com.leonardoserra.watchlist.ViewModels.Message;
+import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
+import com.leonardoserra.watchlist.ViewModels.User;
 import com.leonardoserra.watchlist.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Singleton  {
 
@@ -120,12 +116,14 @@ public class Singleton  {
                 e.putString("wl_user_hash", userHash);
                 e.commit();
 
-                resultado = "";//msgCreateUser.getMessage();
+                return userHash;
             }else{
                 if (msgCreateUser.getMessage().toUpperCase().equals("UNKNOWHOSTEXCEPTION")){
-                    resultado = "Check your internet connection";
+                    //resultado = "Check your internet connection";
+                    return userHash;
                 } else{
-                    resultado = resources.getString(R.string.some_error_occurred);
+                    //resultado = resources.getString(R.string.some_error_occurred);
+                    return userHash;
                 }
             }
         } catch (Exception ex) {
@@ -155,7 +153,7 @@ public class Singleton  {
                 for (int i = 0; i < len; i++) {
                     String str = jsonArray.get(i).toString();
                     MovieViewModel f = new Gson().fromJson(str, MovieViewModel.class);
-                    f.setUser(user);
+                    //f.setUser(user);
                     resultadoDaBusca.add(f);
                 }
             }

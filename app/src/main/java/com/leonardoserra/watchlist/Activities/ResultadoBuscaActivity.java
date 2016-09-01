@@ -7,18 +7,16 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.leonardoserra.watchlist.Domain.Filme;
+import com.leonardoserra.watchlist.FilmeBusiness;
 import com.leonardoserra.watchlist.Helpers.Singleton;
-import com.leonardoserra.watchlist.Models.MovieViewModel;
+import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
 
@@ -33,6 +31,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     private TextView txtFraseBusca;
     private Toolbar toolbar;
     private ArrayList<MovieViewModel> lista;
+    private String hash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +39,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_resultado_busca);
 
         bundle = getIntent().getExtras();
+        hash = bundle.getString("hash");
 
         listView = (ListView) findViewById(R.id.listViewResultadoBusca);
         termo = bundle.getString("resultadodabusca_termo");
@@ -49,7 +49,11 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
 
         listView.setAdapter(movieAdapter);
 
-        lista = Singleton.getInstance().buscaFilme(termo);
+        //lista = Singleton.getInstance().buscaFilme(termo);
+        FilmeBusiness filmeBusiness = new FilmeBusiness(hash);
+        ArrayList<Filme> filmes = filmeBusiness.busca(termo);
+
+        lista = ToViewModel(filmes);
 
         for(final MovieViewModel entry : lista) {
             movieAdapter.add(entry);
@@ -65,6 +69,22 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         configuraActionbar();
 
         Log.d("nav", ">SEARCH_RESULT: " + termo + "|" + qtd);
+    }
+
+    private ArrayList<MovieViewModel> ToViewModel(ArrayList<Filme> filmes){
+
+        ArrayList<MovieViewModel> models = new ArrayList<>();
+        for (Filme f : filmes){
+            MovieViewModel m = new MovieViewModel();
+            m.set_id(f.get_id());
+            m.setNome(f.getName());
+            m.setIsInMyList(f.getIsInMyList());
+            m.setPoster(f.getPoster());
+            m.setAno(f.getAno());
+
+            models.add(m);
+        }
+        return models;
     }
 
     private void configuraActionbar() {
@@ -100,9 +120,9 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
 
     public void vaiParaMyListt(View view){
         Intent intentMyListt = new Intent(this, MyListtActivity.class);
-        Bundle b = new Bundle();
-        b.putString("nomeActivityAnterior", "Search");
-        intentMyListt.putExtras(b);
+        //Bundle b = new Bundle();
+        //b.putString("nomeActivityAnterior", "Search");
+        //intentMyListt.putExtras(b);
 
         startActivity(intentMyListt);
     }

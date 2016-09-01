@@ -1,4 +1,4 @@
-package com.leonardoserra.watchlist.Models;
+package com.leonardoserra.watchlist.ViewModels;
 
 import org.json.JSONObject;
 

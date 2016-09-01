@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.leonardoserra.watchlist.Activities.FilmeActivity;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
-import com.leonardoserra.watchlist.Models.MovieViewModel;
+import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 
 public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 

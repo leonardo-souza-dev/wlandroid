@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText termoTextView;
     private Toolbar toolbar;
     private String termoDaBusca;
+    private String hash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ResultadoBuscaActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("resultadodabusca_termo", termoDaBusca);
+            bundle.putString("hash", hash);
             intent.putExtras(bundle);
             startActivity(intent);
 
@@ -64,13 +66,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void criaOuObtemUsuario(){
 
-        String resultado = Singleton.getInstance().criaOuObtemUsuario();
+        hash = Singleton.getInstance().criaOuObtemUsuario();
 
-        if(!resultado.equals("")) {
-            Toast.makeText(this, resultado, Toast.LENGTH_LONG).show();
-        }
+        /*if(!hash.equals("")) {
+            Toast.makeText(this, hash, Toast.LENGTH_LONG).show();
+        }*/
 
-        Log.d("usuario", resultado);
+        Log.d("usuario", hash);
     }
 
     private void configuraActionbar() {
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     public void vaiParaMyListt(View view){
         Intent intentMyListt = new Intent(this, MyListtActivity.class);
         Bundle b = new Bundle();
-        b.putString("nomeActivityAnterior", "Home");
+        b.putString("hash", hash);
         intentMyListt.putExtras(b);
 
         startActivity(intentMyListt);
