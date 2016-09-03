@@ -1,9 +1,6 @@
 package com.leonardoserra.watchlist.Activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,13 +9,13 @@ import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.TextAppearanceSpan;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leonardoserra.watchlist.WLService;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.R;
 
@@ -28,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private String termoDaBusca;
     private String hash;
+
+    private WLService _WLService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +64,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void criaOuObtemUsuario(){
-
         hash = Singleton.getInstance().criaOuObtemUsuario();
-
-        /*if(!hash.equals("")) {
+        if(!hash.equals("")) {
             Toast.makeText(this, hash, Toast.LENGTH_LONG).show();
-        }*/
-
-        Log.d("usuario", hash);
+        }
+        //Log.d("usuario", hash);
     }
 
     private void configuraActionbar() {

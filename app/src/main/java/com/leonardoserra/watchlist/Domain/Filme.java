@@ -2,10 +2,12 @@ package com.leonardoserra.watchlist.Domain;
 
 import com.leonardoserra.watchlist.ViewModels.User;
 
+import java.io.Serializable;
+
 /**
  * Created by leonardo on 01/09/16.
  */
-public class Filme {
+public class Filme implements Serializable {
 
     private String _id; //movieId
     private String name;

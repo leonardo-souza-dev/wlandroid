@@ -9,22 +9,25 @@ import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by leonardo on 01/09/16.
  */
-public class FilmeRepository implements IFilmeRepository {
+public class CloudRepository implements IRepository  {
 
     private ApiHelper apiHelper;
     private String hash;
 
-    public FilmeRepository(String pHash){
+    public CloudRepository(String pHash){
         hash = pHash;
         apiHelper = new ApiHelper();
     }
+    public CloudRepository(){
+        //apiHelper = new ApiHelper();
+    }
 
-    @Override
     public ArrayList<Filme> obterMyListt(){
 
         ArrayList<Filme> myListt = null;
@@ -59,7 +62,6 @@ public class FilmeRepository implements IFilmeRepository {
         return myListt;
     }
 
-    @Override
     public ArrayList<Filme> busca(String termo) {
 
         ArrayList<Filme> resultadoDaBusca = null;

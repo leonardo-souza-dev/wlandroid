@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leonardoserra.watchlist.Domain.Filme;
-import com.leonardoserra.watchlist.FilmeBusiness;
 import com.leonardoserra.watchlist.Helpers.Singleton;
 import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.leonardoserra.watchlist.MovieAdapter;
@@ -32,6 +31,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ArrayList<MovieViewModel> lista;
     private String hash;
+    private ArrayList<Filme> filmes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         hash = bundle.getString("hash");
 
         listView = (ListView) findViewById(R.id.listViewResultadoBusca);
+
         termo = bundle.getString("resultadodabusca_termo");
         movieAdapter = new MovieAdapter(this, R.layout.simple_row, termo);
 
@@ -49,11 +50,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
 
         listView.setAdapter(movieAdapter);
 
-        //lista = Singleton.getInstance().buscaFilme(termo);
-        FilmeBusiness filmeBusiness = new FilmeBusiness(hash);
-        ArrayList<Filme> filmes = filmeBusiness.busca(termo);
-
-        lista = ToViewModel(filmes);
+        lista = Singleton.getInstance().buscaFilme(termo);
 
         for(final MovieViewModel entry : lista) {
             movieAdapter.add(entry);

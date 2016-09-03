@@ -16,9 +16,10 @@ import com.leonardoserra.watchlist.R;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Singleton  {
+public class Singleton implements Serializable {
 
     private static Singleton mInstance = null;
     private static Context context;
@@ -114,6 +115,7 @@ public class Singleton  {
                 userHash = msgCreateUser.getObject("hash");
 
                 e.putString("wl_user_hash", userHash);
+
                 e.commit();
 
                 return userHash;

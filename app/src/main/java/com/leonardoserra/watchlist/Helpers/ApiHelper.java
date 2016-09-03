@@ -111,7 +111,7 @@ public class ApiHelper {
             }
         } catch (Exception e) {
 
-            Singleton.getInstance().enviarLogException(e);
+            //Singleton.getInstance().enviarLogException(e);
             msg = new Message(false, getResources().getString(R.string.some_error_occurred), null);
             e.printStackTrace();
         }
@@ -129,7 +129,8 @@ public class ApiHelper {
         protected String doInBackground(String... params) {
 
             String responseStr = "", lHash = "";
-            String baseUrlApi = Singleton.getInstance().obterUrlBaseApi() + "/";
+            String baseUrlApi = "";
+            baseUrlApi= Singleton.getInstance().obterUrlBaseApi() + "/";
             HttpURLConnection connection = null;
             try {
 
@@ -186,10 +187,10 @@ public class ApiHelper {
             } catch (java.net.UnknownHostException e) {
                 e.printStackTrace();
                 responseStr = UNKNOWHOSTEXCEPTION;
-                Singleton.getInstance().enviarLogException(e);
+                //Singleton.getInstance().enviarLogException(e);
             }catch (Exception e) {
                 e.printStackTrace();
-                Singleton.getInstance().enviarLogException(e);
+                //Singleton.getInstance().enviarLogException(e);
             } finally {
                 connection.disconnect();
                 return responseStr;
