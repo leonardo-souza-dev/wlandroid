@@ -9,6 +9,7 @@ import com.leonardoserra.watchlist.Interfaces.IRepository;
 public class RepositoryIterator implements IITerador {
 
     IRepository[] itens;
+
     int posicao = 0;
 
     public RepositoryIterator(IRepository[] repos){
