@@ -1,4 +1,4 @@
-package com.leonardoserra.watchlist;
+package com.leonardoserra.watchlist.Interfaces;
 
 import com.leonardoserra.watchlist.Domain.Filme;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by leonardo on 02/09/16.
  */
 
-public interface Iterador {
+public interface IITerador {
     boolean hasNext();
     Object next();
 }

@@ -1,4 +1,4 @@
-package com.leonardoserra.watchlist.Helpers;
+package com.leonardoserra.watchlist;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.util.Base64;
 
 import com.leonardoserra.watchlist.ViewModels.Message;
-import com.leonardoserra.watchlist.R;
 
 import org.json.JSONObject;
 
@@ -112,7 +111,7 @@ public class ApiHelper {
         } catch (Exception e) {
 
             //Singleton.getInstance().enviarLogException(e);
-            msg = new Message(false, getResources().getString(R.string.some_error_occurred), null);
+            msg = new Message(false, "Some error occurred.", null);
             e.printStackTrace();
         }
 
@@ -138,9 +137,12 @@ public class ApiHelper {
                 lHash = (action == OBTERFILMESRECOMENDADOS || action == OBTERMYLISTT ||
                         action == CREATEUSER || action == SEARCH || action == ADDMOVIE ||
                         action == REMOVEMOVIE || action == ENVIARLOG) ? params[1] : "";
+
+
                 String uri = baseUrlApi + action;
 
                 URL url = new URL(uri);
+
                 connection = (HttpURLConnection)url.openConnection();
 
                 connection.setRequestMethod("POST");
@@ -156,7 +158,7 @@ public class ApiHelper {
                         return null;
                     }
                     searchTerm = params[2].trim().replace(",", "").replace("-", "").replace(".", "");
-                    jsonParam.put("searchterm", searchTerm);
+                    jsonParam.put("termo", searchTerm);
                     jsonParam.put("hash", lHash);
                 } else if (action == ADDMOVIE || action == REMOVEMOVIE) {
                     jsonParam.put("movieid", params[2]);

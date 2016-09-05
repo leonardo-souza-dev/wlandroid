@@ -3,7 +3,7 @@ package com.leonardoserra.watchlist.ImageCaching;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.leonardoserra.watchlist.Helpers.Singleton;
+import com.leonardoserra.watchlist.Singleton;
 
 import java.util.Collections;
 import java.util.Iterator;

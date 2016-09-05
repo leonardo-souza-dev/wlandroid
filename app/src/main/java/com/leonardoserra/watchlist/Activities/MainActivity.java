@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leonardoserra.watchlist.WLService;
-import com.leonardoserra.watchlist.Helpers.Singleton;
+import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,7 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
         Singleton.getInstance(getBaseContext(), getResources());//INIT CUSTOM FRAGMENTMANAGER
 
-        criaOuObtemUsuario();
+        //_WLService = new WLService(getBaseContext());
+
+        Singleton.getInstance()
+                .getWLService().criarOuObterUsuario("");
+
+        //_WLService.criarOuObterUsuario("");
+        //criaOuObtemUsuario();
 
         configuraActionbar();
 

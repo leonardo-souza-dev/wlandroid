@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leonardoserra.watchlist.Domain.Filme;
-import com.leonardoserra.watchlist.Helpers.Singleton;
+import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
@@ -35,8 +35,6 @@ public class MyListtActivity extends AppCompatActivity {
     private Button btnVaiParaBusca;
     private String hash;
     private ArrayList<Filme> filmesObtidos;
-    private WLService wlService;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +53,8 @@ public class MyListtActivity extends AppCompatActivity {
 
         listView.setAdapter(movieAdapter);
 
-        //ArrayList<Filme> filmes = filmeService.obterMyListt();
-        wlService = new WLService(getBaseContext());
 
-        filmesObtidos = wlService.obterMyListt();
-
-        //lista = Singleton.getInstance().getMyListt();
+        filmesObtidos = Singleton.getInstance().getWLService().obterMyListt();
         lista = ToViewModel(filmesObtidos);
 
         if (lista.size() > 0){
@@ -163,9 +157,9 @@ public class MyListtActivity extends AppCompatActivity {
 
     public void vaiParaMyListt(View view){
         Intent intentMyListt = new Intent(this, MyListtActivity.class);
-        Bundle b = new Bundle();
-        b.putString("nomeActivityAnterior","MyListt");
-        intentMyListt.putExtras(b);
+//        Bundle b = new Bundle();
+  //      b.putString("nomeActivityAnterior","MyListt");
+    //    intentMyListt.putExtras(b);
 
         startActivity(intentMyListt);
     }

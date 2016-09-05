@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
-import com.leonardoserra.watchlist.Helpers.Singleton;
+import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.R;
 
 import java.io.File;

@@ -1,6 +1,6 @@
 package com.leonardoserra.watchlist.ImageCaching;
 
-import com.leonardoserra.watchlist.Helpers.Singleton;
+import com.leonardoserra.watchlist.Singleton;
 
 import java.io.InputStream;
 import java.io.OutputStream;

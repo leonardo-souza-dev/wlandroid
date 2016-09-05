@@ -1,9 +1,12 @@
-package com.leonardoserra.watchlist;
+package com.leonardoserra.watchlist.Repository;
+
+import com.leonardoserra.watchlist.Interfaces.IITerador;
+import com.leonardoserra.watchlist.Interfaces.IRepository;
 
 /**
  * Created by leonardo on 02/09/16.
  */
-public class RepositoryIterator implements Iterador {
+public class RepositoryIterator implements IITerador {
 
     IRepository[] itens;
     int posicao = 0;

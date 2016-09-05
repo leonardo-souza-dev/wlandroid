@@ -1,4 +1,4 @@
-package com.leonardoserra.watchlist.Helpers;
+package com.leonardoserra.watchlist;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 import com.leonardoserra.watchlist.ViewModels.Message;
 import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.leonardoserra.watchlist.ViewModels.User;
-import com.leonardoserra.watchlist.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,6 +46,8 @@ public class Singleton implements Serializable {
         return mInstance;
     }
 
+    private static WLService wlService;
+
     public static Singleton getInstance(Context pContext, Resources pResources){
         context = pContext;
         resources = pResources;
@@ -55,7 +56,13 @@ public class Singleton implements Serializable {
         {
             mInstance = new Singleton();
         }
+
+        wlService = new WLService(context);
         return mInstance;
+    }
+
+    public WLService getWLService(){
+        return this.wlService;
     }
 
     public String obterUrlBase(){
@@ -138,6 +145,7 @@ public class Singleton implements Serializable {
     }
 
     public ArrayList<MovieViewModel> buscaFilme(String termoBusca){
+
         ArrayList<MovieViewModel> resultadoDaBusca = null;
 
         Message msg = new ApiHelper(context).search(userHash, termoBusca);

@@ -14,10 +14,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leonardoserra.watchlist.Domain.Filme;
-import com.leonardoserra.watchlist.Helpers.Singleton;
+import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
+import com.leonardoserra.watchlist.WLService;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     private ArrayList<MovieViewModel> lista;
     private String hash;
     private ArrayList<Filme> filmes;
+    private WLService wlService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +52,11 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
 
         listView.setAdapter(movieAdapter);
 
-        lista = Singleton.getInstance().buscaFilme(termo);
-
+        //wlService = new WLService(getBaseContext());
+        //filmes = wlService.buscar(termo);
+        filmes = Singleton.getInstance().getWLService().buscar(termo);
+        //lista = Singleton.getInstance().buscaFilme(termo);
+        lista = ToViewModel(filmes);
         for(final MovieViewModel entry : lista) {
             movieAdapter.add(entry);
         }

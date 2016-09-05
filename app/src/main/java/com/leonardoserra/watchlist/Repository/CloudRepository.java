@@ -1,31 +1,53 @@
-package com.leonardoserra.watchlist;
+package com.leonardoserra.watchlist.Repository;
+
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.leonardoserra.watchlist.Domain.Filme;
-import com.leonardoserra.watchlist.Helpers.ApiHelper;
+import com.leonardoserra.watchlist.ApiHelper;
+import com.leonardoserra.watchlist.Interfaces.IObservador;
+import com.leonardoserra.watchlist.Interfaces.IRepository;
+import com.leonardoserra.watchlist.Interfaces.ISujeito;
 import com.leonardoserra.watchlist.ViewModels.Message;
-import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by leonardo on 01/09/16.
  */
-public class CloudRepository implements IRepository  {
+public class CloudRepository implements IRepository, IObservador, ISujeito {
 
     private ApiHelper apiHelper;
     private String hash;
+    private String usuarioApi;
+    private String senhaApi;
 
-    public CloudRepository(String pHash){
-        hash = pHash;
+    public CloudRepository(){
+        String usuarioSenhaApi ="asd:watxi1izTTPWD*";
+        usuarioApi = usuarioSenhaApi.split(":")[0];
+        senhaApi = usuarioSenhaApi.split(":")[1];
+
         apiHelper = new ApiHelper();
     }
-    public CloudRepository(){
-        //apiHelper = new ApiHelper();
+
+    public String criarOuObterUsuario(String usuario){
+        Message msgCreateUser = apiHelper.createuser(usuario);
+        String userHash = null;
+
+        try {
+            if (msgCreateUser.getSucess()) {
+                userHash = msgCreateUser.getObject("hash");
+            } else {
+                return null;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return userHash;
     }
 
     public ArrayList<Filme> obterMyListt(){
@@ -62,7 +84,7 @@ public class CloudRepository implements IRepository  {
         return myListt;
     }
 
-    public ArrayList<Filme> busca(String termo) {
+    public ArrayList<Filme> buscar(String termo) {
 
         ArrayList<Filme> resultadoDaBusca = null;
         Message msg = apiHelper.search(hash, termo);
@@ -87,5 +109,35 @@ public class CloudRepository implements IRepository  {
             }
         }
         return resultadoDaBusca;
+    }
+
+    /*
+        Padrao Observer
+     */
+
+    private ArrayList<IObservador> observadores = new ArrayList<>();
+
+    public void registrarObservador(IObservador o) {
+        observadores.add(o);
+    }
+
+    public void removerObservador(IObservador o) {
+        observadores.remove(o);
+    }
+
+    public void notificarObservadores(String p, String v) {
+        for(IObservador o : observadores) {
+            o.atualizar(this, p, v);
+        }
+    }
+
+    public void atualizar(ISujeito s, String p, String v) {
+        if (s == this) {
+            Log.d("WL","mesmo objeto");
+        } else {
+            if (p.equals("usuario")){
+                hash = v;
+            }
+        }
     }
 }
