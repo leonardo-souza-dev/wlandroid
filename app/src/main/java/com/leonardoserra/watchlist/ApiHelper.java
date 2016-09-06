@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Base64;
 
+import com.leonardoserra.watchlist.Domain.Filme;
 import com.leonardoserra.watchlist.ViewModels.Message;
 
 import org.json.JSONObject;
@@ -73,8 +74,22 @@ public class ApiHelper {
         return msg;
     }
 
+    public Message adicionaFilme(String pHash, Filme filme) {
+        String[] lParameters = {ADDMOVIE, pHash, filme.get_id() };
+        Message msg = call(true, lParameters);
+
+        return msg;
+    }
+
     public Message removeMovie(String pHash, String pMovieId) {
         String[] lParameters = {REMOVEMOVIE, pHash, pMovieId };
+        Message msg = call(true, lParameters);
+
+        return msg;
+    }
+
+    public Message removeMovie(String pHash, Filme filme) {
+        String[] lParameters = {REMOVEMOVIE, pHash, filme.get_id() };
         Message msg = call(true, lParameters);
 
         return msg;

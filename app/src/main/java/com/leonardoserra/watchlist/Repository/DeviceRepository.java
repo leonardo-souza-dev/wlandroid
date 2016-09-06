@@ -6,10 +6,12 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.leonardoserra.watchlist.ApiHelper;
 import com.leonardoserra.watchlist.Domain.Filme;
 import com.leonardoserra.watchlist.Interfaces.IObservador;
 import com.leonardoserra.watchlist.Interfaces.IRepository;
 import com.leonardoserra.watchlist.Interfaces.ISujeito;
+import com.leonardoserra.watchlist.ViewModels.Message;
 
 import java.util.ArrayList;
 
@@ -41,7 +43,7 @@ public class DeviceRepository implements IRepository, ISujeito, IObservador {
     public String criarOuObterUsuario(String usuario){
         usuario = sharedPreferences.getString("wl_user_hash", null);
 
-        notificarObservadores("usuario", usuario);
+        if (usuario != null) notificarObservadores("usuario", usuario);
 
         return usuario;
     }
@@ -62,6 +64,14 @@ public class DeviceRepository implements IRepository, ISujeito, IObservador {
     }
 
 
+
+    public boolean removerFilme(Filme filme){
+        return false;
+    }
+
+    public boolean adicionarFilme(Filme filme){
+        return false;
+    }
 
     /*
         Padrao Observer
@@ -87,7 +97,14 @@ public class DeviceRepository implements IRepository, ISujeito, IObservador {
         if (s == this) {
             Log.d("WL", "mesmo objeto");
         } else {
-            Log.d("WL","ATUALIZAR OBJETO");
+            if (p.equals("usuario")){
+                if (v != null || !v.equals("")){
+
+                    e.putString("wl_user_hash", v);
+
+                    e.commit();
+                }
+            }
         }
     }
 

@@ -35,11 +35,11 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
 
     public String criarOuObterUsuario(String usuario){
         Message msgCreateUser = apiHelper.createuser(usuario);
-        String userHash = null;
 
         try {
             if (msgCreateUser.getSucess()) {
-                userHash = msgCreateUser.getObject("hash");
+                hash = msgCreateUser.getObject("hash");
+                notificarObservadores("usuario", hash);
             } else {
                 return null;
             }
@@ -47,12 +47,13 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
             e.printStackTrace();
         }
 
-        return userHash;
+        return hash;
     }
 
     public ArrayList<Filme> obterMyListt(){
 
         ArrayList<Filme> myListt = null;
+
         Message msg = apiHelper.obterMyListt(hash);
 
         if (msg != null && msg.getObject() != null) {
@@ -111,6 +112,28 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
         return resultadoDaBusca;
     }
 
+    public boolean removerFilme(Filme filme){
+        boolean sucesso = false;
+        try {
+            apiHelper.removeMovie(hash, filme);
+            sucesso = true;
+        } catch (Exception ex){
+            sucesso = false;
+        }
+        return sucesso;
+    }
+
+    public boolean adicionarFilme(Filme filme){
+        boolean sucesso = false;
+        try {
+            apiHelper.adicionaFilme(hash, filme);
+            sucesso = true;
+        } catch (Exception ex){
+            sucesso = false;
+        }
+        return sucesso;
+    }
+
     /*
         Padrao Observer
      */
@@ -136,7 +159,18 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
             Log.d("WL","mesmo objeto");
         } else {
             if (p.equals("usuario")){
-                hash = v;
+                if (v == null || v.equals("")){
+                    ApiHelper api = new ApiHelper();
+                    try {
+                        Message msg = api.createuser("");
+                        if (msg.getSucess()) {
+                            hash = msg.getObject("hash");
+                            notificarObservadores("usuario", hash);
+                        }
+                    } catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                }
             }
         }
     }

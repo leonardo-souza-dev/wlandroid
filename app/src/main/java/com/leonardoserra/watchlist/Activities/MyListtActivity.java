@@ -41,8 +41,8 @@ public class MyListtActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_listt);
 
-        bundle = getIntent().getExtras();
-        hash = bundle.getString("hash");
+        //bundle = getIntent().getExtras();
+        //hash = bundle.getString("hash");
 
         msg = (TextView)findViewById(R.id.txtMsg);
         btnVaiParaBusca = (Button)findViewById(R.id.btnVaiParaBusca);
@@ -53,21 +53,16 @@ public class MyListtActivity extends AppCompatActivity {
 
         listView.setAdapter(movieAdapter);
 
-
         filmesObtidos = Singleton.getInstance().getWLService().obterMyListt();
         lista = ToViewModel(filmesObtidos);
 
         if (lista.size() > 0){
-
             for (final MovieViewModel entry : lista) {
                 movieAdapter.add(entry);
             }
-
             msg.setEnabled(false);
             btnVaiParaBusca.setEnabled(false);
-
         } else {
-
             msg.setText(getResources().getString(R.string.there_is_no_movies));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -80,8 +75,6 @@ public class MyListtActivity extends AppCompatActivity {
         }
 
         configuraActionbar();
-
-        Log.d("nav", ">MY_LISTT");
     }
 
     private ArrayList<MovieViewModel> ToViewModel(ArrayList<Filme> filmes){
@@ -102,9 +95,6 @@ public class MyListtActivity extends AppCompatActivity {
 
     public void vaiParaBusca(View view){
         Intent intent = new Intent(this, MainActivity.class);
-        Bundle b = new Bundle();
-        b.putString("nomeActivityAnterior","MyListt");
-        intent.putExtras(b);
         startActivity(intent);
     }
 
@@ -157,10 +147,6 @@ public class MyListtActivity extends AppCompatActivity {
 
     public void vaiParaMyListt(View view){
         Intent intentMyListt = new Intent(this, MyListtActivity.class);
-//        Bundle b = new Bundle();
-  //      b.putString("nomeActivityAnterior","MyListt");
-    //    intentMyListt.putExtras(b);
-
         startActivity(intentMyListt);
     }
 }

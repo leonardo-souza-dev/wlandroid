@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leonardoserra.watchlist.WLService;
 import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.R;
 
@@ -26,25 +25,14 @@ public class MainActivity extends AppCompatActivity {
     private String termoDaBusca;
     private String hash;
 
-    private WLService _WLService;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Singleton.getInstance(getBaseContext(), getResources());//INIT CUSTOM FRAGMENTMANAGER
-
-        //_WLService = new WLService(getBaseContext());
-
-        Singleton.getInstance()
-                .getWLService().criarOuObterUsuario("");
-
-        //_WLService.criarOuObterUsuario("");
-        //criaOuObtemUsuario();
-
+        Singleton.getInstance().getWLService().criarOuObterUsuario("");
         configuraActionbar();
-
         //setarBanner();
     }
 
@@ -65,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
         } catch(Exception ex) {
+
             Singleton.getInstance().enviarLogException(ex);
+
         }
     }
 
@@ -117,9 +107,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void vaiParaMyListt(View view){
         Intent intentMyListt = new Intent(this, MyListtActivity.class);
-        Bundle b = new Bundle();
-        b.putString("hash", hash);
-        intentMyListt.putExtras(b);
+        //Bundle b = new Bundle();
+        //b.putString("hash", hash);
+        //intentMyListt.putExtras(b);
 
         startActivity(intentMyListt);
     }

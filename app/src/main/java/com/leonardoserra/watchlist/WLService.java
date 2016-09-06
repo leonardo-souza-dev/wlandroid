@@ -44,6 +44,7 @@ public class WLService {
                 encontrou = true;
             }
         }
+        repositoryIterator.resetPosition();
         return usuario;
     }
 
@@ -59,6 +60,7 @@ public class WLService {
                 encontrou = true;
             }
         }
+        repositoryIterator.resetPosition();
         return filmes;
     }
 
@@ -74,7 +76,40 @@ public class WLService {
                 encontrou = true;
             }
         }
+        repositoryIterator.resetPosition();
         return filmes;
+    }
+
+    public Boolean adicionarFilme(Filme filme){
+        boolean sucesso = false;
+
+        boolean encontrou = false;
+
+        while(!encontrou && repositoryIterator.hasNext()){
+            IRepository iRepository = (IRepository)repositoryIterator.next();
+            sucesso = iRepository.adicionarFilme(filme);
+            if (sucesso){
+                encontrou = true;
+            }
+        }
+        repositoryIterator.resetPosition();
+        return sucesso;
+    }
+
+    public boolean removerFilme(Filme filme){
+        boolean sucesso = false;
+
+        boolean encontrou = false;
+
+        while(!encontrou && repositoryIterator.hasNext()){
+            IRepository iRepository = (IRepository)repositoryIterator.next();
+            sucesso = iRepository.removerFilme(filme);
+            if (sucesso){
+                encontrou = true;
+            }
+        }
+        repositoryIterator.resetPosition();
+        return sucesso;
     }
 
 

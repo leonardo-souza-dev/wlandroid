@@ -20,7 +20,7 @@ public class MovieViewModel implements Serializable, Cloneable {
     }
 
 
-    public String getName() {
+    public String getNome() {
         return this.name;
     }
 
@@ -29,8 +29,8 @@ public class MovieViewModel implements Serializable, Cloneable {
     }
 
 
-    public String getAno() {
-        return Integer.toString(this.ano);
+    public int getAno() {
+        return this.ano;
     }
 
     public void setAno(int pAno){

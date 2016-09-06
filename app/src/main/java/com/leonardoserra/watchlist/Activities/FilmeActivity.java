@@ -19,9 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leonardoserra.watchlist.ApiHelper;
+import com.leonardoserra.watchlist.Domain.Filme;
 import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 import com.leonardoserra.watchlist.R;
+import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 
 public class FilmeActivity extends AppCompatActivity {
 
@@ -30,17 +32,20 @@ public class FilmeActivity extends AppCompatActivity {
     private ImageLoader imgLoader;
     private String REMOVE;
     private String ADD;
-    private Boolean estaNaMyListt;
-    private Bundle bundle;
+    //private Boolean estaNaMyListt;
+    //private Bundle bundle;
     private Toolbar toolbar;
-    private String filmeId;
+    //private String filmeId;
+    //private Filme filme;
+    private MovieViewModel filmeViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filme);
 
-        bundle = getIntent().getExtras();
+        Bundle bundle = getIntent().getExtras();
+        filmeViewModel = new MovieViewModel();
 
         textView = (TextView)findViewById(R.id.txtMovieTitle);
         button = (Button)findViewById(R.id.btnAddRemove);
@@ -48,21 +53,24 @@ public class FilmeActivity extends AppCompatActivity {
         REMOVE = getResources().getString(R.string.remove_movie);
         ADD = getResources().getString(R.string.add_movie);
 
-
-        String titulo = bundle.getString("filme2_titulo");
+        String titulo = bundle.getString("filme2_titulo");//
         textView.setText(titulo);
-        estaNaMyListt = bundle.getBoolean("filme2_estaNaMyListt", false);
+        Boolean estaNaMyListt = bundle.getBoolean("filme2_estaNaMyListt", false);//
         button.setText(estaNaMyListt ? REMOVE : ADD);
-
-        String nomeArquivo = bundle.getString("filme2_nomeArquivo");
+        String nomeArquivo = bundle.getString("filme2_nomeArquivo");//
         String baseUrl = "http://10.0.2.2:8080/" + "poster?p=" + nomeArquivo;
 
         if (!Singleton.getInstance().isEmulator())
             baseUrl = "http://192.168.1.5:8080/" + "poster?p=" + nomeArquivo;
 
         imgLoader.DisplayImage(baseUrl, (ImageView) findViewById(R.id.imgPoster));
+        String filmeId = bundle.getString("filme2_filmeId");//
 
-        filmeId = bundle.getString("filme2_filmeId");
+        filmeViewModel.setNome(titulo);
+        filmeViewModel.setIsInMyList(estaNaMyListt);
+        filmeViewModel.setPoster(nomeArquivo);
+        filmeViewModel.set_id(filmeId);
+
 
         Button btnAddOrRemove = (Button)findViewById(R.id.btnAddRemove);
         btnAddOrRemove.setOnClickListener(new View.OnClickListener() {
@@ -71,10 +79,20 @@ public class FilmeActivity extends AppCompatActivity {
                 adicionarOuRetirar(v);
             }
         });
-
         configuraActionbar();
 
         Log.d("nav", "MOVIE: " + titulo);
+    }
+
+    public Filme ToModel(MovieViewModel m){
+        Filme filme = new Filme();
+        filme.set_id(m.get_id());
+        filme.setNome(m.getNome());
+        filme.setEstaNaMinhaLista(m.getIsInMyList());
+        filme.setPoster(m.getPoster());
+        filme.setAno(m.getAno());
+
+        return filme;
     }
 
     public void adicionarOuRetirar(View view) {
@@ -82,17 +100,19 @@ public class FilmeActivity extends AppCompatActivity {
 
         ApiHelper api = new ApiHelper(this);
 
-        if (estaNaMyListt) {
-            api.removeMovie(hash, filmeId);
+        if (filmeViewModel.getIsInMyList()) {
+            Singleton.getInstance().getWLService().removerFilme(ToModel(filmeViewModel));
+            //api.removeMovie(hash, filmeViewModel.get_id());
             Toast.makeText(this, "movie removed from your WatchListt", Toast.LENGTH_LONG).show();
         } else {
-            api.addMovie(hash, filmeId);
+            Singleton.getInstance().getWLService().adicionarFilme(ToModel(filmeViewModel));
+            //api.addMovie(hash, filmeViewModel.get_id());
             Toast.makeText(this, "movie added to your WatchListt", Toast.LENGTH_LONG).show();
         }
+        filmeViewModel.setIsInMyList(!filmeViewModel.getIsInMyList());
+        //estaNaMyListt = !estaNaMyListt;
 
-        estaNaMyListt = !estaNaMyListt;
-
-        button.setText(estaNaMyListt ? REMOVE : ADD);
+        button.setText(filmeViewModel.getIsInMyList() ? REMOVE : ADD);
     }
 
     private void configuraActionbar() {
@@ -109,7 +129,7 @@ public class FilmeActivity extends AppCompatActivity {
 
         //titulo central
         TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
-        String nomeFilme = bundle.getString("filme2_titulo");
+        String nomeFilme = filmeViewModel.getNome();
         if (nomeFilme.length() > 17) {
 
             nomeFilme = nomeFilme.substring(0, 17) + "...";
@@ -130,8 +150,8 @@ public class FilmeActivity extends AppCompatActivity {
     public void onBackPressed()
     {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("filme_estaNaMyListt", estaNaMyListt);
-        returnIntent.putExtra("filme_filmeId", filmeId);
+        returnIntent.putExtra("filme_estaNaMyListt", filmeViewModel.getIsInMyList());
+        returnIntent.putExtra("filme_filmeId", filmeViewModel.get_id());
         setResult(Activity.RESULT_OK, returnIntent);
 
         super.onBackPressed();

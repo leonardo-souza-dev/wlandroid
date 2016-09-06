@@ -16,6 +16,10 @@ public class RepositoryIterator implements IITerador {
         itens = repos;
     }
 
+    public void resetPosition(){
+        posicao = 0;
+    }
+
     public Object next(){
         IRepository iRepository = itens[posicao];
         posicao++;

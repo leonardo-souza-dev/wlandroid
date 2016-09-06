@@ -68,7 +68,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         Intent intent = new Intent(gContext, FilmeActivity.class);
 
         Bundle b = new Bundle();
-        b.putString("filme2_titulo", fruitEntry.getName());
+        b.putString("filme2_titulo", fruitEntry.getNome());
         b.putBoolean("filme2_estaNaMyListt", fruitEntry.getIsInMyList());
         b.putString("filme2_nomeArquivo", fruitEntry.getPoster());
         b.putString("filme2_filmeId", fruitEntry.get_id());
@@ -82,7 +82,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
     private void setElements(ViewHolderSimpleRow viewHolderSimpleRow, MovieViewModel pEntry) {
         // Setting the title view is straightforward
-        String tituloFilme = pEntry.getName();
+        String tituloFilme = pEntry.getNome();
         String partOne = "";
         String partTwo = "";
         String termOriginal = "";
