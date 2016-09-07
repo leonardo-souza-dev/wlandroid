@@ -96,21 +96,20 @@ public class FilmeActivity extends AppCompatActivity {
     }
 
     public void adicionarOuRetirar(View view) {
-        String hash = Singleton.getInstance().getUserHash();
-
-        ApiHelper api = new ApiHelper(this);
 
         if (filmeViewModel.getIsInMyList()) {
+
+            filmeViewModel.setIsInMyList(false);
             Singleton.getInstance().getWLService().removerFilme(ToModel(filmeViewModel));
-            //api.removeMovie(hash, filmeViewModel.get_id());
             Toast.makeText(this, "movie removed from your WatchListt", Toast.LENGTH_LONG).show();
+
         } else {
+
+            filmeViewModel.setIsInMyList(true);
             Singleton.getInstance().getWLService().adicionarFilme(ToModel(filmeViewModel));
-            //api.addMovie(hash, filmeViewModel.get_id());
             Toast.makeText(this, "movie added to your WatchListt", Toast.LENGTH_LONG).show();
+
         }
-        filmeViewModel.setIsInMyList(!filmeViewModel.getIsInMyList());
-        //estaNaMyListt = !estaNaMyListt;
 
         button.setText(filmeViewModel.getIsInMyList() ? REMOVE : ADD);
     }

@@ -87,24 +87,57 @@ public class DeviceRepository implements IRepository, ISujeito, IObservador {
         observadores.remove(o);
     }
 
-    public void notificarObservadores(String propriedade, String valor) {
+    public void notificarObservadores(String propriedade, Object valor) {
         for(IObservador o : observadores) {
             o.atualizar(this, propriedade, valor);
         }
     }
 
-    public void atualizar(ISujeito s, String p, String v) {
-        if (s == this) {
-            Log.d("WL", "mesmo objeto");
-        } else {
-            if (p.equals("usuario")){
-                if (v != null || !v.equals("")){
+    public void atualizar(ISujeito s, String param, Object valor) {
+        if (s != this) {
 
-                    e.putString("wl_user_hash", v);
-
-                    e.commit();
+            if (param.equals("mylistt_zerada")){
+                if(valor != null){
+                    ArrayList<Filme> myListt = new ArrayList<>();
+                    e.putString("mylistt", new Gson().toJson(myListt));
                 }
             }
+
+            if (param.equals("filme_adicionado")){
+                if(valor != null && valor instanceof Filme){
+                    ArrayList<Filme> myListt = obterMyListt();
+                    myListt.add((Filme) valor);
+
+                    e.putString("mylistt", new Gson().toJson(myListt));
+                }
+            }
+
+            if (param.equals("filme_removido")){
+                if(valor != null && valor instanceof Filme){
+                    ArrayList<Filme> myListt = obterMyListt();
+                    ArrayList<Filme> novaMyListt = new ArrayList<>();
+                    for (int i = 0; i < myListt.size(); i++){
+                        if (!myListt.get(i).get_id().equals(((Filme) valor).get_id())){
+                            novaMyListt.add(myListt.get(i));
+                        }
+                    }
+
+                    e.putString("mylistt", new Gson().toJson(novaMyListt));
+                }
+            }
+
+            if (param.equals("usuario")){
+                if (valor != null && !valor.toString().equals("")){
+
+                    /*
+                    ArrayList<Filme> filmesZerado = new ArrayList<>();
+                    e.putString("mylistt", new Gson().toJson(filmesZerado));
+                    */
+
+                    e.putString("wl_user_hash", valor.toString());
+                }
+            }
+            e.commit();
         }
     }
 

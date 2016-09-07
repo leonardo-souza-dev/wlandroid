@@ -7,5 +7,5 @@ public interface ISujeito {
 
     void registrarObservador(IObservador o);
     void removerObservador(IObservador o);
-    void notificarObservadores(String p, String v);
+    void notificarObservadores(String p, Object v);
 }

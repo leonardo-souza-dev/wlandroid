@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Singleton.getInstance(getBaseContext(), getResources());//INIT CUSTOM FRAGMENTMANAGER
+        Singleton.getInstance(getBaseContext(), getResources());//INIT CUSTOM
         Singleton.getInstance().getWLService().criarOuObterUsuario("");
         configuraActionbar();
         //setarBanner();

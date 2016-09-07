@@ -59,6 +59,7 @@ public class MyListtActivity extends AppCompatActivity {
         if (lista.size() > 0){
             for (final MovieViewModel entry : lista) {
                 movieAdapter.add(entry);
+
             }
             msg.setEnabled(false);
             btnVaiParaBusca.setEnabled(false);

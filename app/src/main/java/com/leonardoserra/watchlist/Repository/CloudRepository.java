@@ -38,8 +38,12 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
 
         try {
             if (msgCreateUser.getSucess()) {
-                hash = msgCreateUser.getObject("hash");
-                notificarObservadores("usuario", hash);
+                String usuarioApi = msgCreateUser.getObject("hash");
+                if ((usuario == null && usuarioApi != null) || (!usuario.equals(usuarioApi))){
+                    notificarObservadores("usuario", usuarioApi);
+                    notificarObservadores("mylistt_zerada", new ArrayList<Filme>());
+                    hash = usuarioApi;
+                }
             } else {
                 return null;
             }
@@ -117,6 +121,7 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
         try {
             apiHelper.removeMovie(hash, filme);
             sucesso = true;
+            notificarObservadores("filme_removido", filme);
         } catch (Exception ex){
             sucesso = false;
         }
@@ -128,6 +133,7 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
         try {
             apiHelper.adicionaFilme(hash, filme);
             sucesso = true;
+            notificarObservadores("filme_adicionado", filme);
         } catch (Exception ex){
             sucesso = false;
         }
@@ -148,28 +154,32 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
         observadores.remove(o);
     }
 
-    public void notificarObservadores(String p, String v) {
+    public void notificarObservadores(String param, Object valor) {
         for(IObservador o : observadores) {
-            o.atualizar(this, p, v);
+            o.atualizar(this, param, valor);
         }
     }
 
-    public void atualizar(ISujeito s, String p, String v) {
-        if (s == this) {
-            Log.d("WL","mesmo objeto");
-        } else {
+    public void atualizar(ISujeito s, String p, Object v) {
+        if (s != this) {
+
             if (p.equals("usuario")){
-                if (v == null || v.equals("")){
-                    ApiHelper api = new ApiHelper();
-                    try {
-                        Message msg = api.createuser("");
-                        if (msg.getSucess()) {
-                            hash = msg.getObject("hash");
-                            notificarObservadores("usuario", hash);
-                        }
-                    } catch (Exception ex){
-                        ex.printStackTrace();
-                    }
+
+                if (v != null && !v.toString().equals("")) {
+
+                    //ApiHelper api = new ApiHelper();
+                    //try {
+                    //Message msg = api.createuser("");
+                    hash = v.toString();
+
+                    //if (msg.getSucess()) {
+
+                    //hash = msg.getObject("hash");
+                    //notificarObservadores("usuario", hash);
+                    //}
+                    //} catch (Exception ex){
+                    //    ex.printStackTrace();
+                    //}
                 }
             }
         }
