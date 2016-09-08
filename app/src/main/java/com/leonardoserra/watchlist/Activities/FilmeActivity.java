@@ -101,12 +101,14 @@ public class FilmeActivity extends AppCompatActivity {
 
             filmeViewModel.setIsInMyList(false);
             Singleton.getInstance().getWLService().removerFilme(ToModel(filmeViewModel));
+
             Toast.makeText(this, "movie removed from your WatchListt", Toast.LENGTH_LONG).show();
 
         } else {
 
             filmeViewModel.setIsInMyList(true);
             Singleton.getInstance().getWLService().adicionarFilme(ToModel(filmeViewModel));
+
             Toast.makeText(this, "movie added to your WatchListt", Toast.LENGTH_LONG).show();
 
         }

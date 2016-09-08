@@ -48,7 +48,7 @@
     <Button
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:text="Search a Movie"
+        android:text="@string/search_a_movie"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:id="@+id/btnSearchAMovie"

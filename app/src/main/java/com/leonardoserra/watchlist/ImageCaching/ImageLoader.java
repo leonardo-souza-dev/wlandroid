@@ -112,6 +112,7 @@ public class ImageLoader{
             return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
         } catch (FileNotFoundException e) {
             Singleton.getInstance().enviarLogException(e);
+            e.printStackTrace();
         }
         return null;
     }

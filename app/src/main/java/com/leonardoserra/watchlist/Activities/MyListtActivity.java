@@ -25,15 +25,12 @@ import java.util.ArrayList;
 
 public class MyListtActivity extends AppCompatActivity {
 
-    private Bundle bundle;
     private ListView listView;
-
     private MovieAdapter movieAdapter;
     private Toolbar toolbar;
     private ArrayList<MovieViewModel> lista;
     private TextView msg;
     private Button btnVaiParaBusca;
-    private String hash;
     private ArrayList<Filme> filmesObtidos;
 
     @Override
@@ -41,25 +38,25 @@ public class MyListtActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_listt);
 
-        //bundle = getIntent().getExtras();
-        //hash = bundle.getString("hash");
-
         msg = (TextView)findViewById(R.id.txtMsg);
         btnVaiParaBusca = (Button)findViewById(R.id.btnVaiParaBusca);
-
         listView = (ListView) findViewById(R.id.listViewMyListt);
 
+
+        //carregaLista();
+
+        configuraActionbar();
+    }
+
+    private void carregaLista(){
         movieAdapter = new MovieAdapter(this, R.layout.simple_row, "");
-
         listView.setAdapter(movieAdapter);
-
         filmesObtidos = Singleton.getInstance().getWLService().obterMyListt();
         lista = ToViewModel(filmesObtidos);
 
         if (lista.size() > 0){
             for (final MovieViewModel entry : lista) {
                 movieAdapter.add(entry);
-
             }
             msg.setEnabled(false);
             btnVaiParaBusca.setEnabled(false);
@@ -74,8 +71,14 @@ public class MyListtActivity extends AppCompatActivity {
 
             btnVaiParaBusca.setText(getResources().getString(R.string.search_movies));
         }
+    }
 
-        configuraActionbar();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        carregaLista();
     }
 
     private ArrayList<MovieViewModel> ToViewModel(ArrayList<Filme> filmes){

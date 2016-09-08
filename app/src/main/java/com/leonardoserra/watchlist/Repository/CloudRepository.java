@@ -124,6 +124,7 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
             notificarObservadores("filme_removido", filme);
         } catch (Exception ex){
             sucesso = false;
+            ex.printStackTrace();
         }
         return sucesso;
     }
@@ -136,6 +137,7 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
             notificarObservadores("filme_adicionado", filme);
         } catch (Exception ex){
             sucesso = false;
+            ex.printStackTrace();
         }
         return sucesso;
     }

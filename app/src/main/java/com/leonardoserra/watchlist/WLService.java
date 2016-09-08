@@ -9,6 +9,7 @@ import com.leonardoserra.watchlist.Repository.DeviceRepository;
 import com.leonardoserra.watchlist.Repository.RepositoryIterator;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by leonardo on 01/09/16.
@@ -53,8 +54,11 @@ public class WLService {
         boolean encontrou = false;
 
         while(!encontrou && repositoryIterator.hasNext()){
-
             IRepository iRepository = (IRepository)repositoryIterator.next();
+            int aleatorio = Aleatorio.gerar();
+            if ((iRepository instanceof DeviceRepository) && (aleatorio % 2 == 1)){
+                iRepository = (IRepository)repositoryIterator.next();
+            }
             filmes = iRepository.obterMyListt();
             if (filmes != null){
                 encontrou = true;
@@ -62,6 +66,15 @@ public class WLService {
         }
         repositoryIterator.resetPosition();
         return filmes;
+    }
+
+    private static final class Aleatorio {
+
+        public static final int gerar(){
+            Random randomGenerator = new Random();
+            int randomInt = randomGenerator.nextInt(100);
+            return randomInt;
+        }
     }
 
     public ArrayList<Filme> buscar(String termo){
