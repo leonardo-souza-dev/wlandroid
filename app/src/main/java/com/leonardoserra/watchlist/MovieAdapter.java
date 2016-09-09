@@ -23,20 +23,20 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
     private final String gTerm;
     private Context gContext;
     private ImageLoader imgLoader;
-    private String nomeActivityAnterior;
+    //private String nomeActivityAnterior;
 
     public MovieAdapter(final Context context, final int lLayout, String term) {
         super(context, 0);
 
         gContext = context;
-        switch (gContext.getClass().getSimpleName().toLowerCase()){
-            case "mylisttactivity":
-                nomeActivityAnterior = "MyListt";
-                break;
-            case "resultadobuscaactivity":
-                nomeActivityAnterior = "Search";
-                break;
-        }
+        //switch (gContext.getClass().getSimpleName().toLowerCase()){
+        //    case "mylisttactivity":
+        //        nomeActivityAnterior = "MyListt";
+        //        break;
+        //    case "resultadobuscaactivity":
+        //        nomeActivityAnterior = "Search";
+        //        break;
+        //}
         gLayout = lLayout;
         gTerm = term;
 
@@ -73,7 +73,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         b.putString("filme2_nomeArquivo", fruitEntry.getPoster());
         b.putString("filme2_filmeId", fruitEntry.get_id());
         b.putInt("filme2_position", position);
-        b.putString("nomeActivityAnterior", nomeActivityAnterior);
+        //b.putString("nomeActivityAnterior", nomeActivityAnterior);
 
         intent.putExtras(b);
 
@@ -113,8 +113,8 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
         if(null == convertView) {
             final Context context = getContext();
-            final LayoutInflater inflater = (LayoutInflater)context.getSystemService
-                    (Context.LAYOUT_INFLATER_SERVICE);
+            final LayoutInflater inflater =
+                    (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             workingView = inflater.inflate(gLayout, null);
         } else {

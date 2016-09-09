@@ -8,6 +8,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.text.style.TextAppearanceSpan;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,26 +21,24 @@ import com.leonardoserra.watchlist.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText termoTextView;
-    private Toolbar toolbar;
-    private String termoDaBusca;
-    private String hash;
+    //private String hash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Singleton.getInstance(getBaseContext(), getResources());//INIT CUSTOM
+        Singleton.getInstance(getBaseContext());//INIT CUSTOM
         Singleton.getInstance().getWLService().criarOuObterUsuario("");
+
         configuraActionbar();
         //setarBanner();
     }
 
     public void busca(View view) {
         try {
-            termoTextView = (EditText) findViewById(R.id.edtSearchAMovie);
-            termoDaBusca = "";
+            EditText termoTextView = (EditText) findViewById(R.id.edtSearchAMovie);
+            String termoDaBusca = "";
             if (!termoTextView.getText().toString().equals(""))
                 termoDaBusca = termoTextView.getText().toString();
             else
@@ -48,27 +47,18 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ResultadoBuscaActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("resultadodabusca_termo", termoDaBusca);
-            bundle.putString("hash", hash);
+            //bundle.putString("hash", hash);
             intent.putExtras(bundle);
             startActivity(intent);
 
         } catch(Exception ex) {
-
             Singleton.getInstance().enviarLogException(ex);
-
+            ex.printStackTrace();
         }
-    }
-
-    private void criaOuObtemUsuario(){
-        hash = Singleton.getInstance().criaOuObtemUsuario();
-        if(!hash.equals("")) {
-            Toast.makeText(this, hash, Toast.LENGTH_LONG).show();
-        }
-        //Log.d("usuario", hash);
     }
 
     private void configuraActionbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbarra);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarra);
         setSupportActionBar(toolbar);
 
         String titulo = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
@@ -78,15 +68,15 @@ public class MainActivity extends AppCompatActivity {
         Spannable text = new SpannableString(getSupportActionBar().getTitle());
         text.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.cinze)),
                 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        text.setSpan(new AbsoluteSizeSpan(34),
-                0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        //text.setSpan(new AbsoluteSizeSpan(34), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new RelativeSizeSpan(1.2f), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         text.setSpan(new TextAppearanceSpan(this, R.style.FonteBold),
                 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
         getSupportActionBar().setTitle(text);
 
         //titulo central
-        TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
+        TextView txtTitulo = (TextView) toolbar.findViewById(R.id.txtTituloToolbar);
         txtTitulo.setText("");
     }
 

@@ -3,6 +3,8 @@ package com.leonardoserra.watchlist.Activities;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 public class MyListtActivity extends AppCompatActivity {
 
     private ListView listView;
-    private MovieAdapter movieAdapter;
+    //private MovieAdapter movieAdapter;
     private Toolbar toolbar;
     private ArrayList<MovieViewModel> lista;
     private TextView msg;
@@ -49,7 +51,7 @@ public class MyListtActivity extends AppCompatActivity {
     }
 
     private void carregaLista(){
-        movieAdapter = new MovieAdapter(this, R.layout.simple_row, "");
+        MovieAdapter movieAdapter = new MovieAdapter(this, R.layout.simple_row, "");
         listView.setAdapter(movieAdapter);
         filmesObtidos = Singleton.getInstance().getWLService().obterMyListt();
         lista = ToViewModel(filmesObtidos);
@@ -124,13 +126,13 @@ public class MyListtActivity extends AppCompatActivity {
 
         //botao voltar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        upArrow.setColorFilter(getResources().getColor(R.color.laranja), PorterDuff.Mode.SRC_ATOP);
+        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         //titulo central
         TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
-        txtTitulo.setText("MyListt");
+        txtTitulo.setText(R.string.mylistt);
 
         //botao mylistt
         TextView txtMenuItem = (TextView)toolbar.findViewById(R.id.txtItemMenuMyListt);

@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -18,7 +18,6 @@ import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
-import com.leonardoserra.watchlist.WLService;
 
 import java.util.ArrayList;
 
@@ -33,7 +32,6 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     private ArrayList<MovieViewModel> lista;
     private String hash;
     private ArrayList<Filme> filmes;
-    private WLService wlService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +67,6 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         txtFraseBusca.setText(suaBuscaPara + " \"" + termo + "\" " + retornou + " " + qtd + " " + resultados);
 
         configuraActionbar();
-
-        Log.d("nav", ">SEARCH_RESULT: " + termo + "|" + qtd);
     }
 
     private ArrayList<MovieViewModel> ToViewModel(ArrayList<Filme> filmes){
@@ -97,8 +93,8 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
 
         //botao voltar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        upArrow.setColorFilter(getResources().getColor(R.color.laranja), PorterDuff.Mode.SRC_ATOP);
+        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         //titulo central
@@ -122,10 +118,6 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
 
     public void vaiParaMyListt(View view){
         Intent intentMyListt = new Intent(this, MyListtActivity.class);
-        //Bundle b = new Bundle();
-        //b.putString("nomeActivityAnterior", "Search");
-        //intentMyListt.putExtras(b);
-
         startActivity(intentMyListt);
     }
 

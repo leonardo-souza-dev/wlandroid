@@ -19,7 +19,7 @@ import java.net.URL;
 public class ApiHelper {
 
     private Context context;
-    private String action;
+    //private String action;
 
     private final String SEARCH = "search";
     private final String CREATEUSER = "createuser";
@@ -108,7 +108,7 @@ public class ApiHelper {
 
         try {
 
-            WLWebApi api = new WLWebApi();
+            ApiHelper.WLWebApi api = new WLWebApi();
             String response = sync ? api.execute(params).get() : null;
 
             if (!response.equals(UNKNOWHOSTEXCEPTION)) {
@@ -148,7 +148,7 @@ public class ApiHelper {
             HttpURLConnection connection = null;
             try {
 
-                action = params[0];
+                String action = params[0];
                 lHash = (action == OBTERFILMESRECOMENDADOS || action == OBTERMYLISTT ||
                         action == CREATEUSER || action == SEARCH || action == ADDMOVIE ||
                         action == REMOVEMOVIE || action == ENVIARLOG) ? params[1] : "";
@@ -219,4 +219,5 @@ public class ApiHelper {
 
         }
     }
+
 }

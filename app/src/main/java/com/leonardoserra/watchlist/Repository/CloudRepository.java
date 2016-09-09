@@ -22,13 +22,13 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
 
     private ApiHelper apiHelper;
     private String hash;
-    private String usuarioApi;
-    private String senhaApi;
+    //private String usuarioApi;
+    //private String senhaApi;
 
     public CloudRepository(){
         String usuarioSenhaApi ="asd:watxi1izTTPWD*";
-        usuarioApi = usuarioSenhaApi.split(":")[0];
-        senhaApi = usuarioSenhaApi.split(":")[1];
+        String usuarioApi = usuarioSenhaApi.split(":")[0];
+        String senhaApi = usuarioSenhaApi.split(":")[1];
 
         apiHelper = new ApiHelper();
     }

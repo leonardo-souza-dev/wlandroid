@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,9 +29,9 @@ import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 
 public class FilmeActivity extends AppCompatActivity {
 
-    private TextView textView;
+    //private TextView textView;
     private Button button;
-    private ImageLoader imgLoader;
+    //private ImageLoader imgLoader;
     private String REMOVE;
     private String ADD;
     //private Boolean estaNaMyListt;
@@ -47,9 +49,9 @@ public class FilmeActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         filmeViewModel = new MovieViewModel();
 
-        textView = (TextView)findViewById(R.id.txtMovieTitle);
+        TextView textView = (TextView)findViewById(R.id.txtMovieTitle);
         button = (Button)findViewById(R.id.btnAddRemove);
-        imgLoader = new ImageLoader(this);
+        ImageLoader imgLoader = new ImageLoader(this);
         REMOVE = getResources().getString(R.string.remove_movie);
         ADD = getResources().getString(R.string.add_movie);
 
@@ -71,17 +73,14 @@ public class FilmeActivity extends AppCompatActivity {
         filmeViewModel.setPoster(nomeArquivo);
         filmeViewModel.set_id(filmeId);
 
-
-        Button btnAddOrRemove = (Button)findViewById(R.id.btnAddRemove);
-        btnAddOrRemove.setOnClickListener(new View.OnClickListener() {
+        //Button btnAddOrRemove = (Button)findViewById(R.id.btnAddRemove);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 adicionarOuRetirar(v);
             }
         });
         configuraActionbar();
-
-        Log.d("nav", "MOVIE: " + titulo);
     }
 
     public Filme ToModel(MovieViewModel m){
@@ -124,26 +123,23 @@ public class FilmeActivity extends AppCompatActivity {
 
         //botao voltar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        upArrow.setColorFilter(getResources().getColor(R.color.laranja), PorterDuff.Mode.SRC_ATOP);
+        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         //titulo central
         TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
         String nomeFilme = filmeViewModel.getNome();
-        if (nomeFilme.length() > 17) {
 
-            nomeFilme = nomeFilme.substring(0, 17) + "...";
-            //Spannable text = new SpannableString(getSupportActionBar().getTitle());
+        if (nomeFilme.length() > 18) {
+
+            nomeFilme = nomeFilme.substring(0, 18) + "...";
             Spannable text = new SpannableString(nomeFilme);
-            text.setSpan(new AbsoluteSizeSpan(20),
-                    0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            text.setSpan(new RelativeSizeSpan(0.9f), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             txtTitulo.setText(text);
 
         } else {
-
             txtTitulo.setText(nomeFilme);
-
         }
     }
 
@@ -162,7 +158,7 @@ public class FilmeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                this.onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -22,14 +22,14 @@ public class DeviceRepository implements IRepository, ISujeito, IObservador {
 
     private String hash;
     private SharedPreferences sharedPreferences;
-    private Context context;
+    //private Context context;
     private SharedPreferences.Editor e;
 
 
     private boolean novoElemento = false;
 
     public DeviceRepository(Context pContext){
-        context = pContext;
+        Context context = pContext;
         sharedPreferences = context.getSharedPreferences("", Context.MODE_PRIVATE);
         e = sharedPreferences.edit();
     }

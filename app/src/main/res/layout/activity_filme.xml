@@ -31,7 +31,7 @@
         android:layout_marginTop="30dp"
         android:textColor="@color/cinze"
         android:text="@string/titulo_filme"
-        android:textSize="18dp" />
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btnAddRemove"
