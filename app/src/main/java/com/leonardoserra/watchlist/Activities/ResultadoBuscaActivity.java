@@ -66,7 +66,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         String resultados = qtd == 1 ? r.getString(R.string.resultado) : r.getString(R.string.resultados);
         txtFraseBusca.setText(suaBuscaPara + " \"" + termo + "\" " + retornou + " " + qtd + " " + resultados);
 
-        configuraActionbar();
+        //configuraActionbar();
     }
 
     private ArrayList<MovieViewModel> ToViewModel(ArrayList<Filme> filmes){
@@ -85,7 +85,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         return models;
     }
 
-    private void configuraActionbar() {
+    /*private void configuraActionbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbarra);
         setSupportActionBar(toolbar);
 
@@ -100,7 +100,11 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         //titulo central
         TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
         txtTitulo.setText("Search");
-    }
+
+        //esconde botao mylistt
+        //TextView txtMenuItem = (TextView)toolbar.findViewById(R.id.txtItemMenuMyListt);
+        //txtMenuItem.setVisibility(View.GONE);
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

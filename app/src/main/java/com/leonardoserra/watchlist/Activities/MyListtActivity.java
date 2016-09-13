@@ -3,8 +3,12 @@ package com.leonardoserra.watchlist.Activities;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -25,11 +29,10 @@ import com.leonardoserra.watchlist.WLService;
 
 import java.util.ArrayList;
 
-public class MyListtActivity extends AppCompatActivity {
+public class MyListtActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private ListView listView;
-    //private MovieAdapter movieAdapter;
-    private Toolbar toolbar;
     private ArrayList<MovieViewModel> lista;
     private TextView msg;
     private Button btnVaiParaBusca;
@@ -44,10 +47,24 @@ public class MyListtActivity extends AppCompatActivity {
         btnVaiParaBusca = (Button)findViewById(R.id.btnVaiParaBusca);
         listView = (ListView) findViewById(R.id.listViewMyListt);
 
+        carregaLista();
 
-        //carregaLista();
+    }
 
-        configuraActionbar();
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_myListt) {
+            Intent i = new Intent(this, MyListtActivity.class);
+            startActivity(i);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private void carregaLista(){
@@ -74,7 +91,6 @@ public class MyListtActivity extends AppCompatActivity {
             btnVaiParaBusca.setText(getResources().getString(R.string.search_movies));
         }
     }
-
 
     @Override
     protected void onResume() {
@@ -118,27 +134,29 @@ public class MyListtActivity extends AppCompatActivity {
         }
     }
 
+/*
     private void configuraActionbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbarra);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbare);
+        //setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("");
+        //getSupportActionBar().setTitle("");
 
         //botao voltar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        //upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
+        //getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         //titulo central
-        TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
-        txtTitulo.setText(R.string.mylistt);
+        //TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
+        //txtTitulo.setText(R.string.mylistt);
 
-        //botao mylistt
-        TextView txtMenuItem = (TextView)toolbar.findViewById(R.id.txtItemMenuMyListt);
-        txtMenuItem.setVisibility(View.GONE);
+        //esconde botao mylistt
+        //TextView txtMenuItem = (TextView)toolbar.findViewById(R.id.txtItemMenuMyListt);
+        //txtMenuItem.setVisibility(View.GONE);
 
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -154,5 +172,5 @@ public class MyListtActivity extends AppCompatActivity {
     public void vaiParaMyListt(View view){
         Intent intentMyListt = new Intent(this, MyListtActivity.class);
         startActivity(intentMyListt);
-    }
+    }*/
 }

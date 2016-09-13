@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WatchListt</string>
     <string name="title_activity_search_result">SearchResult</string>
@@ -36,4 +37,9 @@
     <string name="baseUrlLocalDevice">http://192.168.1.5:5000</string>
     <string name="baseUrlLocalEmulator">http://10.0.2.2:5000</string>
     <string name="search_a_movie">Search a Movie</string>
+
+
+
+    <string name="navigation_drawer_open">Open menu</string>
+    <string name="navigation_drawer_close">Close menu</string>
 </resources>

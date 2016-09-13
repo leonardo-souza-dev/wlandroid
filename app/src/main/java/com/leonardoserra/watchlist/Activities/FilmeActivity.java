@@ -80,7 +80,7 @@ public class FilmeActivity extends AppCompatActivity {
                 adicionarOuRetirar(v);
             }
         });
-        configuraActionbar();
+        //configuraActionbar();
     }
 
     public Filme ToModel(MovieViewModel m){
@@ -115,33 +115,37 @@ public class FilmeActivity extends AppCompatActivity {
         button.setText(filmeViewModel.getIsInMyList() ? REMOVE : ADD);
     }
 
-    private void configuraActionbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbarra);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setTitle("");
-
-        //botao voltar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
-        //titulo central
-        TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
-        String nomeFilme = filmeViewModel.getNome();
-
-        if (nomeFilme.length() > 18) {
-
-            nomeFilme = nomeFilme.substring(0, 18) + "...";
-            Spannable text = new SpannableString(nomeFilme);
-            text.setSpan(new RelativeSizeSpan(0.9f), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-            txtTitulo.setText(text);
-
-        } else {
-            txtTitulo.setText(nomeFilme);
-        }
-    }
+//    private void configuraActionbar() {
+//        toolbar = (Toolbar) findViewById(R.id.toolbarra);
+//        setSupportActionBar(toolbar);
+//
+//        getSupportActionBar().setTitle("");
+//
+//        //botao voltar
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+//        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
+//        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+//
+//        //titulo central
+//        TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
+//        String nomeFilme = filmeViewModel.getNome();
+//
+//        if (nomeFilme.length() > 18) {
+//
+//            nomeFilme = nomeFilme.substring(0, 18) + "...";
+//            Spannable text = new SpannableString(nomeFilme);
+//            text.setSpan(new RelativeSizeSpan(0.9f), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+//            txtTitulo.setText(text);
+//
+//        } else {
+//            txtTitulo.setText(nomeFilme);
+//        }
+//
+//        //esconde botao mylistt
+//        //TextView txtMenuItem = (TextView)toolbar.findViewById(R.id.txtItemMenuMyListt);
+//        //txtMenuItem.setVisibility(View.GONE);
+//    }
 
     @Override
     public void onBackPressed()
