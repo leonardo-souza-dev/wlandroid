@@ -1,7 +1,5 @@
 package com.leonardoserra.watchlist;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Base64;
 
@@ -18,9 +16,6 @@ import java.net.URL;
 
 public class ApiHelper {
 
-    private Context context;
-    //private String action;
-
     private final String SEARCH = "search";
     private final String CREATEUSER = "createuser";
     private final String ADDMOVIE = "addmovie";
@@ -31,15 +26,7 @@ public class ApiHelper {
 
     private final String UNKNOWHOSTEXCEPTION = "unknowhostexception";
 
-    public ApiHelper(Context current) {
-        context = current;
-    }
-
     public ApiHelper() {
-    }
-
-    private Resources getResources(){
-        return context.getResources();
     }
 
     public void enviarLog(String msg){
@@ -67,22 +54,8 @@ public class ApiHelper {
         return msg;
     }
 
-    public Message addMovie(String pHash, String pMovieId) {
-        String[] lParameters = {ADDMOVIE, pHash, pMovieId };
-        Message msg = call(true, lParameters);
-
-        return msg;
-    }
-
     public Message adicionaFilme(String pHash, Filme filme) {
         String[] lParameters = {ADDMOVIE, pHash, filme.get_id() };
-        Message msg = call(true, lParameters);
-
-        return msg;
-    }
-
-    public Message removeMovie(String pHash, String pMovieId) {
-        String[] lParameters = {REMOVEMOVIE, pHash, pMovieId };
         Message msg = call(true, lParameters);
 
         return msg;
@@ -124,16 +97,12 @@ public class ApiHelper {
                 msg = new Message(false, UNKNOWHOSTEXCEPTION, null);
             }
         } catch (Exception e) {
-
-            //Singleton.getInstance().enviarLogException(e);
             msg = new Message(false, "Some error occurred.", null);
             e.printStackTrace();
         }
 
         return msg;
     }
-
-
 
     private class WLWebApi extends AsyncTask<String, Void, String> {
 

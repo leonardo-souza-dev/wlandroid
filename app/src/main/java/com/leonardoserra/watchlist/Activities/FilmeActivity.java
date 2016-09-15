@@ -8,11 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.RelativeSizeSpan;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leonardoserra.watchlist.ApiHelper;
 import com.leonardoserra.watchlist.Domain.Filme;
 import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
@@ -80,7 +74,7 @@ public class FilmeActivity extends AppCompatActivity {
                 adicionarOuRetirar(v);
             }
         });
-        //configuraActionbar();
+        configuraActionbar();
     }
 
     public Filme ToModel(MovieViewModel m){
@@ -115,22 +109,22 @@ public class FilmeActivity extends AppCompatActivity {
         button.setText(filmeViewModel.getIsInMyList() ? REMOVE : ADD);
     }
 
-//    private void configuraActionbar() {
-//        toolbar = (Toolbar) findViewById(R.id.toolbarra);
-//        setSupportActionBar(toolbar);
-//
-//        getSupportActionBar().setTitle("");
-//
-//        //botao voltar
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-//        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
-//        getSupportActionBar().setHomeAsUpIndicator(upArrow);
-//
-//        //titulo central
-//        TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
-//        String nomeFilme = filmeViewModel.getNome();
-//
+    private void configuraActionbar() {
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Back");
+
+        //botao voltar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        //upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
+        //getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        //titulo central
+        //TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
+        //String nomeFilme = filmeViewModel.getNome();
+
 //        if (nomeFilme.length() > 18) {
 //
 //            nomeFilme = nomeFilme.substring(0, 18) + "...";
@@ -141,11 +135,15 @@ public class FilmeActivity extends AppCompatActivity {
 //        } else {
 //            txtTitulo.setText(nomeFilme);
 //        }
-//
-//        //esconde botao mylistt
-//        //TextView txtMenuItem = (TextView)toolbar.findViewById(R.id.txtItemMenuMyListt);
-//        //txtMenuItem.setVisibility(View.GONE);
-//    }
+
+        //desabilita busca
+        ImageView imgBusca = (ImageView) toolbar.findViewById(R.id.imgBusca);
+        imgBusca.setVisibility(View.GONE);
+
+        //desabilita my watchListt
+        ImageView imgMyWatchListt = (ImageView) toolbar.findViewById(R.id.imgMyWatchListt);
+        imgMyWatchListt.setVisibility(View.GONE);
+    }
 
     @Override
     public void onBackPressed()
@@ -170,7 +168,7 @@ public class FilmeActivity extends AppCompatActivity {
     }
 
     public void vaiParaMyListt(View view){
-        Intent intentMyListt = new Intent(this, MyListtActivity.class);
+        Intent intentMyListt = new Intent(this, MyWatchListt.class);
         Bundle b = new Bundle();
         b.putString("nomeActivityAnterior", "Back");
         intentMyListt.putExtras(b);

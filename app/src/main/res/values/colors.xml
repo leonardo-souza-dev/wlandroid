@@ -2,9 +2,9 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="laranja">#f25100</color>
-    <color name="laranjaEscuro">#d02000</color>
-    <color name="cinzaClaro">#BABAAA</color>
-    <color name="cinzaEscuro">#666666</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="cinzaEscuro">#333333</color>
+    <color name="preto">#101010</color>
+    <color name="azul">#303F9F</color>
+    <color name="rosa">#FF4081</color>
+    <color name="verde">#004400</color>
 </resources>

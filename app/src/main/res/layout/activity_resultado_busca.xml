@@ -3,14 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Activities.ResultadoBuscaActivity"
     android:orientation="vertical"
-    android:background="#111111"
-    android:weightSum="1">
+    android:background="@color/preto"
+    android:weightSum="1"
+    tools:context=".Activities.ResultadoBuscaActivity">
+
+    <include layout="@layout/tool_bar"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,7 +18,7 @@
         android:layout_marginLeft="16dp"
         android:text="New Text"
         android:id="@+id/txtFraseBusca"
-        android:textColor="@color/cinzaClaro" />
+        android:textColor="#FFFFFF" />
 
     <ListView
         android:layout_width="wrap_content"

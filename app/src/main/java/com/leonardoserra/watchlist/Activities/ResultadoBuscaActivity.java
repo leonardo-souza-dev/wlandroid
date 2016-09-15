@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -18,6 +19,7 @@ import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
+import com.leonardoserra.watchlist.WLService;
 
 import java.util.ArrayList;
 
@@ -28,10 +30,10 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     private String termo;
     private MovieAdapter movieAdapter;
     private TextView txtFraseBusca;
-    private Toolbar toolbar;
     private ArrayList<MovieViewModel> lista;
     private String hash;
     private ArrayList<Filme> filmes;
+    private WLService wlService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,9 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         String resultados = qtd == 1 ? r.getString(R.string.resultado) : r.getString(R.string.resultados);
         txtFraseBusca.setText(suaBuscaPara + " \"" + termo + "\" " + retornou + " " + qtd + " " + resultados);
 
-        //configuraActionbar();
+        configuraActionbar();
+
+        Log.d("nav", ">SEARCH_RESULT: " + termo + "|" + qtd);
     }
 
     private ArrayList<MovieViewModel> ToViewModel(ArrayList<Filme> filmes){
@@ -85,26 +89,43 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         return models;
     }
 
-    /*private void configuraActionbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbarra);
+    private void configuraActionbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("");
+        //titulo
+        String titulo = getResources().getString(R.string.resultado_busca) == null ? "Search result" : getResources().getString(R.string.resultado_busca);
+        getSupportActionBar().setTitle(titulo);
 
-        //botao voltar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+//        //botao voltar
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+//        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
+//        getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         //titulo central
-        TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
-        txtTitulo.setText("Search");
+        //TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
+        //txtTitulo.setText("Search");
+    }
 
-        //esconde botao mylistt
-        //TextView txtMenuItem = (TextView)toolbar.findViewById(R.id.txtItemMenuMyListt);
-        //txtMenuItem.setVisibility(View.GONE);
-    }*/
+    public void vaiParaMyWatchListt(View view){
+        startActivity(new Intent(this, MyWatchListt.class));
+    }
+
+    public void vaiParaBusca(View view){
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                finish();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -117,22 +138,6 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
                     lista.get(i).setIsInMyList(esta);
                 }
             }
-        }
-    }
-
-    public void vaiParaMyListt(View view){
-        Intent intentMyListt = new Intent(this, MyListtActivity.class);
-        startActivity(intentMyListt);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 }

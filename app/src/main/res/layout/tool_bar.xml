@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="4dp"
+    app:theme="@style/Dark.Overlay"
+    app:popupTheme="@style/Dark.Overlay.LightPopup"
+    android:id="@+id/tool_bar">
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="end"
+        android:src="@drawable/mywatchlistt48"
+        android:id="@+id/imgMyWatchListt"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp"
+        android:onClick="vaiParaMyWatchListt"/>
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="end"
+        android:src="@drawable/busca48"
+        android:id="@+id/imgBusca"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:onClick="vaiParaBusca" />
+</android.support.v7.widget.Toolbar>

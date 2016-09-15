@@ -1,21 +1,13 @@
 package com.leonardoserra.watchlist.Activities;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,14 +17,14 @@ import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
-import com.leonardoserra.watchlist.WLService;
 
 import java.util.ArrayList;
 
-public class MyListtActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+public class MyWatchListt extends AppCompatActivity {
 
     private ListView listView;
+    //private MovieAdapter movieAdapter;
+    private Toolbar toolbar;
     private ArrayList<MovieViewModel> lista;
     private TextView msg;
     private Button btnVaiParaBusca;
@@ -47,24 +39,10 @@ public class MyListtActivity extends AppCompatActivity
         btnVaiParaBusca = (Button)findViewById(R.id.btnVaiParaBusca);
         listView = (ListView) findViewById(R.id.listViewMyListt);
 
-        carregaLista();
 
-    }
+        //carregaLista();
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_myListt) {
-            Intent i = new Intent(this, MyListtActivity.class);
-            startActivity(i);
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        configuraActionbar();
     }
 
     private void carregaLista(){
@@ -92,6 +70,7 @@ public class MyListtActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -115,11 +94,6 @@ public class MyListtActivity extends AppCompatActivity
         return models;
     }
 
-    public void vaiParaBusca(View view){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
@@ -134,29 +108,19 @@ public class MyListtActivity extends AppCompatActivity
         }
     }
 
-/*
     private void configuraActionbar() {
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbare);
-        //setSupportActionBar(toolbar);
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
 
-        //getSupportActionBar().setTitle("");
+        //titulo
+        String titulo = getResources().getString(R.string.mylistt) == null ? "My WatchListt" : getResources().getString(R.string.mylistt);
+        getSupportActionBar().setTitle(titulo);
 
-        //botao voltar
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        //upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
-        //getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
-        //titulo central
-        //TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
-        //txtTitulo.setText(R.string.mylistt);
-
-        //esconde botao mylistt
-        //TextView txtMenuItem = (TextView)toolbar.findViewById(R.id.txtItemMenuMyListt);
-        //txtMenuItem.setVisibility(View.GONE);
-
+        //desabilita my watchlistt
+        ImageView imageView = (ImageView) toolbar.findViewById(R.id.imgMyWatchListt);
+        imageView.setImageResource(R.drawable.mywatchlistt48);
+        imageView.setEnabled(false);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -169,8 +133,8 @@ public class MyListtActivity extends AppCompatActivity
         }
     }
 
-    public void vaiParaMyListt(View view){
-        Intent intentMyListt = new Intent(this, MyListtActivity.class);
+    public void vaiParaBusca(View view){
+        Intent intentMyListt = new Intent(this, MainActivity.class);
         startActivity(intentMyListt);
-    }*/
+    }
 }

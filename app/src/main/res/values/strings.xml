@@ -1,45 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WatchListt</string>
-    <string name="title_activity_search_result">SearchResult</string>
+    <string name="resultado_busca">Search result</string>
+    <string name="mylistt">My WatchListt</string>
+
+    <!--<string name="title_activity_search_result">SearchResult</string>
     <string name="title_activity_search_results">SearchResults</string>
     <string name="title_activity_movie_activity">MovieTitle</string>
-    <string name="title_activity_movie_new">MovieNewActivity</string>
+    string name="title_activity_movie_new">MovieNewActivity</string>-->
     <string name="chamada_busca">Add a movie to your watch list</string>
     <string name="botao_adiciona_remove">Add to my WatchListt!</string>
     <string name="botao_busca">Search</string>
     <string name="titulo_filme">Movie name</string>
     <string name="remove_movie">Remove from my WatchListt</string>
     <string name="add_movie">Add to my WatchListt</string>
-    <string name="title_activity_xxxyyy">XxxyyyActivity</string>
     <string name="title_activity_primeira">PrimeiraActivity</string>
     <string name="title_activity_first">FirstActivity</string>
-    <string name="resultado_busca">Resultado da busca</string>
-    <string name="sua_busca_para">Sua busca para </string>
-    <string name="retornou">retornou</string>
-    <string name="resultado">resultado</string>
-    <string name="resultados">resultados</string>
+    <string name="sua_busca_para">Your search for </string>
+    <string name="retornou">returned</string>
+    <string name="resultado">result</string>
+    <string name="resultados">results</string>
     <string name="some_error_occurred">Some error occurred. Try again in a few minutes.</string>
 
     <string name="there_is_no_movies">There\'s no movies in your WatchListt :(</string>
     <string name="search_movies">Go to search a movie!</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_teste_aba_home">TesteAbaHomeActivity</string>
-    <string name="movie_title">Batman</string>
+    <!--<string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_teste_aba_home">TesteAbaHomeActivity</string>-->
+    <string name="movie_title">Title</string>
     <string name="poster">poster</string>
     <string name="ano">2016</string>
     <string name="home">Home</string>
-    <string name="mylistt">MyListt</string>
     <string name="chamada">Search a movie to add to your WatchListt</string>
+    <string name="search_a_movie">Search a Movie</string>
 
     <string name="testarApiLocal">true</string>
     <string name="baseUrlNuvem">https://wlistt.herokuapp.com</string>
     <string name="baseUrlLocalDevice">http://192.168.1.5:5000</string>
     <string name="baseUrlLocalEmulator">http://10.0.2.2:5000</string>
-    <string name="search_a_movie">Search a Movie</string>
-
-
-
-    <string name="navigation_drawer_open">Open menu</string>
-    <string name="navigation_drawer_close">Close menu</string>
 </resources>
