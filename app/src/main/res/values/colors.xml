@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="laranja">#f25100</color>
-    <color name="cinzaEscuro">#333333</color>
+    <color name="laranja">#e37211</color>
+    <color name="laranja_escuro">#f25100</color>
+    <color name="cinzaEscuro3">#343434</color>
+    <color name="cinzaEscuro6">#666666</color>
     <color name="preto">#101010</color>
     <color name="azul">#303F9F</color>
     <color name="rosa">#FF4081</color>

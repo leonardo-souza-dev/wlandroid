@@ -2,9 +2,6 @@ package com.leonardoserra.watchlist.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -137,11 +134,11 @@ public class FilmeActivity extends AppCompatActivity {
 //        }
 
         //desabilita busca
-        ImageView imgBusca = (ImageView) toolbar.findViewById(R.id.imgBusca);
+        ImageView imgBusca = (ImageView) toolbar.findViewById(R.id.imgLupa);
         imgBusca.setVisibility(View.GONE);
 
         //desabilita my watchListt
-        ImageView imgMyWatchListt = (ImageView) toolbar.findViewById(R.id.imgMyWatchListt);
+        ImageView imgMyWatchListt = (ImageView) toolbar.findViewById(R.id.imgLista);
         imgMyWatchListt.setVisibility(View.GONE);
     }
 

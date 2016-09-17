@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -94,18 +95,8 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //titulo
-        String titulo = getResources().getString(R.string.resultado_busca) == null ? "Search result" : getResources().getString(R.string.resultado_busca);
+        String titulo = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
         getSupportActionBar().setTitle(titulo);
-
-//        //botao voltar
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-//        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
-//        getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
-        //titulo central
-        //TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
-        //txtTitulo.setText("Search");
     }
 
     public void vaiParaMyWatchListt(View view){

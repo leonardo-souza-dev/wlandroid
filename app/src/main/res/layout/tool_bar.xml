@@ -4,27 +4,29 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:elevation="4dp"
+    android:background="@color/laranja"
     app:theme="@style/Dark.Overlay"
     app:popupTheme="@style/Dark.Overlay.LightPopup"
     android:id="@+id/tool_bar">
 
     <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:src="@drawable/mywatchlistt48"
-        android:id="@+id/imgMyWatchListt"
+        android:src="@drawable/lista_branca"
+        android:id="@+id/imgLista"
         android:paddingRight="8dp"
         android:paddingLeft="8dp"
         android:onClick="vaiParaMyWatchListt"/>
 
     <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:src="@drawable/busca48"
-        android:id="@+id/imgBusca"
+        android:src="@drawable/lupa_branca"
+        android:id="@+id/imgLupa"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:onClick="vaiParaBusca" />
+
 </android.support.v7.widget.Toolbar>

@@ -113,13 +113,16 @@ public class MyWatchListt extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //titulo
-        String titulo = getResources().getString(R.string.mylistt) == null ? "My WatchListt" : getResources().getString(R.string.mylistt);
+        String titulo = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
         getSupportActionBar().setTitle(titulo);
 
         //desabilita my watchlistt
-        ImageView imageView = (ImageView) toolbar.findViewById(R.id.imgMyWatchListt);
-        imageView.setImageResource(R.drawable.mywatchlistt48);
+        ImageView imageView = (ImageView) toolbar.findViewById(R.id.imgLista);
         imageView.setEnabled(false);
+
+        //habilita lupa
+        ImageView imgLupa = (ImageView) toolbar.findViewById(R.id.imgLupa);
+        imgLupa.setEnabled(true);
     }
 
     @Override

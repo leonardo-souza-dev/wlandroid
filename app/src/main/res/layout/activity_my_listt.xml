@@ -9,22 +9,18 @@
 
     <include
         layout="@layout/tool_bar"/>
-<!--
+
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:text="@string/mylistt"
-        android:gravity="start"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="My WatchListt"
+        android:id="@+id/textView"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
         android:textColor="@color/laranja"
-        android:id="@+id/txtTituloMyListt"
-        android:layout_gravity="center"
-        android:textAlignment="textStart" />
--->
+        android:textStyle="bold"/>
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -58,10 +58,13 @@ public class MainActivity extends AppCompatActivity {
         String titulo = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
         getSupportActionBar().setTitle(titulo);
 
-        //desabilita busca
-        ImageView imageView = (ImageView) toolbar.findViewById(R.id.imgBusca);
-        imageView.setImageResource(R.drawable.busca48);
-        imageView.setEnabled(false);
+        //desabilita lupa
+        ImageView imgLupa = (ImageView) toolbar.findViewById(R.id.imgLupa);
+        imgLupa.setEnabled(false);
+
+        //habilita my watchlistt
+        ImageView imgLista = (ImageView) toolbar.findViewById(R.id.imgLista);
+        imgLista.setEnabled(true);
     }
 
     @Override
@@ -80,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void vaiParaMyWatchListt(View view){
-        startActivity(new Intent(this, MyWatchListt.class));
+        Intent intent = new Intent(this, MyWatchListt.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
