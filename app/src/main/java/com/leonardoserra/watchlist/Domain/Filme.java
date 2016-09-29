@@ -1,7 +1,5 @@
 package com.leonardoserra.watchlist.Domain;
 
-import com.leonardoserra.watchlist.ViewModels.User;
-
 import java.io.Serializable;
 
 /**
@@ -10,10 +8,11 @@ import java.io.Serializable;
 public class Filme implements Serializable {
 
     private String _id; //movieId
-    private String name;
+    private String titulo;
+    private String tituloOriginal;
     private Boolean isInMyList;
     private String poster;
-    private int ano;
+    private String dataLancamento;
 
     public String get_id() {
         return _id;
@@ -23,19 +22,27 @@ public class Filme implements Serializable {
         this._id = p_id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setNome(String pNome){
-        this.name = pNome;
+    public void setTitulo(String pTitulo){
+        this.titulo = pTitulo;
+    }
+
+    public String getTituloOriginal() {
+        return this.tituloOriginal;
+    }
+
+    public void setTituloOriginal(String pTituloOriginal){
+        this.titulo = pTituloOriginal;
     }
 
     public Boolean getIsInMyList() {
         return isInMyList;
     }
 
-    public void setEstaNaMinhaLista(boolean esta){
+    public void setIsInMyList(boolean esta){
         this.isInMyList = esta;
     }
 
@@ -47,11 +54,11 @@ public class Filme implements Serializable {
         this.poster = pPoster;
     }
 
-    public int getAno() {
-        return ano;
+    public String getDataLancamento() {
+        return this.dataLancamento;
     }
 
-    public void setAno(int pAno){
-        this.ano = pAno;
+    public void setDataLancamento(String pDataLancamento){
+        this.dataLancamento = pDataLancamento;
     }
 }

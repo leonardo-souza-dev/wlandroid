@@ -2,16 +2,11 @@ package com.leonardoserra.watchlist.Activities;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -80,10 +75,11 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         for (Filme f : filmes){
             MovieViewModel m = new MovieViewModel();
             m.set_id(f.get_id());
-            m.setNome(f.getName());
+            m.setTitulo(f.getTitulo());
+            m.setTituloOriginal(f.getTituloOriginal());
             m.setIsInMyList(f.getIsInMyList());
             m.setPoster(f.getPoster());
-            m.setAno(f.getAno());
+            m.setDataLancamento(f.getDataLancamento());
 
             models.add(m);
         }

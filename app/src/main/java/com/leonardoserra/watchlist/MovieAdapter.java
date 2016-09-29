@@ -68,7 +68,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         Intent intent = new Intent(gContext, FilmeActivity.class);
 
         Bundle b = new Bundle();
-        b.putString("filme2_titulo", fruitEntry.getNome());
+        b.putString("filme2_titulo", fruitEntry.getTitulo());
         b.putBoolean("filme2_estaNaMyListt", fruitEntry.getIsInMyList());
         b.putString("filme2_nomeArquivo", fruitEntry.getPoster());
         b.putString("filme2_filmeId", fruitEntry.get_id());
@@ -81,28 +81,11 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
     }
 
     private void setElements(ViewHolderSimpleRow viewHolderSimpleRow, MovieViewModel pEntry) {
-        // Setting the title view is straightforward
-        String tituloFilme = pEntry.getNome();
-        String partOne = "";
-        String partTwo = "";
-        String termOriginal = "";
+        String titulo = pEntry.getTitulo();
 
-        if (!gTerm.equals("") && tituloFilme != null) {
-            int p = tituloFilme.toLowerCase().indexOf(gTerm.toLowerCase());
-            termOriginal = tituloFilme.substring(p, p + gTerm.length());
-            partOne = tituloFilme.substring(0, p);
-            partTwo = tituloFilme.substring(p + gTerm.length(), tituloFilme.length());
-        }
-        if (gTerm.equals("") && tituloFilme != null) {
-            partOne = tituloFilme;
-        }
-
-        viewHolderSimpleRow.titleView1.setText(partOne);
+        viewHolderSimpleRow.titleView1.setText(titulo);
         viewHolderSimpleRow.titleView1.setTextColor(Color.WHITE);
-        viewHolderSimpleRow.titleView2.setText(termOriginal);
-        viewHolderSimpleRow.titleView2.setTextColor(Color.GREEN);
-        viewHolderSimpleRow.titleView3.setText(partTwo);
-        viewHolderSimpleRow.titleView3.setTextColor(Color.WHITE);
+
         imgLoader.DisplayImage(Singleton.getInstance().obterUrlBasePoster(pEntry.getPoster()), viewHolderSimpleRow.imgFilmePoster);
     }
 

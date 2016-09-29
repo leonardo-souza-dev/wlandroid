@@ -5,11 +5,11 @@ import java.io.Serializable;
 public class MovieViewModel implements Serializable, Cloneable {
 
     private String _id; //movieId
-    private String name;
+    private String titulo;
+    private String tituloOriginal;
     private Boolean isInMyList;
     private String poster;
-    private int ano;
-    //private User user;
+    private String dataLancamento;
 
     public MovieViewModel(String _id, Boolean pIsInMyList) {
         this._id = _id;
@@ -19,22 +19,29 @@ public class MovieViewModel implements Serializable, Cloneable {
     public MovieViewModel() {
     }
 
-
-    public String getNome() {
-        return this.name;
+    public String getTitulo() {
+        return this.titulo;
     }
 
-    public void setNome(String pNome){
-        name = pNome;
+    public String getTituloOriginal() {
+        return this.tituloOriginal;
+    }
+
+    public void setTitulo(String pNome){
+        titulo = pNome;
+    }
+
+    public void setTituloOriginal(String pTituloOriginal){
+        this.tituloOriginal = pTituloOriginal;
     }
 
 
-    public int getAno() {
-        return this.ano;
+    public String getDataLancamento() {
+        return this.dataLancamento;
     }
 
-    public void setAno(int pAno){
-        ano = pAno;
+    public void setDataLancamento(String pAno){
+        dataLancamento = pAno;
     }
 
 
@@ -65,9 +72,5 @@ public class MovieViewModel implements Serializable, Cloneable {
     }
 
 
-
-    /*public void setUser(User user) {
-        this.user = user;
-    }*/
 }
 

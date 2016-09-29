@@ -84,10 +84,10 @@ public class MyWatchListt extends AppCompatActivity {
         for (Filme f : filmes){
             MovieViewModel m = new MovieViewModel();
             m.set_id(f.get_id());
-            m.setNome(f.getName());
+            m.setTitulo(f.getTitulo());
             m.setIsInMyList(f.getIsInMyList());
             m.setPoster(f.getPoster());
-            m.setAno(f.getAno());
+            m.setDataLancamento(f.getDataLancamento());
 
             models.add(m);
         }

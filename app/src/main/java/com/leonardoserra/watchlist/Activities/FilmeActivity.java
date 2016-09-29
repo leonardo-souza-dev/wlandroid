@@ -59,7 +59,7 @@ public class FilmeActivity extends AppCompatActivity {
         imgLoader.DisplayImage(baseUrl, (ImageView) findViewById(R.id.imgPoster));
         String filmeId = bundle.getString("filme2_filmeId");//
 
-        filmeViewModel.setNome(titulo);
+        filmeViewModel.setTitulo(titulo);
         filmeViewModel.setIsInMyList(estaNaMyListt);
         filmeViewModel.setPoster(nomeArquivo);
         filmeViewModel.set_id(filmeId);
@@ -77,10 +77,10 @@ public class FilmeActivity extends AppCompatActivity {
     public Filme ToModel(MovieViewModel m){
         Filme filme = new Filme();
         filme.set_id(m.get_id());
-        filme.setNome(m.getNome());
-        filme.setEstaNaMinhaLista(m.getIsInMyList());
+        filme.setTitulo(m.getTitulo());
+        filme.setIsInMyList(m.getIsInMyList());
         filme.setPoster(m.getPoster());
-        filme.setAno(m.getAno());
+        filme.setDataLancamento(m.getDataLancamento());
 
         return filme;
     }
@@ -120,7 +120,7 @@ public class FilmeActivity extends AppCompatActivity {
 
         //titulo central
         //TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
-        //String nomeFilme = filmeViewModel.getNome();
+        //String nomeFilme = filmeViewModel.getTitulo();
 
 //        if (nomeFilme.length() > 18) {
 //

@@ -43,7 +43,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="200dp"
         android:background="#CCCCCC"
         android:singleLine="true"
         android:textAlignment="center"
