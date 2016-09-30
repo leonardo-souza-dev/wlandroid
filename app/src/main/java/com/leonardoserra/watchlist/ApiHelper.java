@@ -23,6 +23,7 @@ public class ApiHelper {
     private final String OBTERMYLISTT = "obtermylistt";
     private final String OBTERFILMESRECOMENDADOS = "obterfilmesrecomendados";
     private final String ENVIARLOG = "enviarlog";
+    private final String OBTERURLPOSTER = "obterurlposter";
 
     private final String UNKNOWHOSTEXCEPTION = "unknowhostexception";
 
@@ -63,6 +64,12 @@ public class ApiHelper {
 
     public Message removeMovie(String pHash, Filme filme) {
         String[] lParameters = {REMOVEMOVIE, pHash, filme.get_id() };
+        Message msg = call(true, lParameters);
+
+        return msg;
+    }
+    public Message obterUrlPoster(String pTmdbId) {
+        String[] lParameters = { OBTERURLPOSTER, pTmdbId};
         Message msg = call(true, lParameters);
 
         return msg;
@@ -125,6 +132,10 @@ public class ApiHelper {
 
                 String uri = baseUrlApi + action;
 
+                if(action == OBTERURLPOSTER) {
+                    uri = baseUrlApi + OBTERURLPOSTER;
+                }
+
                 URL url = new URL(uri);
 
                 connection = (HttpURLConnection)url.openConnection();
@@ -152,6 +163,8 @@ public class ApiHelper {
                 } else if (action == ENVIARLOG) {
                     jsonParam.put("hash", lHash);
                     jsonParam.put("logmsg", params[1]);
+                }else if (action == OBTERURLPOSTER) {
+                    jsonParam.put("_id", params[1]);
                 }
 
                 byte[] outputBytes = jsonParam.toString().getBytes();

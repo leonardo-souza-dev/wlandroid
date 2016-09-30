@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.leonardoserra.watchlist.Activities.FilmeActivity;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
+import com.squareup.picasso.Picasso;
 
 public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
@@ -86,12 +87,12 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         viewHolderSimpleRow.titleView1.setText(titulo);
         viewHolderSimpleRow.titleView1.setTextColor(Color.WHITE);
 
-        imgLoader.DisplayImage(Singleton.getInstance().obterUrlBasePoster(pEntry.getPoster()), viewHolderSimpleRow.imgFilmePoster);
+        String url = Singleton.getInstance().getWLService().obterUrlBasePoster(pEntry.get_id());
+        Picasso.with(gContext).load(url).into(viewHolderSimpleRow.imgFilmePoster);
+        //imgLoader.DisplayImage(Singleton.getInstance().obterUrlBasePoster(pEntry.getPoster()), viewHolderSimpleRow.imgFilmePoster);
     }
 
     private View getWorkingView(final View convertView) {
-        // The workingView is basically just the convertView re-used if possible
-        // or inflated new if not possible
         View workingView;
 
         if(null == convertView) {

@@ -18,10 +18,11 @@ public class WLService {
 
     private IRepository[] repositories;
     private RepositoryIterator repositoryIterator;
+    CloudRepository cloudRepository;
 
     public WLService(Context context){
         DeviceRepository deviceRepository = new DeviceRepository(context);
-        CloudRepository cloudRepository = new CloudRepository();
+        cloudRepository = new CloudRepository();
 
         String usuario;
         repositories = new IRepository[2];
@@ -125,5 +126,9 @@ public class WLService {
         return sucesso;
     }
 
+    public String obterUrlBasePoster(String pTmdbId){
+        String url = cloudRepository.obterUrlPoster(pTmdbId);
 
+        return url;
+    }
 }

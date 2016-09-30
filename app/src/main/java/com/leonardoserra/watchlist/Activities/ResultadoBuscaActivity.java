@@ -29,7 +29,6 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     private ArrayList<MovieViewModel> lista;
     private String hash;
     private ArrayList<Filme> filmes;
-    private WLService wlService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +47,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
 
         listView.setAdapter(movieAdapter);
 
-        //wlService = new WLService(getBaseContext());
-        //filmes = wlService.buscar(termo);
         filmes = Singleton.getInstance().getWLService().buscar(termo);
-        //lista = Singleton.getInstance().buscaFilme(termo);
         lista = ToViewModel(filmes);
         for(final MovieViewModel entry : lista) {
             movieAdapter.add(entry);
@@ -65,8 +61,6 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         txtFraseBusca.setText(suaBuscaPara + " \"" + termo + "\" " + retornou + " " + qtd + " " + resultados);
 
         configuraActionbar();
-
-        Log.d("nav", ">SEARCH_RESULT: " + termo + "|" + qtd);
     }
 
     private ArrayList<MovieViewModel> ToViewModel(ArrayList<Filme> filmes){
@@ -102,17 +96,6 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     public void vaiParaBusca(View view){
         startActivity(new Intent(this, MainActivity.class));
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case android.R.id.home:
-//                finish();
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
