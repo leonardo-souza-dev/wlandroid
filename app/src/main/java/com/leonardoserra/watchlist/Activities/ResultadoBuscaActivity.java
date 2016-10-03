@@ -48,7 +48,9 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         listView.setAdapter(movieAdapter);
 
         filmes = Singleton.getInstance().getWLService().buscar(termo);
+
         lista = ToViewModel(filmes);
+
         for(final MovieViewModel entry : lista) {
             movieAdapter.add(entry);
         }
@@ -73,6 +75,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
             m.setTituloOriginal(f.getTituloOriginal());
             m.setIsInMyList(f.getIsInMyList());
             m.setPoster(f.getPoster());
+            m.setUrlPoster(f.getUrlPoster());
             m.setDataLancamento(f.getDataLancamento());
 
             models.add(m);

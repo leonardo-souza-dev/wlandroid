@@ -17,23 +17,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Search"
         android:id="@+id/textView"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="140dp"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/laranja"
         android:textStyle="bold" />
-
-    <!--<TextView-->
-        <!--android:layout_width="210dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:text="@string/chamada"-->
-        <!--android:layout_marginTop="120dp"-->
-        <!--android:textColor="#FFFFFF"-->
-        <!--android:textSize="24sp"-->
-        <!--android:textStyle="bold"-->
-        <!--android:layout_marginBottom="10dp"-->
-        <!--android:textAlignment="center"-->
-        <!--android:enabled="false" />-->
 
     <EditText
         android:layout_width="300dp"
@@ -43,7 +30,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="140dp"
         android:background="#CCCCCC"
         android:singleLine="true"
         android:textAlignment="center"
@@ -66,7 +53,7 @@
         android:layout_gravity="center_horizontal"
         android:onClick="busca"
         android:padding="4dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:background="#f35100"
         android:textColor="#000000" />
 </LinearLayout>

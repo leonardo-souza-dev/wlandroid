@@ -64,17 +64,18 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         return view;
     }
 
-    private void vaiParaActivity(MovieViewModel fruitEntry, int position) {
+    private void vaiParaActivity(MovieViewModel filmeViewModel, int position) {
         Activity origin = (Activity)gContext;
         Intent intent = new Intent(gContext, FilmeActivity.class);
 
         Bundle b = new Bundle();
-        b.putString("filme2_titulo", fruitEntry.getTitulo());
-        b.putBoolean("filme2_estaNaMyListt", fruitEntry.getIsInMyList());
-        b.putString("filme2_nomeArquivo", fruitEntry.getPoster());
-        b.putString("filme2_filmeId", fruitEntry.get_id());
+        b.putString("filme2_titulo", filmeViewModel.getTitulo());
+        b.putBoolean("filme2_estaNaMyListt", filmeViewModel.getIsInMyList());
+        b.putString("filme2_nomeArquivo", filmeViewModel.getPoster());
+        b.putString("filme2_filmeId", filmeViewModel.get_id());
         b.putInt("filme2_position", position);
-        //b.putString("nomeActivityAnterior", nomeActivityAnterior);
+
+        b.putString("filme2_urlPoster", filmeViewModel.getUrlPoster());
 
         intent.putExtras(b);
 
@@ -87,9 +88,10 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         viewHolderSimpleRow.titleView1.setText(titulo);
         viewHolderSimpleRow.titleView1.setTextColor(Color.WHITE);
 
-        String url = Singleton.getInstance().getWLService().obterUrlBasePoster(pEntry.get_id());
-        Picasso.with(gContext).load(url).into(viewHolderSimpleRow.imgFilmePoster);
-        //imgLoader.DisplayImage(Singleton.getInstance().obterUrlBasePoster(pEntry.getPoster()), viewHolderSimpleRow.imgFilmePoster);
+        String url = pEntry.getUrlPoster();
+        Picasso.with(gContext).load(url)
+                .placeholder(R.drawable.film_strip)
+                .into(viewHolderSimpleRow.imgFilmePoster);
     }
 
     private View getWorkingView(final View convertView) {
@@ -115,8 +117,6 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         if (gLayout == R.layout.simple_row) {
             ViewHolderSimpleRow viewHolderSimpleRow = new ViewHolderSimpleRow();
             viewHolderSimpleRow.titleView1 = (TextView) workingView.findViewById(R.id.rowTextView1);
-            viewHolderSimpleRow.titleView2 = (TextView) workingView.findViewById(R.id.rowTextView2);
-            viewHolderSimpleRow.titleView3 = (TextView) workingView.findViewById(R.id.rowTextView3);
             viewHolderSimpleRow.addRemoveBtn = (Button)workingView.findViewById(R.id.btnAddRemove);
             viewHolderSimpleRow.imgFilmePoster = (ImageView) workingView.findViewById(R.id.imgFilmePoster);
 
@@ -129,8 +129,6 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
     private static class ViewHolderSimpleRow extends ViewBase {
         public TextView titleView1;
-        public TextView titleView2;
-        public TextView titleView3;
         public ImageView imgFilmePoster;
         public Button addRemoveBtn;
     }

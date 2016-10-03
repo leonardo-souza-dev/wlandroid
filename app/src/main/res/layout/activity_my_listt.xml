@@ -26,9 +26,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/listViewMyListt"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="18dp"
         android:layout_marginRight="16dp"
-        android:divider="#666666"
+        android:divider="#444444"
         android:dividerHeight="1dp" />
 
     <TextView

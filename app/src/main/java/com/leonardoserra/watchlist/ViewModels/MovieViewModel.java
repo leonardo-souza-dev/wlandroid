@@ -9,6 +9,7 @@ public class MovieViewModel implements Serializable, Cloneable {
     private String tituloOriginal;
     private Boolean isInMyList;
     private String poster;
+    private String urlPoster;
     private String dataLancamento;
 
     public MovieViewModel(String _id, Boolean pIsInMyList) {
@@ -58,8 +59,8 @@ public class MovieViewModel implements Serializable, Cloneable {
         return this.isInMyList;
     }
 
-    public void setIsInMyList(Boolean esta) {
-        this.isInMyList = esta;
+    public void setIsInMyList(Boolean estaa) {
+        this.isInMyList = estaa;
     }
 
 
@@ -67,8 +68,16 @@ public class MovieViewModel implements Serializable, Cloneable {
         return poster;
     }
 
+    public String getUrlPoster() {
+        return urlPoster;
+    }
+
     public void setPoster(String pPoster){
         poster = pPoster;
+    }
+
+    public void setUrlPoster(String pUrlPoster){
+        urlPoster = pUrlPoster;
     }
 
 

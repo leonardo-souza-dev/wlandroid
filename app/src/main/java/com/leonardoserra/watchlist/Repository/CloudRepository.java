@@ -104,6 +104,7 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
                     resultadoDaBusca = new ArrayList<>();
 
                     for (int i = 0; i < jsonArray.length(); i++) {
+
                         String str = jsonArray.get(i).toString();
                         Filme f = new Gson().fromJson(str, Filme.class);
                         resultadoDaBusca.add(f);

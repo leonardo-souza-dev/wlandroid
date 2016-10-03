@@ -17,6 +17,7 @@ import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 import com.leonardoserra.watchlist.R;
 import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
+import com.squareup.picasso.Picasso;
 
 public class FilmeActivity extends AppCompatActivity {
 
@@ -56,8 +57,13 @@ public class FilmeActivity extends AppCompatActivity {
         if (!Singleton.getInstance().isEmulator())
             baseUrl = "http://192.168.1.5:8080/" + "poster?p=" + nomeArquivo;
 
-        imgLoader.DisplayImage(baseUrl, (ImageView) findViewById(R.id.imgPoster));
-        String filmeId = bundle.getString("filme2_filmeId");//
+        String filmeId = bundle.getString("filme2_filmeId");
+
+        String urlPoster = bundle.getString("filme2_urlPoster");
+        Picasso.with(getBaseContext())
+                .load(urlPoster)
+            .placeholder(R.drawable.film_strip)
+            .into((ImageView)findViewById(R.id.imgPoster));
 
         filmeViewModel.setTitulo(titulo);
         filmeViewModel.setIsInMyList(estaNaMyListt);
@@ -75,6 +81,7 @@ public class FilmeActivity extends AppCompatActivity {
     }
 
     public Filme ToModel(MovieViewModel m){
+
         Filme filme = new Filme();
         filme.set_id(m.get_id());
         filme.setTitulo(m.getTitulo());
@@ -114,24 +121,6 @@ public class FilmeActivity extends AppCompatActivity {
 
         //botao voltar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        //upArrow.setColorFilter(ContextCompat.getColor(this, R.color.laranja), PorterDuff.Mode.SRC_ATOP);
-        //getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
-        //titulo central
-        //TextView txtTitulo = (TextView)toolbar.findViewById(R.id.txtTituloToolbar);
-        //String nomeFilme = filmeViewModel.getTitulo();
-
-//        if (nomeFilme.length() > 18) {
-//
-//            nomeFilme = nomeFilme.substring(0, 18) + "...";
-//            Spannable text = new SpannableString(nomeFilme);
-//            text.setSpan(new RelativeSizeSpan(0.9f), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-//            txtTitulo.setText(text);
-//
-//        } else {
-//            txtTitulo.setText(nomeFilme);
-//        }
 
         //desabilita busca
         ImageView imgBusca = (ImageView) toolbar.findViewById(R.id.imgLupa);
@@ -162,14 +151,5 @@ public class FilmeActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public void vaiParaMyListt(View view){
-        Intent intentMyListt = new Intent(this, MyWatchListt.class);
-        Bundle b = new Bundle();
-        b.putString("nomeActivityAnterior", "Back");
-        intentMyListt.putExtras(b);
-
-        startActivity(intentMyListt);
     }
 }

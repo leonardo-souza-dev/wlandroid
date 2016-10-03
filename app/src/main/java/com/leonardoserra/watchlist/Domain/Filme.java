@@ -12,6 +12,7 @@ public class Filme implements Serializable {
     private String tituloOriginal;
     private Boolean isInMyList;
     private String poster;
+    private String urlPoster;
     private String dataLancamento;
 
     public String get_id() {
@@ -48,6 +49,10 @@ public class Filme implements Serializable {
 
     public String getPoster() {
         return poster;
+    }
+
+    public String getUrlPoster() {
+        return urlPoster;
     }
 
     public void setPoster(String pPoster){
