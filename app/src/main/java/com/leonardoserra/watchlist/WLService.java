@@ -15,7 +15,7 @@ public class WLService {
 
     private IRepository[] repositories;
     private RepositoryIterator repositoryIterator;
-    CloudRepository cloudRepository;
+    private CloudRepository cloudRepository;
 
     public WLService(Context context){
         DeviceRepository deviceRepository = new DeviceRepository(context);

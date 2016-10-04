@@ -18,6 +18,8 @@ import com.leonardoserra.watchlist.R;
 import com.leonardoserra.watchlist.WLService;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ResultadoBuscaActivity extends AppCompatActivity {
 
@@ -46,6 +48,29 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         listView.setAdapter(movieAdapter);
 
         filmes = Singleton.getInstance().getWLService().buscar(termo);
+
+        Collections.sort(filmes, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                Filme p1 = (Filme) o1;
+                Filme p2 = (Filme) o2;
+
+                int resultado = -1;
+
+                if (p2.getPopularidade() == null && p1.getPopularidade() == null){
+                    resultado = -1;
+                } else {
+                    if (p2.getPopularidade() > p1.getPopularidade())
+                        resultado = + 1;
+                    else
+                        resultado = 0;
+                }
+                /*return p2.getPopularidade() < p1.getPopularidade() ?
+                        -1 :
+                        (p2.getPopularidade() > p1.getPopularidade() ? + 1 : 0);*/
+                return resultado;
+            }
+        });
+
 
         lista = ToViewModel(filmes);
 

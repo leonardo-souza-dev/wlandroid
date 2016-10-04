@@ -96,6 +96,7 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
 
                         String str = jsonArray.get(i).toString();
                         Filme f = new Gson().fromJson(str, Filme.class);
+
                         resultadoDaBusca.add(f);
                     }
                 }
@@ -130,25 +131,6 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
             ex.printStackTrace();
         }
         return sucesso;
-    }
-
-    public String obterUrlPoster(String pTmdbId){
-
-        String urlPoster = null;
-        Message msg = apiHelper.obterUrlPoster(pTmdbId);
-
-        if (msg != null && msg.getObject() != null) {
-            try {
-
-                JSONObject object = msg.getObject();
-                urlPoster = object.get("urlPoster").toString();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return urlPoster;
-
     }
 
     /*

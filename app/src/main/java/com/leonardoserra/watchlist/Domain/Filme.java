@@ -11,6 +11,7 @@ public class Filme implements Serializable {
     private String poster;
     private String urlPoster;
     private String dataLancamento;
+    private Float popularidade;
 
     public String get_id() {
         return _id;
@@ -54,6 +55,10 @@ public class Filme implements Serializable {
 
     public String getDataLancamento() {
         return this.dataLancamento;
+    }
+
+    public Float getPopularidade() {
+        return this.popularidade;
     }
 
     public void setDataLancamento(String pDataLancamento){
