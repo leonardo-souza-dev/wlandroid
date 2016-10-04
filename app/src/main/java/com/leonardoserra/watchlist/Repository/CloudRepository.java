@@ -1,7 +1,5 @@
 package com.leonardoserra.watchlist.Repository;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.leonardoserra.watchlist.Domain.Filme;
 import com.leonardoserra.watchlist.ApiHelper;
@@ -15,21 +13,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by leonardo on 01/09/16.
- */
 public class CloudRepository implements IRepository, IObservador, ISujeito {
 
     private ApiHelper apiHelper;
     private String hash;
-    //private String usuarioApi;
-    //private String senhaApi;
 
     public CloudRepository(){
-        String usuarioSenhaApi ="asd:watxi1izTTPWD*";
-        String usuarioApi = usuarioSenhaApi.split(":")[0];
-        String senhaApi = usuarioSenhaApi.split(":")[1];
-
         apiHelper = new ApiHelper();
     }
 

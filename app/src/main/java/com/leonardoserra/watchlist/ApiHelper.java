@@ -24,7 +24,6 @@ public class ApiHelper {
     private final String OBTERFILMESRECOMENDADOS = "obterfilmesrecomendados";
     private final String ENVIARLOG = "enviarlog";
     private final String OBTERURLPOSTER = "obterurlposter";
-
     private final String UNKNOWHOSTEXCEPTION = "unknowhostexception";
 
     public ApiHelper() {
@@ -41,6 +40,7 @@ public class ApiHelper {
 
         return msg;
     }
+
     public Message obterMyListt(String pHash) {
         String[] lParameters = {OBTERMYLISTT, pHash};
         Message msg = call(true, lParameters);
@@ -120,15 +120,17 @@ public class ApiHelper {
 
             String responseStr = "", lHash = "";
             String baseUrlApi = "";
-            baseUrlApi= Singleton.getInstance().obterUrlBaseApi() + "/";
+            //baseUrlApi= Singleton.getInstance().obterUrlBaseApi() + "/";
+            baseUrlApi = Singleton.getInstance().getHelper().obterUrlBaseApi() + "/";
+
             HttpURLConnection connection = null;
+
             try {
 
                 String action = params[0];
                 lHash = (action == OBTERFILMESRECOMENDADOS || action == OBTERMYLISTT ||
                         action == CREATEUSER || action == SEARCH || action == ADDMOVIE ||
                         action == REMOVEMOVIE || action == ENVIARLOG) ? params[1] : "";
-
 
                 String uri = baseUrlApi + action;
 
@@ -139,7 +141,6 @@ public class ApiHelper {
                 URL url = new URL(uri);
 
                 connection = (HttpURLConnection)url.openConnection();
-
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
 
@@ -186,10 +187,10 @@ public class ApiHelper {
             } catch (java.net.UnknownHostException e) {
                 e.printStackTrace();
                 responseStr = UNKNOWHOSTEXCEPTION;
-                //Singleton.getInstance().enviarLogException(e);
+                Singleton.getInstance().getHelper().enviarLogException(e);
             }catch (Exception e) {
                 e.printStackTrace();
-                //Singleton.getInstance().enviarLogException(e);
+                Singleton.getInstance().getHelper().enviarLogException(e);
             } finally {
                 connection.disconnect();
                 return responseStr;
@@ -201,5 +202,4 @@ public class ApiHelper {
 
         }
     }
-
 }

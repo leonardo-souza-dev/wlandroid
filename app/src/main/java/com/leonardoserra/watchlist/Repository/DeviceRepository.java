@@ -2,43 +2,26 @@ package com.leonardoserra.watchlist.Repository;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.leonardoserra.watchlist.ApiHelper;
 import com.leonardoserra.watchlist.Domain.Filme;
 import com.leonardoserra.watchlist.Interfaces.IObservador;
 import com.leonardoserra.watchlist.Interfaces.IRepository;
 import com.leonardoserra.watchlist.Interfaces.ISujeito;
-import com.leonardoserra.watchlist.ViewModels.Message;
 
 import java.util.ArrayList;
 
-/**
- * Created by leonardo on 03/09/16.
- */
 public class DeviceRepository implements IRepository, ISujeito, IObservador {
 
-    private String hash;
     private SharedPreferences sharedPreferences;
-    //private Context context;
     private SharedPreferences.Editor e;
-
-
-    private boolean novoElemento = false;
 
     public DeviceRepository(Context pContext){
         Context context = pContext;
         sharedPreferences = context.getSharedPreferences("", Context.MODE_PRIVATE);
         e = sharedPreferences.edit();
     }
-
-
-
-
-
-
 
     public String criarOuObterUsuario(String usuario){
         usuario = sharedPreferences.getString("wl_user_hash", null);
@@ -56,14 +39,11 @@ public class DeviceRepository implements IRepository, ISujeito, IObservador {
         ArrayList<Filme> filmes = gson.fromJson(myListt, new TypeToken<ArrayList<Filme>>(){}.getType());
 
         return filmes;
-
     }
 
     public ArrayList<Filme> buscar(String termo) {
         return null;
     }
-
-
 
     public boolean removerFilme(Filme filme){
         return false;
@@ -128,19 +108,10 @@ public class DeviceRepository implements IRepository, ISujeito, IObservador {
 
             if (param.equals("usuario")){
                 if (valor != null && !valor.toString().equals("")){
-
-                    /*
-                    ArrayList<Filme> filmesZerado = new ArrayList<>();
-                    e.putString("mylistt", new Gson().toJson(filmesZerado));
-                    */
-
                     e.putString("wl_user_hash", valor.toString());
                 }
             }
             e.commit();
         }
     }
-
-
-
 }

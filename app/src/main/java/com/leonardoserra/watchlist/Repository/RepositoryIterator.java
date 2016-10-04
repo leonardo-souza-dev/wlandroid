@@ -3,9 +3,6 @@ package com.leonardoserra.watchlist.Repository;
 import com.leonardoserra.watchlist.Interfaces.IITerador;
 import com.leonardoserra.watchlist.Interfaces.IRepository;
 
-/**
- * Created by leonardo on 02/09/16.
- */
 public class RepositoryIterator implements IITerador {
 
     IRepository[] itens;
@@ -33,5 +30,4 @@ public class RepositoryIterator implements IITerador {
             return true;
         }
     }
-
 }

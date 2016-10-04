@@ -23,7 +23,6 @@ import java.util.ArrayList;
 public class MyWatchListt extends AppCompatActivity {
 
     private ListView listView;
-    //private MovieAdapter movieAdapter;
     private Toolbar toolbar;
     private ArrayList<MovieViewModel> lista;
     private TextView msg;
@@ -38,9 +37,6 @@ public class MyWatchListt extends AppCompatActivity {
         msg = (TextView)findViewById(R.id.txtMsg);
         btnVaiParaBusca = (Button)findViewById(R.id.btnVaiParaBusca);
         listView = (ListView) findViewById(R.id.listViewMyListt);
-
-
-        //carregaLista();
 
         configuraActionbar();
     }

@@ -14,23 +14,16 @@ import android.widget.Toast;
 
 import com.leonardoserra.watchlist.Domain.Filme;
 import com.leonardoserra.watchlist.Singleton;
-import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 import com.leonardoserra.watchlist.R;
 import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.squareup.picasso.Picasso;
 
 public class FilmeActivity extends AppCompatActivity {
 
-    //private TextView textView;
     private Button button;
-    //private ImageLoader imgLoader;
     private String REMOVE;
     private String ADD;
-    //private Boolean estaNaMyListt;
-    //private Bundle bundle;
     private Toolbar toolbar;
-    //private String filmeId;
-    //private Filme filme;
     private MovieViewModel filmeViewModel;
 
     @Override
@@ -43,7 +36,6 @@ public class FilmeActivity extends AppCompatActivity {
 
         TextView textView = (TextView)findViewById(R.id.txtMovieTitle);
         button = (Button)findViewById(R.id.btnAddRemove);
-        ImageLoader imgLoader = new ImageLoader(this);
         REMOVE = getResources().getString(R.string.remove_movie);
         ADD = getResources().getString(R.string.add_movie);
 
@@ -65,7 +57,6 @@ public class FilmeActivity extends AppCompatActivity {
         filmeViewModel.setPoster(nomeArquivo);
         filmeViewModel.set_id(filmeId);
 
-        //Button btnAddOrRemove = (Button)findViewById(R.id.btnAddRemove);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -11,9 +11,6 @@ import com.leonardoserra.watchlist.Repository.RepositoryIterator;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by leonardo on 01/09/16.
- */
 public class WLService {
 
     private IRepository[] repositories;
@@ -24,13 +21,11 @@ public class WLService {
         DeviceRepository deviceRepository = new DeviceRepository(context);
         cloudRepository = new CloudRepository();
 
-        String usuario;
         repositories = new IRepository[2];
         repositories[0] = deviceRepository;
         repositories[1] = cloudRepository;
 
         deviceRepository.registrarObservador(cloudRepository);
-
         cloudRepository.registrarObservador(deviceRepository);
 
         repositoryIterator = new RepositoryIterator(repositories);
@@ -124,11 +119,5 @@ public class WLService {
         }
         repositoryIterator.resetPosition();
         return sucesso;
-    }
-
-    public String obterUrlBasePoster(String pTmdbId){
-        String url = cloudRepository.obterUrlPoster(pTmdbId);
-
-        return url;
     }
 }

@@ -27,7 +27,6 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
     private MovieAdapter movieAdapter;
     private TextView txtFraseBusca;
     private ArrayList<MovieViewModel> lista;
-    private String hash;
     private ArrayList<Filme> filmes;
 
     @Override
@@ -36,7 +35,6 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_resultado_busca);
 
         bundle = getIntent().getExtras();
-        hash = bundle.getString("hash");
 
         listView = (ListView) findViewById(R.id.listViewResultadoBusca);
 

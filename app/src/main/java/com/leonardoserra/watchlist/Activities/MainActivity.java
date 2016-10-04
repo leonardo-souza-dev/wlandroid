@@ -14,8 +14,6 @@ import com.leonardoserra.watchlist.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    //private String hash;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         Singleton.getInstance().getWLService().criarOuObterUsuario("");
 
         configuraActionbar();
+
         //setarBanner();
     }
 
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
         } catch(Exception ex) {
-            Singleton.getInstance().enviarLogException(ex);
+            Singleton.getInstance().getHelper().enviarLogException(ex);
             ex.printStackTrace();
         }
     }

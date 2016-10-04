@@ -14,34 +14,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leonardoserra.watchlist.Activities.FilmeActivity;
-import com.leonardoserra.watchlist.ImageCaching.ImageLoader;
 import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.squareup.picasso.Picasso;
 
 public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
 
     private final int gLayout;
-    private final String gTerm;
     private Context gContext;
-    private ImageLoader imgLoader;
-    //private String nomeActivityAnterior;
 
     public MovieAdapter(final Context context, final int lLayout, String term) {
         super(context, 0);
 
         gContext = context;
-        //switch (gContext.getClass().getSimpleName().toLowerCase()){
-        //    case "mylisttactivity":
-        //        nomeActivityAnterior = "MyListt";
-        //        break;
-        //    case "resultadobuscaactivity":
-        //        nomeActivityAnterior = "Search";
-        //        break;
-        //}
         gLayout = lLayout;
-        gTerm = term;
-
-        imgLoader = new ImageLoader(context);
     }
 
     @Override
@@ -110,9 +95,9 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         return workingView;
     }
 
-    private ViewBase getViewHolder(final View workingView) {
+    private ViewHolderSimpleRow getViewHolder(final View workingView) {
 
-        ViewBase viewBase = null;
+        ViewHolderSimpleRow viewBase = null;
 
         if (gLayout == R.layout.simple_row) {
             ViewHolderSimpleRow viewHolderSimpleRow = new ViewHolderSimpleRow();
@@ -127,14 +112,9 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         return viewBase;
     }
 
-    private static class ViewHolderSimpleRow extends ViewBase {
+    private static class ViewHolderSimpleRow  {
         public TextView titleView1;
         public ImageView imgFilmePoster;
         public Button addRemoveBtn;
-    }
-
-
-    private static class ViewBase {
-
     }
 }

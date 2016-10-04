@@ -2,9 +2,6 @@ package com.leonardoserra.watchlist.Domain;
 
 import java.io.Serializable;
 
-/**
- * Created by leonardo on 01/09/16.
- */
 public class Filme implements Serializable {
 
     private String _id; //movieId
@@ -33,10 +30,6 @@ public class Filme implements Serializable {
 
     public String getTituloOriginal() {
         return this.tituloOriginal;
-    }
-
-    public void setTituloOriginal(String pTituloOriginal){
-        this.titulo = pTituloOriginal;
     }
 
     public Boolean getIsInMyList() {
