@@ -10,6 +10,12 @@
     <include
         layout="@layout/tool_bar"/>
 
+    <com.daimajia.slider.library.SliderLayout
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"    />
+
     <Space
         android:layout_width="fill_parent"
         android:layout_height="0dp"

@@ -6,18 +6,48 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.R;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
+
+    private SliderLayout mDemoSlider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDemoSlider = (SliderLayout)findViewById(R.id.slider);
+
+
+        DefaultSliderView textSliderView = new DefaultSliderView(this);
+        textSliderView
+                .description("Game of Thrones")
+                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
+
+        DefaultSliderView textSliderView2 = new DefaultSliderView(this);
+        textSliderView2
+                .description("Hannibal")
+                .image("http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
+
+        mDemoSlider.addSlider(textSliderView);
+        mDemoSlider.addSlider(textSliderView2);
 
         Singleton.getInstance(getBaseContext());//INIT CUSTOM
         Singleton.getInstance().getWLService().criarOuObterUsuario("");
@@ -25,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
         configuraActionbar();
 
         //setarBanner();
+    }
+
+    @Override
+     protected void onStop() {
+        mDemoSlider.stopAutoCycle();
+        super.onStop();
     }
 
     public void busca(View view) {
