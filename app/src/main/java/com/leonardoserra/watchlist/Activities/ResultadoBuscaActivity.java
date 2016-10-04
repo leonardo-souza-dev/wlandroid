@@ -64,9 +64,6 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
                     else
                         resultado = 0;
                 }
-                /*return p2.getPopularidade() < p1.getPopularidade() ?
-                        -1 :
-                        (p2.getPopularidade() > p1.getPopularidade() ? + 1 : 0);*/
                 return resultado;
             }
         });

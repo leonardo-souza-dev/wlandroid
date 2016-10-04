@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="My WatchListt"
-        android:id="@+id/textView"
+        android:id="@+id/chamada"
         android:layout_marginTop="16dp"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/laranja"
