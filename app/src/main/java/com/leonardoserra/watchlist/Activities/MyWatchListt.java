@@ -88,6 +88,7 @@ public class MyWatchListt extends AppCompatActivity {
             m.setIsInMyList(f.getIsInMyList());
             m.setPoster(f.getPoster());
             m.setDataLancamento(f.getDataLancamento());
+            m.setUrlPoster(f.getUrlPoster());
 
             models.add(m);
         }
@@ -123,6 +124,7 @@ public class MyWatchListt extends AppCompatActivity {
         //habilita lupa
         ImageView imgLupa = (ImageView) toolbar.findViewById(R.id.imgLupa);
         imgLupa.setEnabled(true);
+
     }
 
     @Override

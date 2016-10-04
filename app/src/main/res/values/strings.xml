@@ -23,8 +23,6 @@
 
     <string name="there_is_no_movies">There\'s no movies in your WatchListt :(</string>
     <string name="search_movies">Go to search a movie!</string>
-    <!--<string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_teste_aba_home">TesteAbaHomeActivity</string>-->
     <string name="movie_title">Title</string>
     <string name="poster">poster</string>
     <string name="ano">2016</string>

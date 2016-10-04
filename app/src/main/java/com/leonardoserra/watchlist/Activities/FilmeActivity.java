@@ -51,17 +51,12 @@ public class FilmeActivity extends AppCompatActivity {
         textView.setText(titulo);
         Boolean estaNaMyListt = bundle.getBoolean("filme2_estaNaMyListt", false);//
         button.setText(estaNaMyListt ? REMOVE : ADD);
-        String nomeArquivo = bundle.getString("filme2_nomeArquivo");//
-        String baseUrl = "http://10.0.2.2:8080/" + "poster?p=" + nomeArquivo;
-
-        if (!Singleton.getInstance().isEmulator())
-            baseUrl = "http://192.168.1.5:8080/" + "poster?p=" + nomeArquivo;
-
+        String nomeArquivo = bundle.getString("filme2_nomeArquivo");
         String filmeId = bundle.getString("filme2_filmeId");
 
         String urlPoster = bundle.getString("filme2_urlPoster");
-        Picasso.with(getBaseContext())
-                .load(urlPoster)
+
+        Picasso.with(getBaseContext()).load(urlPoster)
             .placeholder(R.drawable.film_strip)
             .into((ImageView)findViewById(R.id.imgPoster));
 
