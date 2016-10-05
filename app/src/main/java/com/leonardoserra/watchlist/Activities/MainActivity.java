@@ -6,62 +6,62 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.daimajia.slider.library.Transformers.BaseTransformer;
-import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.R;
 
-import java.util.HashMap;
-
 public class MainActivity extends AppCompatActivity {
 
-    private SliderLayout mDemoSlider;
+    private SliderLayout carrossel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Singleton.getInstance(getBaseContext());//INIT CUSTOM
 
-        mDemoSlider = (SliderLayout)findViewById(R.id.slider);
+        inicializaSingleton();
 
-        String[] urls = Singleton.getInstance().getWLService().obterItensCarrossel();
-        //String[] urls = {"http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg",
-        //        "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg"};
+        obterCarrossel();
 
-        for(String url : urls){
-
-            DefaultSliderView textSliderView = new DefaultSliderView(this);
-            textSliderView.description("").image(url).setScaleType(BaseSliderView.ScaleType.CenterCrop);
-            mDemoSlider.addSlider(textSliderView);
-        }
-        mDemoSlider.setDuration(8100);
-        mDemoSlider.setPresetTransformer(5);
-        mDemoSlider.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
-
-        Singleton.getInstance().getWLService().criarOuObterUsuario("");
+        criarOuObterUsuario();
 
         configuraActionbar();
 
         //setarBanner();
     }
 
+    private void criarOuObterUsuario() {
+        Singleton.getInstance().getWLService().criarOuObterUsuario("");
+    }
+
+    private void inicializaSingleton() {
+        Singleton.getInstance(getBaseContext());//INIT CUSTOM
+    }
+
+    private void obterCarrossel() {
+        carrossel = (SliderLayout)findViewById(R.id.slider);
+
+        String[] urls = Singleton.getInstance().getWLService().obterItensCarrossel();
+
+        for(String url : urls){
+            DefaultSliderView textSliderView = new DefaultSliderView(this);
+            textSliderView.description("").image(url).setScaleType(BaseSliderView.ScaleType.CenterCrop);
+            carrossel.addSlider(textSliderView);
+        }
+        carrossel.setDuration(8100);
+        carrossel.setPresetTransformer(5);
+        carrossel.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
+    }
+
     @Override
      protected void onStop() {
-        mDemoSlider.stopAutoCycle();
+        carrossel.stopAutoCycle();
         super.onStop();
     }
 
