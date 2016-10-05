@@ -38,6 +38,7 @@
                 android:layout_marginRight="24dp"
                 android:textColor="#FFFFFF"
                 android:text="@string/titulo_filme"
+                android:gravity="center"
                 android:textSize="18sp" />
 
             <Button

@@ -18,6 +18,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Transformers.BaseTransformer;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.R;
@@ -39,15 +40,20 @@ public class MainActivity extends AppCompatActivity {
         DefaultSliderView textSliderView = new DefaultSliderView(this);
         textSliderView
                 .description("Game of Thrones")
-                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
+                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg")
+                .setScaleType(BaseSliderView.ScaleType.CenterCrop)
+        ;
 
         DefaultSliderView textSliderView2 = new DefaultSliderView(this);
         textSliderView2
                 .description("Hannibal")
-                .image("http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
+                .image("http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg")
+                .setScaleType(BaseSliderView.ScaleType.CenterCrop);
 
         mDemoSlider.addSlider(textSliderView);
         mDemoSlider.addSlider(textSliderView2);
+        mDemoSlider.setDuration(10000);
+        mDemoSlider.setPresetTransformer(5);
 
         Singleton.getInstance(getBaseContext());//INIT CUSTOM
         Singleton.getInstance().getWLService().criarOuObterUsuario("");

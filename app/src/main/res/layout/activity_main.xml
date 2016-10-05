@@ -1,87 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/preto"
+    android:background="#010111"
     tools:context=".Activities.MainActivity">
-
-    <include
-        layout="@layout/tool_bar"/>
 
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:gravity="center"    />
-
-    <Space
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/chamada"
-        android:id="@+id/chamada"
-        android:textColor="@color/laranja"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:layout_gravity="center"
         android:gravity="center"
-        android:textSize="32sp" />
+        android:alpha="0.1" />
 
-    <Space
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2" />
-
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:id="@+id/edtSearchAMovie"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginRight="44dp"
-        android:layout_marginLeft="44dp"
-        android:background="#CCCCCC"
-        android:singleLine="true"
-        android:textAlignment="center"
-        android:textStyle="normal"
-        android:scrollIndicators="none"
-        android:lines="1"
-        android:inputType="text"
-        android:gravity="center_vertical|center_horizontal"
-        android:enabled="true"
-        android:allowUndo="true"
-        android:hint="@string/exemplo_filme"
-        android:textSize="18sp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Space
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.05" />
+        <include
+            layout="@layout/tool_bar"
+            android:id="@+id/tool_bar" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="@string/search_a_movie"
-        android:layout_marginRight="70dp"
-        android:layout_marginLeft="70dp"
-        android:id="@+id/btnSearchAMovie"
-        android:layout_gravity="center_horizontal"
-        android:onClick="busca"
-        android:padding="4dp"
-        android:background="#f35100"
-        android:textColor="#000000"
-        android:textSize="18sp" />
+        <Space
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5" />
 
-    <Space
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.25" />
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/chamada"
+            android:id="@+id/chamada"
+            android:textColor="@color/laranja"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="32sp"
+            android:layout_below="@id/tool_bar"
+            android:layout_centerHorizontal="true" />
+
+        <Space
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:id="@+id/edtSearchAMovie"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="44dp"
+            android:layout_marginLeft="44dp"
+            android:background="#CCCCCC"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textStyle="normal"
+            android:scrollIndicators="none"
+            android:lines="1"
+            android:inputType="text"
+            android:gravity="center_vertical|center_horizontal"
+            android:enabled="true"
+            android:allowUndo="true"
+            android:hint="@string/exemplo_filme"
+            android:textSize="18sp"
+            android:layout_below="@id/chamada"/>
+
+        <Space
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.05" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/search_a_movie"
+            android:layout_marginRight="70dp"
+            android:layout_marginLeft="70dp"
+            android:id="@+id/btnSearchAMovie"
+            android:layout_gravity="center_horizontal"
+            android:onClick="busca"
+            android:padding="4dp"
+            android:background="#f35100"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:layout_below="@id/edtSearchAMovie"/>
+
+        <Space
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.25" />
+
+    </LinearLayout>
+
+</RelativeLayout>

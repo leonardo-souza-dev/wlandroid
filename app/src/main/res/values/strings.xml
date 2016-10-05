@@ -21,7 +21,7 @@
     <string name="poster">poster</string>
     <string name="ano">2016</string>
     <string name="home">Home</string>
-    <string name="chamada">Add a movie to your WatchListt</string>
+    <string name="chamada">Add a movie to \nyour WatchListt</string>
     <string name="search_a_movie">Search a Movie</string>
     <string name="exemplo_filme">Interestellar</string>
     <string name="testarApiLocal">true</string>
