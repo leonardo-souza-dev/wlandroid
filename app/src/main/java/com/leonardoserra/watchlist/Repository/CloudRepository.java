@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CloudRepository implements IRepository, IObservador, ISujeito {
 
@@ -105,6 +106,36 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
             }
         }
         return resultadoDaBusca;
+    }
+
+    public String[] obterItensCarrossel() {
+
+        //String[] resultadoArray = null;
+        List<String> resultado = new ArrayList<String>();
+        Message msg = apiHelper.obterItensCarrossel();
+
+        if (msg != null && msg.getObject() != null) {
+            try {
+
+                JSONObject object = msg.getObject();
+                JSONArray jsonArray = object.getJSONArray("urls");
+
+                if (jsonArray != null) {
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+
+                        String str = jsonArray.get(i).toString();
+                        resultado.add(str);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        String[] simpleArray = new String[ resultado.size() ];
+        resultado.toArray( simpleArray );
+
+        return simpleArray;
     }
 
     public boolean removerFilme(Filme filme){

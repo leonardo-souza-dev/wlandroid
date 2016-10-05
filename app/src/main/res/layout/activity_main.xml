@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#010111"
     tools:context=".Activities.MainActivity">
 
@@ -12,6 +13,13 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:alpha="0.1" />
+
+    <com.daimajia.slider.library.Indicators.PagerIndicator
+        android:id="@+id/custom_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:visibility="invisible"/>
 
     <LinearLayout
         android:layout_width="match_parent"

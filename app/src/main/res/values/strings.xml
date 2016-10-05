@@ -23,7 +23,7 @@
     <string name="home">Home</string>
     <string name="chamada">Add a movie to \nyour WatchListt</string>
     <string name="search_a_movie">Search a Movie</string>
-    <string name="exemplo_filme">Interestellar</string>
+    <string name="exemplo_filme">The Martian</string>
     <string name="testarApiLocal">true</string>
     <string name="baseUrlNuvem">https://wlistt.herokuapp.com</string>
     <string name="baseUrlLocalDevice">http://192.168.1.5:5000</string>

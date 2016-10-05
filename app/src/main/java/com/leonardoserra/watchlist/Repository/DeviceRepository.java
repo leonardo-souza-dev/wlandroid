@@ -11,6 +11,7 @@ import com.leonardoserra.watchlist.Interfaces.IRepository;
 import com.leonardoserra.watchlist.Interfaces.ISujeito;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class DeviceRepository implements IRepository, ISujeito, IObservador {
 
@@ -23,6 +24,17 @@ public class DeviceRepository implements IRepository, ISujeito, IObservador {
         e = sharedPreferences.edit();
     }
 
+    public String[] obterItensCarrossel() {
+        Set<String> urlsSp = sharedPreferences.getStringSet("itenscarrossel", null);
+
+        if (urlsSp == null)
+            return null;
+
+        String[] urls = urlsSp.toArray(new String[urlsSp.size()]);
+
+        return urls;
+
+    }
     public String criarOuObterUsuario(String usuario){
         usuario = sharedPreferences.getString("wl_user_hash", null);
 

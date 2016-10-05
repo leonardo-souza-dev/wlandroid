@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
@@ -33,29 +34,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Singleton.getInstance(getBaseContext());//INIT CUSTOM
 
         mDemoSlider = (SliderLayout)findViewById(R.id.slider);
 
+        String[] urls = Singleton.getInstance().getWLService().obterItensCarrossel();
+        //String[] urls = {"http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg",
+        //        "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg"};
 
-        DefaultSliderView textSliderView = new DefaultSliderView(this);
-        textSliderView
-                .description("Game of Thrones")
-                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg")
-                .setScaleType(BaseSliderView.ScaleType.CenterCrop)
-        ;
+        for(String url : urls){
 
-        DefaultSliderView textSliderView2 = new DefaultSliderView(this);
-        textSliderView2
-                .description("Hannibal")
-                .image("http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg")
-                .setScaleType(BaseSliderView.ScaleType.CenterCrop);
-
-        mDemoSlider.addSlider(textSliderView);
-        mDemoSlider.addSlider(textSliderView2);
-        mDemoSlider.setDuration(10000);
+            DefaultSliderView textSliderView = new DefaultSliderView(this);
+            textSliderView.description("").image(url).setScaleType(BaseSliderView.ScaleType.CenterCrop);
+            mDemoSlider.addSlider(textSliderView);
+        }
+        mDemoSlider.setDuration(8100);
         mDemoSlider.setPresetTransformer(5);
+        mDemoSlider.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
 
-        Singleton.getInstance(getBaseContext());//INIT CUSTOM
         Singleton.getInstance().getWLService().criarOuObterUsuario("");
 
         configuraActionbar();

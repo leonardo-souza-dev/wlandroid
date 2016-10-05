@@ -25,6 +25,7 @@ public class ApiHelper {
     private final String ENVIARLOG = "enviarlog";
     private final String OBTERURLPOSTER = "obterurlposter";
     private final String UNKNOWHOSTEXCEPTION = "unknowhostexception";
+    private final String OBTERITENSCARROSSEL = "obteritenscarrossel";
 
     public ApiHelper() {
     }
@@ -32,6 +33,13 @@ public class ApiHelper {
     public void enviarLog(String msg){
         String[] parametros = {ENVIARLOG, msg};
         Message message = call(true, parametros);
+    }
+
+    public Message obterItensCarrossel() {
+        String[] lParameters = {OBTERITENSCARROSSEL};
+        Message msg = call(true, lParameters);
+
+        return msg;
     }
 
     public Message obterFilmesRecomendados(String pHash) {
@@ -120,7 +128,6 @@ public class ApiHelper {
 
             String responseStr = "", lHash = "";
             String baseUrlApi = "";
-            //baseUrlApi= Singleton.getInstance().obterUrlBaseApi() + "/";
             baseUrlApi = Singleton.getInstance().getHelper().obterUrlBaseApi() + "/";
 
             HttpURLConnection connection = null;
@@ -141,8 +148,10 @@ public class ApiHelper {
                 URL url = new URL(uri);
 
                 connection = (HttpURLConnection)url.openConnection();
+
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
+
 
                 final String basicAuth = "Basic " + Base64.encodeToString("asd:watxi1izTTPWD*".getBytes(), Base64.NO_WRAP);
                 connection.setRequestProperty("Authorization", basicAuth);
@@ -177,6 +186,7 @@ public class ApiHelper {
                             new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
                     String line = "";
+
                     StringBuilder response = new StringBuilder();
                     while ((line = stream.readLine()) != null) {
                         response.append(line);

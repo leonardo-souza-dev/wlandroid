@@ -10,4 +10,5 @@ public interface IRepository extends IObservador {
     ArrayList<Filme> buscar(String termo);
     boolean removerFilme(Filme filme);
     boolean adicionarFilme(Filme filme);
+    String[] obterItensCarrossel();
 }

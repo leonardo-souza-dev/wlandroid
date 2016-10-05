@@ -45,6 +45,22 @@ public class WLService {
         return usuario;
     }
 
+    public String[] obterItensCarrossel(){
+        String[] urls = null;
+
+        boolean encontrou = false;
+
+        while(!encontrou && repositoryIterator.hasNext()){
+            IRepository iRepository = (IRepository)repositoryIterator.next();
+            urls = iRepository.obterItensCarrossel();
+            if (urls != null){
+                encontrou = true;
+            }
+        }
+        repositoryIterator.resetPosition();
+        return urls;
+    }
+
     public ArrayList<Filme> obterMyListt(){
         ArrayList<Filme> filmes = null;
         boolean encontrou = false;
