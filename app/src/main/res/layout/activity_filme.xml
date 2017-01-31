@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
@@ -25,20 +25,20 @@
                 android:layout_height="266dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
-                android:src="@drawable/img"
-                android:contentDescription="poster" />
+                android:contentDescription="@string/poster"
+                android:src="@drawable/img" />
 
             <TextView
                 android:id="@+id/txtMovieTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
-                android:textColor="#FFFFFF"
-                android:text="@string/titulo_filme"
+                android:layout_marginTop="30dp"
                 android:gravity="center"
+                android:text="@string/titulo_filme"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
             <Button
@@ -47,12 +47,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
+                android:background="#f35100"
+                android:onClick="adicionarOuRetirar"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:onClick="adicionarOuRetirar"
-                android:background="#f35100"
-                android:textColor="#000000"
-                android:text="@string/botao_adiciona_remove"/>
+                android:text="@string/botao_adiciona_remove"
+                android:textColor="#000000" />
 
         </LinearLayout>
     </ScrollView>

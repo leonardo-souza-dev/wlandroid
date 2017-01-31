@@ -1,8 +1,8 @@
 package com.leonardoserra.watchlist.Activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,13 +10,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.leonardoserra.watchlist.Domain.Filme;
-import com.leonardoserra.watchlist.Singleton;
-import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
+import com.leonardoserra.watchlist.Singleton;
+import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,24 @@ public class MyWatchListt extends AppCompatActivity {
         btnVaiParaBusca = (Button)findViewById(R.id.btnVaiParaBusca);
         listView = (ListView) findViewById(R.id.listViewMyListt);
 
-        configuraActionbar();
+        setActionbar();
+
+        setTabs();
+    }
+
+    private void setTabs() {
+        TabHost host = (TabHost) findViewById(R.id.tabHost);
+        host.setup();
+
+        TabHost.TabSpec spec = host.newTabSpec("MyListt");
+        spec.setContent(R.id.tabMyListt);
+        spec.setIndicator("MyListt");
+        host.addTab(spec);
+
+        spec = host.newTabSpec("Profile");
+        spec.setContent(R.id.tabProfile);
+        spec.setIndicator("Profile");
+        host.addTab(spec);
     }
 
     private void carregaLista(){
@@ -105,13 +123,15 @@ public class MyWatchListt extends AppCompatActivity {
         }
     }
 
-    private void configuraActionbar() {
+    private void setActionbar() {
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
         //titulo
-        String titulo = getResources().getString(R.string.app_name) == null ? "WatchListt" : getResources().getString(R.string.app_name);
-        getSupportActionBar().setTitle(titulo);
+        String titulo = getResources().getString(R.string.app_name);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(titulo);
+        }
 
         //desabilita my watchlistt
         ImageView imageView = (ImageView) toolbar.findViewById(R.id.imgLista);

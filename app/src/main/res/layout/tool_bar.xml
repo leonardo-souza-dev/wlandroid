@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tool_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:elevation="4dp"
     android:background="@color/laranja"
-    app:theme="@style/Dark.Overlay"
-    app:popupTheme="@style/Dark.Overlay.LightPopup"
-    android:id="@+id/tool_bar">
+    android:theme="@style/AppTheme"
+    app:popupTheme="@style/AppTheme">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:src="@drawable/lista_branca"
         android:id="@+id/imgLista"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
-        android:onClick="vaiParaMyWatchListt"/>
-
-    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:src="@drawable/lupa_branca"
-        android:id="@+id/imgLupa"
+        android:contentDescription="@string/mylistt"
+        android:onClick="vaiParaMyWatchListt"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:onClick="vaiParaBusca" />
+        android:src="@drawable/lista_branca" />
+
+    <ImageView
+        android:id="@+id/imgLupa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:contentDescription="@string/search_a_movie"
+        android:onClick="vaiParaBusca"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:src="@drawable/lupa_branca" />
 
 </android.support.v7.widget.Toolbar>

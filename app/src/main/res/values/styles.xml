@@ -1,15 +1,21 @@
 <resources>
-    <style name="Dark.Overlay" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <style name="AppTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <!--<item name="android:background">@color/cinzaEscuro6</item>-->
         <item name="android:label">@color/laranja</item>
-        <item name="android:textColor">@color/azul</item>
-        <item name="android:colorPrimaryDark">@color/laranja_escuro</item>
+        <item name="android:textColor">@color/cinzaEscuro6</item>
     </style>
 
     <style name="Dark.Overlay.LightPopup" parent="ThemeOverlay.AppCompat.Light">
-        <!--<item name="android:background">@color/cinzaEscuro6</item>-->
         <item name="android:label">@color/verde</item>
-        <item name="android:textColor">@color/rosa</item>
+        <item name="android:textColor">@color/laranja</item>
     </style>
 
+    <style name="TabWidgetTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/cinzaEscuro3</item>
+        <item name="colorAccent">@color/laranja</item>
+        <item name="android:textColorPrimary">@color/cinzaEscuro3</item>
+        <item name="android:textColorSecondary">@color/laranja</item>
+        <item name="android:textColor">@color/laranja</item>
+    </style>
 </resources>

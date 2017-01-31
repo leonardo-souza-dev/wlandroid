@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/preto"
+    android:orientation="vertical"
     android:weightSum="1"
     tools:context=".Activities.ResultadoBuscaActivity">
 
@@ -12,32 +12,32 @@
         layout="@layout/tool_bar"/>
 
     <TextView
+        android:id="@+id/chamada"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Search result"
-        android:id="@+id/chamada"
-        android:layout_marginTop="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="@string/resultado_busca"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/laranja"
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/txtFraseBusca"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp"
         android:text="New Text"
-        android:id="@+id/txtFraseBusca"
         android:textColor="#FFFFFF" />
 
     <ListView
+        android:id="@+id/listViewResultadoBusca"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:id="@+id/listViewResultadoBusca"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="6dp"
         android:divider="#666666"
         android:dividerHeight="1dp" />

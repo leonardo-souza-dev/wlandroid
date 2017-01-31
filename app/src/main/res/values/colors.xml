@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#3f51b5</color>
     <color name="laranja">#e37211</color>
     <color name="laranja_escuro">#f25100</color>
-    <color name="cinzaEscuro3">#343434</color>
+    <color name="cinzaEscuro3">#333333</color>
     <color name="cinzaEscuro6">#666666</color>
     <color name="preto">#101010</color>
     <color name="azul">#303F9F</color>
     <color name="rosa">#FF4081</color>
     <color name="verde">#004400</color>
+    <color name="branco">#AAAAAA</color>
 </resources>
