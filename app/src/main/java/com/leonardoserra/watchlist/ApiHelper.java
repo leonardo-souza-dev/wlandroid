@@ -3,7 +3,7 @@ package com.leonardoserra.watchlist;
 import android.os.AsyncTask;
 import android.util.Base64;
 
-import com.leonardoserra.watchlist.Domain.Filme;
+import com.leonardoserra.watchlist.Bean.Filme;
 import com.leonardoserra.watchlist.ViewModels.Message;
 
 import org.json.JSONObject;
@@ -30,7 +30,7 @@ public class ApiHelper {
     public ApiHelper() {
     }
 
-    public void enviarLog(String msg){
+    void enviarLog(String msg) {
         String[] parametros = {ENVIARLOG, msg};
         Message message = call(true, parametros);
     }
@@ -135,9 +135,9 @@ public class ApiHelper {
             try {
 
                 String action = params[0];
-                lHash = (action == OBTERFILMESRECOMENDADOS || action == OBTERMYLISTT ||
-                        action == CREATEUSER || action == SEARCH || action == ADDMOVIE ||
-                        action == REMOVEMOVIE || action == ENVIARLOG) ? params[1] : "";
+                lHash = (action.equals(OBTERFILMESRECOMENDADOS) || action.equals(OBTERMYLISTT) ||
+                        action.equals(CREATEUSER) || action.equals(SEARCH) || action.equals(ADDMOVIE) ||
+                        action.equals(REMOVEMOVIE) || action.equals(ENVIARLOG) ? params[1] : "");
 
                 String uri = baseUrlApi + action;
 
@@ -185,7 +185,7 @@ public class ApiHelper {
                     BufferedReader stream =
                             new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-                    String line = "";
+                    String line;
 
                     StringBuilder response = new StringBuilder();
                     while ((line = stream.readLine()) != null) {

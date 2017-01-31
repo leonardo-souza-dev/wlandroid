@@ -2,8 +2,8 @@ package com.leonardoserra.watchlist.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,9 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leonardoserra.watchlist.Domain.Filme;
-import com.leonardoserra.watchlist.Singleton;
+import com.leonardoserra.watchlist.Bean.Filme;
 import com.leonardoserra.watchlist.R;
+import com.leonardoserra.watchlist.Singleton;
 import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 import com.squareup.picasso.Picasso;
 

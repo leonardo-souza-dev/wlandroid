@@ -1,6 +1,6 @@
 package com.leonardoserra.watchlist.Interfaces;
 
-import com.leonardoserra.watchlist.Domain.Filme;
+import com.leonardoserra.watchlist.Bean.Filme;
 
 import java.util.ArrayList;
 

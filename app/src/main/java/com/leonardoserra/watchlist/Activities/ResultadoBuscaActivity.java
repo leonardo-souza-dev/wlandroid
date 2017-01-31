@@ -2,20 +2,18 @@ package com.leonardoserra.watchlist.Activities;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.leonardoserra.watchlist.Domain.Filme;
-import com.leonardoserra.watchlist.Singleton;
-import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
+import com.leonardoserra.watchlist.Bean.Filme;
 import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
-import com.leonardoserra.watchlist.WLService;
+import com.leonardoserra.watchlist.Singleton;
+import com.leonardoserra.watchlist.ViewModels.MovieViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;

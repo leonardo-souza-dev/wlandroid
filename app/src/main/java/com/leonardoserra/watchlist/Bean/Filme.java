@@ -1,4 +1,4 @@
-package com.leonardoserra.watchlist.Domain;
+package com.leonardoserra.watchlist.Bean;
 
 import java.io.Serializable;
 
@@ -45,23 +45,23 @@ public class Filme implements Serializable {
         return poster;
     }
 
-    public String getUrlPoster() {
-        return urlPoster;
-    }
-
     public void setPoster(String pPoster){
         this.poster = pPoster;
+    }
+
+    public String getUrlPoster() {
+        return urlPoster;
     }
 
     public String getDataLancamento() {
         return this.dataLancamento;
     }
 
-    public Float getPopularidade() {
-        return this.popularidade;
-    }
-
     public void setDataLancamento(String pDataLancamento){
         this.dataLancamento = pDataLancamento;
+    }
+
+    public Float getPopularidade() {
+        return this.popularidade;
     }
 }

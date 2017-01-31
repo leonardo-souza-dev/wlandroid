@@ -1,8 +1,8 @@
 package com.leonardoserra.watchlist.Repository;
 
 import com.google.gson.Gson;
-import com.leonardoserra.watchlist.Domain.Filme;
 import com.leonardoserra.watchlist.ApiHelper;
+import com.leonardoserra.watchlist.Bean.Filme;
 import com.leonardoserra.watchlist.Interfaces.IObservador;
 import com.leonardoserra.watchlist.Interfaces.IRepository;
 import com.leonardoserra.watchlist.Interfaces.ISujeito;
@@ -18,6 +18,7 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
 
     private ApiHelper apiHelper;
     private String hash;
+    private ArrayList<IObservador> observadores = new ArrayList<>();
 
     public CloudRepository(){
         apiHelper = new ApiHelper();
@@ -29,7 +30,7 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
         try {
             if (msgCreateUser.getSucess()) {
                 String usuarioApi = msgCreateUser.getObject("hash");
-                if ((usuario == null && usuarioApi != null) || (!usuario.equals(usuarioApi))){
+                if ((usuario == null && usuarioApi != null) || (usuario != null && !usuario.equals(usuarioApi))) {
                     notificarObservadores("usuario", usuarioApi);
                     notificarObservadores("mylistt_zerada", new ArrayList<Filme>());
                     hash = usuarioApi;
@@ -151,6 +152,10 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
         return sucesso;
     }
 
+    /*
+        Padrao Observer
+     */
+
     public boolean adicionarFilme(Filme filme){
         boolean sucesso = false;
         try {
@@ -163,12 +168,6 @@ public class CloudRepository implements IRepository, IObservador, ISujeito {
         }
         return sucesso;
     }
-
-    /*
-        Padrao Observer
-     */
-
-    private ArrayList<IObservador> observadores = new ArrayList<>();
 
     public void registrarObservador(IObservador o) {
         observadores.add(o);

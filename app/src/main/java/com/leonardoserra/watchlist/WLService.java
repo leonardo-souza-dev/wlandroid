@@ -2,7 +2,7 @@ package com.leonardoserra.watchlist;
 
 import android.content.Context;
 
-import com.leonardoserra.watchlist.Domain.Filme;
+import com.leonardoserra.watchlist.Bean.Filme;
 import com.leonardoserra.watchlist.Interfaces.IRepository;
 import com.leonardoserra.watchlist.Repository.CloudRepository;
 import com.leonardoserra.watchlist.Repository.DeviceRepository;
@@ -80,15 +80,6 @@ public class WLService {
         return filmes;
     }
 
-    private static final class Aleatorio {
-
-        public static final int gerar(){
-            Random randomGenerator = new Random();
-            int randomInt = randomGenerator.nextInt(100);
-            return randomInt;
-        }
-    }
-
     public ArrayList<Filme> buscar(String termo){
         ArrayList<Filme> filmes = null;
 
@@ -135,5 +126,14 @@ public class WLService {
         }
         repositoryIterator.resetPosition();
         return sucesso;
+    }
+
+    private static final class Aleatorio {
+
+        static int gerar() {
+            Random randomGenerator = new Random();
+
+            return randomGenerator.nextInt(100);
+        }
     }
 }

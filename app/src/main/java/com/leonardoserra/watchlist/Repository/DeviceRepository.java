@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.leonardoserra.watchlist.Domain.Filme;
+import com.leonardoserra.watchlist.Bean.Filme;
 import com.leonardoserra.watchlist.Interfaces.IObservador;
 import com.leonardoserra.watchlist.Interfaces.IRepository;
 import com.leonardoserra.watchlist.Interfaces.ISujeito;
@@ -17,9 +17,9 @@ public class DeviceRepository implements IRepository, ISujeito, IObservador {
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor e;
+    private ArrayList<IObservador> observadores = new ArrayList<>();
 
-    public DeviceRepository(Context pContext){
-        Context context = pContext;
+    public DeviceRepository(Context context) {
         sharedPreferences = context.getSharedPreferences("", Context.MODE_PRIVATE);
         e = sharedPreferences.edit();
     }
@@ -30,11 +30,10 @@ public class DeviceRepository implements IRepository, ISujeito, IObservador {
         if (urlsSp == null)
             return null;
 
-        String[] urls = urlsSp.toArray(new String[urlsSp.size()]);
-
-        return urls;
+        return urlsSp.toArray(new String[urlsSp.size()]);
 
     }
+
     public String criarOuObterUsuario(String usuario){
         usuario = sharedPreferences.getString("wl_user_hash", null);
 
@@ -61,15 +60,13 @@ public class DeviceRepository implements IRepository, ISujeito, IObservador {
         return false;
     }
 
-    public boolean adicionarFilme(Filme filme){
-        return false;
-    }
-
     /*
         Padrao Observer
      */
 
-    private ArrayList<IObservador> observadores = new ArrayList<>();
+    public boolean adicionarFilme(Filme filme) {
+        return false;
+    }
 
     public void registrarObservador(IObservador o) {
         observadores.add(o);

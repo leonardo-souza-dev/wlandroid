@@ -13,7 +13,7 @@ import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.leonardoserra.watchlist.Domain.Filme;
+import com.leonardoserra.watchlist.Bean.Filme;
 import com.leonardoserra.watchlist.MovieAdapter;
 import com.leonardoserra.watchlist.R;
 import com.leonardoserra.watchlist.Singleton;
