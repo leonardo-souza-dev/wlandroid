@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.leonardoserra.watchlist.Bean.Filme;
@@ -40,23 +39,6 @@ public class MyWatchListt extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listViewMyListt);
 
         setActionbar();
-
-        setTabs();
-    }
-
-    private void setTabs() {
-        TabHost host = (TabHost) findViewById(R.id.tabHost);
-        host.setup();
-
-        TabHost.TabSpec spec = host.newTabSpec("MyListt");
-        spec.setContent(R.id.tabMyListt);
-        spec.setIndicator("MyListt");
-        host.addTab(spec);
-
-        spec = host.newTabSpec("Profile");
-        spec.setContent(R.id.tabProfile);
-        spec.setIndicator("Profile");
-        host.addTab(spec);
     }
 
     private void carregaLista(){

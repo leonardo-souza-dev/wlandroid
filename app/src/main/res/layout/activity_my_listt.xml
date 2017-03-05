@@ -1,81 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tabHost"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/TabWidgetTheme">
+    android:background="@color/preto"
+    android:orientation="vertical"
+    tools:context=".Activities.MyWatchListt">
 
-    <LinearLayout
+    <include layout="@layout/tool_bar" />
+
+    <TextView
+        android:id="@+id/chamada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="My WatchListt"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/laranja"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/listViewMyListt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="18dp"
+        android:divider="#444444"
+        android:dividerHeight="1dp" />
+
+    <TextView
+        android:id="@+id/txtMsg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="#FFFFFF" />
 
-        <include layout="@layout/tool_bar" />
+    <Button
+        android:id="@+id/btnVaiParaBusca"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#111111"
+        android:onClick="vaiParaBusca"
+        android:textColor="@color/laranja" />
 
-        <TabWidget
-            android:id="@android:id/tabs"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#111111"
-            android:theme="@android:style/TextAppearance" />
-
-        <FrameLayout
-            android:id="@android:id/tabcontent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/tabMyListt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#111111"
-                android:orientation="vertical">
-
-                <ListView
-                    android:id="@+id/listViewMyListt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="18dp"
-                    android:divider="#444444"
-                    android:dividerHeight="1dp" />
-
-                <Button
-                    android:id="@+id/btnVaiParaBusca"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:background="#111111"
-                    android:onClick="vaiParaBusca"
-                    android:textColor="@color/laranja" />
-
-                <TextView
-                    android:id="@+id/txtMsg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:textColor="#FFFFFF" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/tabProfile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#ffffff"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/lorem" />
-            </LinearLayout>
-        </FrameLayout>
-
-    </LinearLayout>
-</TabHost>
+</LinearLayout>

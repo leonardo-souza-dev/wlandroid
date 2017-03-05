@@ -47,25 +47,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
 
         filmes = Singleton.getInstance().getWLService().buscar(termo);
 
-        Collections.sort(filmes, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                Filme p1 = (Filme) o1;
-                Filme p2 = (Filme) o2;
-
-                int resultado = -1;
-
-                if (p2.getPopularidade() == null && p1.getPopularidade() == null){
-                    resultado = -1;
-                } else {
-                    if (p2.getPopularidade() > p1.getPopularidade())
-                        resultado = + 1;
-                    else
-                        resultado = 0;
-                }
-                return resultado;
-            }
-        });
-
+        Collections.sort(filmes, new CustomComparator());
 
         lista = ToViewModel(filmes);
 
@@ -89,7 +71,7 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
         for (Filme f : filmes){
             MovieViewModel m = new MovieViewModel();
             m.set_id(f.get_id());
-            m.setTitulo(f.getTitulo());
+            m.setTitulo(f.getTitulo() + f.getPopularidade());
             m.setTituloOriginal(f.getTituloOriginal());
             m.setIsInMyList(f.getIsInMyList());
             m.setPoster(f.getPoster());
@@ -129,6 +111,13 @@ public class ResultadoBuscaActivity extends AppCompatActivity {
                     lista.get(i).setIsInMyList(esta);
                 }
             }
+        }
+    }
+
+    public class CustomComparator implements Comparator<Filme> {
+        @Override
+        public int compare(Filme f1, Filme f2) {
+            return f2.getPopularidade().compareTo(f1.getPopularidade());
         }
     }
 }

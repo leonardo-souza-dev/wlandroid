@@ -36,7 +36,7 @@ public final class MovieAdapter extends ArrayAdapter<MovieViewModel> {
         final MovieViewModel entry = getItem(position);
 
         if (gLayout == R.layout.simple_row) {
-            final ViewHolderSimpleRow viewHolderSimpleRow = (ViewHolderSimpleRow) getViewHolder(view);
+            final ViewHolderSimpleRow viewHolderSimpleRow = getViewHolder(view);
             setElements(viewHolderSimpleRow, entry);
         }
 
